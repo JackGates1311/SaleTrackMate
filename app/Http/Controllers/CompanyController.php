@@ -35,7 +35,7 @@ class CompanyController extends Controller
         return response()->json([
             'message' => Constants::COMPANY_SAVE_SUCCESS,
             'data' => $company
-        ]);
+        ], 201);
     }
 
     public function update(Request $request, $id): JsonResponse
