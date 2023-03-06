@@ -11,4 +11,8 @@ class Constants
     const ARTICLE_SAVE_SUCCESS = "Article saved successfully";
     const ARTICLE_UPDATE_SUCCESS = "Article updated successfully";
     const ARTICLE_DELETE_SUCCESS = "Article deleted successfully";
+    const ARTICLE_DETAILS_NOT_FOUND = "Article details not found with ID";
+    const ARTICLE_DETAILS_SAVE_SUCCESS = "Article details saved successfully";
+    const ARTICLE_DETAILS_UPDATE_SUCCESS = "Article details updated successfully";
+    const ARTICLE_DETAILS_DELETE_SUCCESS = "Article details deleted successfully";
 }

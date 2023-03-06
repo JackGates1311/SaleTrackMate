@@ -18,6 +18,13 @@ class ArticleController extends Controller
         return response()->json(['articles' => $articles]);
     }
 
+    public function indexWithDetails(): JsonResponse
+    {
+        $articles = Article::with('articleDetails')->get();
+
+        return response()->json(['articles' => $articles]);
+    }
+
     public function findByCompanyId($companyId): JsonResponse
     {
         $company = Company::find($companyId);
