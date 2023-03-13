@@ -50,6 +50,7 @@ class CompanyController extends Controller
         $company->reg_id = $request['reg_id'];
         $company->vat_id = $request['vat_id'];
         $company->name = $request['name'];
+        $company->category = $request['category'];
         $company->country = $request['country'];
         $company->place = $request['place'];
         $company->postal_code = $request['postal_code'];

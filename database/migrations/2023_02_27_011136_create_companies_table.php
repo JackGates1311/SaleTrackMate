@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('reg_id')->nullable();
             $table->string('vat_id')->nullable();
             $table->string('name');
+            $table->string('category');
             $table->string('country');
             $table->string('place');
             $table->string('postal_code');

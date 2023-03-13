@@ -16,8 +16,8 @@ class Company extends Model
 
     public $incrementing = false;
     protected $table = "companies";
-    protected $fillable = ['company_id', 'tax_code', 'reg_id', 'vat_id', 'name', 'country', 'place', 'postal_code',
-        'address', 'iban', 'bank_name', 'phone_num', 'fax', 'email', 'url', 'logo_url'];
+    protected $fillable = ['company_id', 'tax_code', 'reg_id', 'vat_id', 'name', 'category', 'country', 'place',
+        'postal_code', 'address', 'iban', 'bank_name', 'phone_num', 'fax', 'email', 'url', 'logo_url'];
 
     public function articles(): HasMany
     {
