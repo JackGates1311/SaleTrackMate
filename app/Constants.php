@@ -15,4 +15,7 @@ class Constants
     const ARTICLE_DETAILS_SAVE_SUCCESS = "Article details saved successfully";
     const ARTICLE_DETAILS_UPDATE_SUCCESS = "Article details updated successfully";
     const ARTICLE_DETAILS_DELETE_SUCCESS = "Article details deleted successfully";
+    const INVOICE_NOT_FOUND = "Invoice not found with ID";
+    const INVOICE_SAVE_SUCCESS = "Invoice saved successfully";
+    const INVOICE_DELETE_SUCCESS = "Invoice deleted successfully";
 }

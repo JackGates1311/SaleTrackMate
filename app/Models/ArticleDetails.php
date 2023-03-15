@@ -16,7 +16,6 @@ class ArticleDetails extends Model
 
     public $incrementing = false;
     protected $table = "article_details";
-
     protected $fillable = ['article_id', 'url', 'category', 'supplier', 'country_origin', 'country_origin_code',
         'weight', 'dimensions', 'color'];
 
