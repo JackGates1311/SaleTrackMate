@@ -21,19 +21,19 @@ class Invoice extends Model
         'invoice_location', 'due_date', 'due_location', 'delivery_date', 'delivery_location', 'payment_method',
         'payment_deadline', 'fiscal_receipt_num', 'articles_id'];
 
-    public function articles(): HasMany
+    public function issuerCompany(): BelongsTo
     {
-        return $this->hasMany(Article::class);
+        return $this->belongsTo(Company::class, 'issuer_company_id', 'id');
     }
 
     public function recipientCompany(): BelongsTo
     {
-        return $this->belongsTo(InvoiceRecipient::class);
+        return $this->belongsTo(InvoiceRecipient::class, 'recipient_company_id', 'id');
     }
 
-    public function issuerCompany(): BelongsTo
+    public function articles(): HasMany
     {
-        return $this->belongsTo(Company::class);
+        return $this->HasMany(InvoiceArticles::class, 'invoice_id', 'id');
     }
 
 }

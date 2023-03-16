@@ -10,8 +10,6 @@ return new class extends Migration
     {
         Schema::create('invoice_recipients', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('invoice_id')->constrained('invoices')->onDelete('cascade');
-            $table->string('recipient_id')->nullable();
             $table->string('tax_code');
             $table->string('reg_id')->nullable();
             $table->string('vat_id')->nullable();

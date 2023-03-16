@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArticleDetailsController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\InvoiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'companies'], function () {
@@ -36,6 +37,14 @@ Route::group(['prefix' => 'articlesDetails'], function () {
     Route::post('/', [ArticleDetailsController::class, 'store'])->name('store');
     Route::put('/{id}', [ArticleDetailsController::class, 'update'])->name('update');
     Route::delete('/{id}', [ArticleDetailsController::class, 'destroy'])->name('destroy');
+
+});
+
+Route::group(['prefix' => 'invoices'], function () {
+
+    Route::get('/', [InvoiceController::class, 'index'])->name('index');
+    Route::get('/{id}', [InvoiceController::class, 'show'])->name('show');
+    Route::post('/', [InvoiceController::class, 'store'])->name('store');
 
 });
 

@@ -10,7 +10,9 @@ return new class extends Migration
     {
         Schema::create('invoice_articles', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('invoice_id')->constrained('invoices')->onDelete('cascade');
+            $table->foreignUuid('invoice_id')->references('id')->on('invoices')->
+                onDelete('cascade');;
+            $table->string('article_id');
             $table->string('name');
             $table->string('unit');
             $table->integer('quantity');

@@ -24,8 +24,6 @@ return new class extends Migration
             $table->string('payment_method');
             $table->date('payment_deadline');
             $table->string('fiscal_receipt_num');
-            $table->foreignUuid('article_id')->references('id')->on('invoice_articles')->
-                onDelete('cascade');
             $table->timestamps();
         });
     }

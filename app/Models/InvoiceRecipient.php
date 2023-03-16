@@ -12,6 +12,6 @@ class InvoiceRecipient extends Model
 
     public $incrementing = false;
     protected $table = "invoice_recipients";
-    protected $fillable = ['invoice_id', 'recipient_id', 'tax_code', 'reg_id', 'vat_id', 'name', 'place',
+    protected $fillable = ['tax_code', 'reg_id', 'vat_id', 'name', 'place',
         'postal_code', 'address', 'iban', 'phone_num', 'fax', 'email'];
 }

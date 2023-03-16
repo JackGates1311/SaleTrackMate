@@ -15,7 +15,7 @@ class InvoiceController extends Controller
 {
     public function index(): JsonResponse
     {
-        $invoices = Invoice::all();
+        $invoices = Invoice::with('issuerCompany', 'recipientCompany', 'articles')->get();
 
         return response()->json(['invoices' => $invoices]);
     }
@@ -23,28 +23,32 @@ class InvoiceController extends Controller
     public function show($id): JsonResponse
     {
         $invoice = Invoice::find($id);
+
         if (!$invoice) {
             return response()->json(['message' => Constants::INVOICE_NOT_FOUND . ' ' . $id], 404);
         }
 
-        return response()->json(['invoice' => $invoice]);
+        $resp = $invoice::with('issuerCompany', 'recipientCompany', 'articles')->first();
+        return response()->json(['invoice' => $resp]);
     }
 
     public function store(Request $request): JsonResponse
     {
         $validatedData = $this->validateInvoiceData($request);
 
-        $issuerCompany = Company::find($validatedData['issuer_company_id']);
+        $issuerCompany = (new Company)->findByCompanyId($validatedData['issuer_company_id']);
+        $validatedData['issuer_company_id'] = $issuerCompany->id;
 
         $recipientCompany = new InvoiceRecipient($validatedData['recipient_company']);
         $recipientCompany->save();
+        $validatedData['recipient_company_id'] = $recipientCompany->getAttributes()["id"];
 
         $invoice = new Invoice($validatedData);
-        $invoice->issuerCompany()->associate($issuerCompany);
-        $invoice->recipientCompany()->associate($recipientCompany);
         $invoice->save();
+        $invoice_id = $invoice->getAttributes()["id"];
 
-        $articles = collect($validatedData['articles'])->map(function ($articleData) {
+        $articles = collect($validatedData['articles'])->map(function ($articleData) use ($invoice_id) {
+            $articleData['invoice_id'] = $invoice_id;
             $article = new InvoiceArticles($articleData);
             $article->save();
             return $article;
@@ -54,41 +58,6 @@ class InvoiceController extends Controller
 
         return response()->json(['message' => Constants::INVOICE_SAVE_SUCCESS, 'data' => $invoice]);
     }
-
-    /* public function update(Request $request, $id): JsonResponse
-    {
-       $company = Company::find($id);
-        if(!$company) {
-            return response()->json(['message' => Constants::COMPANY_NOT_FOUND . ' ' . $id], 404);
-        }
-
-        $company->company_id = $request['company_id'];
-        $company->tax_code = $request['tax_code'];
-        $company->reg_id = $request['reg_id'];
-        $company->vat_id = $request['vat_id'];
-        $company->name = $request['name'];
-        $company->category = $request['category'];
-        $company->country = $request['country'];
-        $company->place = $request['place'];
-        $company->postal_code = $request['postal_code'];
-        $company->address = $request['address'];
-        $company->iban = $request['iban'];
-        $company->bank_name = $request['bank_name'];
-        $company->phone_num = $request['phone_num'];
-        $company->fax = $request['fax'];
-        $company->email = $request['email'];
-        $company->url = $request['url'];
-        $company->logo_url = $request['logo_url'];
-
-        $company->save();
-
-        return response()->json([
-            'message' => Constants::COMPANY_UPDATE_SUCCESS,
-            'data' => $company
-        ]);
-
-        return response()->json([]);
-    } */
 
     public function destroy($id): JsonResponse
     {
@@ -108,10 +77,10 @@ class InvoiceController extends Controller
     private function validateInvoiceData(Request $request): array
     {
         return $request->validate([
-            'issuer_company_id' => 'required|exists:companies,id',
+            'issuer_company_id' => 'required|exists:companies,company_id',
             'recipient_company.tax_code' => 'required|string',
-            'recipient_company.reg_id' => 'required|string',
-            'recipient_company.vat_id' => 'required|string',
+            'recipient_company.reg_id' => '',
+            'recipient_company.vat_id' => '',
             'recipient_company.name' => 'required|string',
             'recipient_company.place' => 'required|string',
             'recipient_company.postal_code' => 'required|string',
