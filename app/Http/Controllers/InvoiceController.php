@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Constants;
+use App\Helper\PdfGenerator;
 use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\InvoiceArticles;
 use App\Models\InvoiceRecipient;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -31,6 +33,16 @@ class InvoiceController extends Controller
 
         $resp = $invoice::with('issuerCompany', 'recipientCompany', 'articles')->first();
         return response()->json(['invoice' => $resp]);
+    }
+
+    public function showAsPdf($id): void
+    {
+        $invoice = Invoice::find($id);
+
+        if ($invoice) {
+            $resp = $invoice::with('issuerCompany', 'recipientCompany', 'articles')->first();
+            (new PdfGenerator)->generatePdf($resp);
+        }
     }
 
     public function store(Request $request): JsonResponse
@@ -62,12 +74,14 @@ class InvoiceController extends Controller
 
             DB::commit();
 
-        } catch (\Exception $exception)
+        } catch (Exception $exception)
         {
             DB::rollBack();
 
             return response()->json(['message' => Constants::INVOICE_SAVE_FAIL, 'trace' => $exception]);
         }
+
+        // TODO here place implementation code for saving PDF file to server file system
 
         return response()->json(['message' => Constants::INVOICE_SAVE_SUCCESS, 'data' => $invoice]);
     }

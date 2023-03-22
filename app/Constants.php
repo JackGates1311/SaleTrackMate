@@ -18,4 +18,5 @@ class Constants
     const INVOICE_NOT_FOUND = "Invoice not found with ID";
     const INVOICE_SAVE_SUCCESS = "Invoice saved successfully";
     const INVOICE_DELETE_SUCCESS = "Invoice deleted successfully";
+    const INVOICE_SAVE_FAIL = "Invoice not saved successfully";
 }

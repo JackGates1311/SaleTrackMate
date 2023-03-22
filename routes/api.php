@@ -45,6 +45,7 @@ Route::group(['prefix' => 'invoices'], function () {
     Route::get('/', [InvoiceController::class, 'index'])->name('index');
     Route::get('/{id}', [InvoiceController::class, 'show'])->name('show');
     Route::post('/', [InvoiceController::class, 'store'])->name('store');
+    Route::get('/{id}/pdf', [InvoiceController::class, 'showAsPdf'])->name('showAsPdf');
 
 });
 
