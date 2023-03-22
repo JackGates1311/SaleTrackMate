@@ -10,6 +10,7 @@ use App\Models\InvoiceRecipient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {
@@ -34,27 +35,39 @@ class InvoiceController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $validatedData = $this->validateInvoiceData($request);
+        DB::beginTransaction();
 
-        $issuerCompany = (new Company)->findByCompanyId($validatedData['issuer_company_id']);
-        $validatedData['issuer_company_id'] = $issuerCompany->id;
+        try {
+            $validatedData = $this->validateInvoiceData($request);
 
-        $recipientCompany = new InvoiceRecipient($validatedData['recipient_company']);
-        $recipientCompany->save();
-        $validatedData['recipient_company_id'] = $recipientCompany->getAttributes()["id"];
+            $issuerCompany = (new Company)->findByCompanyId($validatedData['issuer_company_id']);
+            $validatedData['issuer_company_id'] = $issuerCompany->id;
 
-        $invoice = new Invoice($validatedData);
-        $invoice->save();
-        $invoice_id = $invoice->getAttributes()["id"];
+            $recipientCompany = new InvoiceRecipient($validatedData['recipient_company']);
+            $recipientCompany->save();
+            $validatedData['recipient_company_id'] = $recipientCompany->getAttributes()["id"];
 
-        $articles = collect($validatedData['articles'])->map(function ($articleData) use ($invoice_id) {
-            $articleData['invoice_id'] = $invoice_id;
-            $article = new InvoiceArticles($articleData);
-            $article->save();
-            return $article;
-        });
+            $invoice = new Invoice($validatedData);
+            $invoice->save();
+            $invoice_id = $invoice->getAttributes()["id"];
 
-        $invoice->articles()->saveMany($articles);
+            $articles = collect($validatedData['articles'])->map(function ($articleData) use ($invoice_id) {
+                $articleData['invoice_id'] = $invoice_id;
+                $article = new InvoiceArticles($articleData);
+                $article->save();
+                return $article;
+            });
+
+            $invoice->articles()->saveMany($articles);
+
+            DB::commit();
+
+        } catch (\Exception $exception)
+        {
+            DB::rollBack();
+
+            return response()->json(['message' => Constants::INVOICE_SAVE_FAIL, 'trace' => $exception]);
+        }
 
         return response()->json(['message' => Constants::INVOICE_SAVE_SUCCESS, 'data' => $invoice]);
     }
