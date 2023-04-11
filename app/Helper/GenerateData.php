@@ -163,6 +163,27 @@ class GenerateData
         $accountingSupplierParty->appendChild($party);
         $accountingCustomerParty->appendChild($partyCustomer);
 
+        $delivery = $invoice->createElement('cac:Delivery');
+        $actualDeliveryDate = $invoice->createElement('cbc:ActualDeliveryDate', $data['delivery_date']);
+        $delivery->appendChild($actualDeliveryDate);
+
+        $paymentMeans = $invoice->createElement('cac:PaymentMeans');
+        $paymentMeansCode = $invoice->createElement('cbc:PaymentMeansCode', $data['payment_code']);
+        $paymentID = $invoice->createElement('cbc:PaymentID', "(mod" . $data['payment_mod'] . ") " .
+            $data['payment_id']);
+        $paymentFinancialAccount = $invoice->createElement('cac:PayeeFinancialAccount');
+        $paymentFinancialAccountID = $invoice->createElement('cbc:ID', $data['issuer_company']['iban']);
+        $paymentFinancialAccount->appendChild($paymentFinancialAccountID);
+
+        $paymentMeans->appendChild($paymentMeansCode);
+        $paymentMeans->appendChild($paymentID);
+        $paymentMeans->appendChild($paymentFinancialAccount);
+
+        $taxTotal = $invoice->createElement('cac:TaxTotal');
+        $taxAmount = $invoice->createElement('cbc:TaxAmount', $data['tax_amount']);
+        $taxAmount->setAttribute('currencyID', $data['currency']);
+        $taxTotal->appendChild($taxAmount);
+
         $invoiceElement->appendChild($customizationID);
         $invoiceElement->appendChild($ID);
         $invoiceElement->appendChild($issueDate);
@@ -173,7 +194,9 @@ class GenerateData
         $invoiceElement->appendChild($contractDocumentReference);
         $invoiceElement->appendChild($accountingSupplierParty);
         $invoiceElement->appendChild($accountingCustomerParty);
-        $invoiceElement->appendChild($delivery); // continue there ...
+        $invoiceElement->appendChild($delivery);
+        $invoiceElement->appendChild($paymentMeans);
+        $invoiceElement->appendChild($taxTotal);
 
         $invoice->appendChild($invoiceElement);
 
