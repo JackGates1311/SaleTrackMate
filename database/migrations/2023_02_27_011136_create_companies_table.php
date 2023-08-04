@@ -22,9 +22,9 @@ return new class extends Migration
             $table->string('address');
             $table->string('iban');
             $table->string('bank_name');
-            $table->string('phone_num');
+            $table->string('phone_num')->nullable();
             $table->string('fax')->nullable();
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('url')->nullable();
             $table->string('logo_url')->nullable();
             $table->timestamps();

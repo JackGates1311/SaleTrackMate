@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('price', 10, 2);
             $table->decimal('rebate', 10, 2)->nullable();
-            $table->decimal('vat', 5, 2);
+            $table->decimal('vat', 5, 2);php art
             $table->decimal('price_with_vat', 10, 2);
             $table->string('image_url')->nullable();
             $table->timestamps();
