@@ -10,11 +10,11 @@ companies=(
 )
 
 articles=(
-  '{"company_id": "1", "article_id": "ABC123", "serial_num": "12345", "name": "Article 1", "unit": "piece", "min_unit": 1, "max_unit": 10, "price": 9.99, "description": "This is article 1", "image_url": "http://example.com/image1.jpg", "available_quantity": 100, "warranty_len": 12}'
-  '{"company_id": "1", "article_id": "DEF456", "serial_num": "67890", "name": "Article 2", "unit": "meter", "min_unit": 2, "max_unit": 20, "price": 19.99, "description": "This is article 2", "image_url": "http://example.com/image2.jpg", "available_quantity": 200, "warranty_len": 24}'
-  '{"company_id": "2", "article_id": "GHI789", "serial_num": "24680", "name": "Article 3", "unit": "gram", "min_unit": 3, "max_unit": 30, "price": 29.99, "description": "This is article 3", "image_url": "http://example.com/image3.jpg", "available_quantity": 300, "warranty_len": 36}'
-  '{"company_id": "2", "article_id": "JKL012", "serial_num": "13579", "name": "Article 4", "unit": "liter", "min_unit": 4, "max_unit": 40, "price": 39.99, "description": "This is article 4", "image_url": "http://example.com/image4.jpg", "available_quantity": 400, "warranty_len": 48}'
-  '{"company_id": "3", "article_id": "MNO345", "serial_num": "97531", "name": "Article 5", "unit": "box", "min_unit": 5, "max_unit": 50, "price": 49.99, "description": "This is article 5", "image_url": "http://example.com/image5.jpg", "available_quantity": 500, "warranty_len": 60}'
+  '{"company_id": "1", "article_id": "ABC123", "serial_num": "12345", "name": "GoodsOrServices 1", "unit": "piece", "min_unit": 1, "max_unit": 10, "price": 9.99, "description": "This is article 1", "image_url": "http://example.com/image1.jpg", "available_quantity": 100, "warranty_len": 12}'
+  '{"company_id": "1", "article_id": "DEF456", "serial_num": "67890", "name": "GoodsOrServices 2", "unit": "meter", "min_unit": 2, "max_unit": 20, "price": 19.99, "description": "This is article 2", "image_url": "http://example.com/image2.jpg", "available_quantity": 200, "warranty_len": 24}'
+  '{"company_id": "2", "article_id": "GHI789", "serial_num": "24680", "name": "GoodsOrServices 3", "unit": "gram", "min_unit": 3, "max_unit": 30, "price": 29.99, "description": "This is article 3", "image_url": "http://example.com/image3.jpg", "available_quantity": 300, "warranty_len": 36}'
+  '{"company_id": "2", "article_id": "JKL012", "serial_num": "13579", "name": "GoodsOrServices 4", "unit": "liter", "min_unit": 4, "max_unit": 40, "price": 39.99, "description": "This is article 4", "image_url": "http://example.com/image4.jpg", "available_quantity": 400, "warranty_len": 48}'
+  '{"company_id": "3", "article_id": "MNO345", "serial_num": "97531", "name": "GoodsOrServices 5", "unit": "box", "min_unit": 5, "max_unit": 50, "price": 49.99, "description": "This is article 5", "image_url": "http://example.com/image5.jpg", "available_quantity": 500, "warranty_len": 60}'
 )
 
 articlesDetails=(

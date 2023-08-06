@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\ArticleDetails;
+use App\Models\GoodsOrServicesDetails;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Tests\TestData;
@@ -45,7 +45,7 @@ class ArticleDetailsTest extends TestCase
         // DELETE
         $response = $this->deleteJson('/api/articlesDetails/' . $articlesDetailsUpdated[1]['id']);
         $response->assertStatus(200);
-        $this->assertNull(ArticleDetails::find($articlesDetailsUpdated[1]['id']));
+        $this->assertNull(GoodsOrServicesDetails::find($articlesDetailsUpdated[1]['id']));
     }
 
     public function createArticlesDetails($articlesDetails): array

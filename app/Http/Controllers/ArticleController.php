@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants;
-use App\Models\Article;
+use App\Models\GoodsOrServices;
 use App\Models\Company;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,14 +13,14 @@ class ArticleController extends Controller
 {
     public function index(): JsonResponse
     {
-        $articles = Article::all();
+        $articles = GoodsOrServices::all();
 
         return response()->json(['articles' => $articles]);
     }
 
     public function indexWithDetails(): JsonResponse
     {
-        $articles = Article::with('articleDetails')->get();
+        $articles = GoodsOrServices::with('articleDetails')->get();
 
         return response()->json(['articles' => $articles]);
     }
@@ -44,7 +44,7 @@ class ArticleController extends Controller
 
     public function show($id): JsonResponse
     {
-        $article = Article::find($id);
+        $article = GoodsOrServices::find($id);
         if (!$article) {
             return response()->json(['message' => Constants::ARTICLE_NOT_FOUND . ' ' . $id], 404);
         }
@@ -54,7 +54,7 @@ class ArticleController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $article = new Article($request->toArray());
+        $article = new GoodsOrServices($request->toArray());
         $article->save();
 
         return response()->json([
@@ -65,7 +65,7 @@ class ArticleController extends Controller
 
     public function update(Request $request, $id): JsonResponse
     {
-        $article = Article::find($id);
+        $article = GoodsOrServices::find($id);
         if(!$article) {
             return response()->json(['message' => Constants::ARTICLE_NOT_FOUND . ' ' . $id], 404);
         }
@@ -92,7 +92,7 @@ class ArticleController extends Controller
 
     public function destroy($id): JsonResponse
     {
-        $article = Article::find($id);
+        $article = GoodsOrServices::find($id);
         if (!$article) {
             return response()->json(['message' => Constants::ARTICLE_NOT_FOUND . ' ' . $id], 404);
         }

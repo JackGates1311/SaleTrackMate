@@ -6,8 +6,8 @@ use App\Constants;
 use App\Helper\GenerateData;
 use App\Models\Company;
 use App\Models\Invoice;
-use App\Models\InvoiceArticles;
-use App\Models\InvoiceRecipient;
+use App\Models\InvoiceItems;
+use App\Models\Recipient;
 use DOMException;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -141,7 +141,7 @@ class InvoiceController extends Controller
             $issuerCompany = (new Company)->findByCompanyId($validatedData['issuer_company_id']);
             $validatedData['issuer_company_id'] = $issuerCompany->id;
 
-            $recipientCompany = new InvoiceRecipient($validatedData['recipient_company']);
+            $recipientCompany = new Recipient($validatedData['recipient_company']);
             $recipientCompany->save();
             $validatedData['recipient_company_id'] = $recipientCompany->getAttributes()["id"];
 
@@ -151,7 +151,7 @@ class InvoiceController extends Controller
 
             $articles = collect($validatedData['articles'])->map(function ($articleData) use ($invoice_id) {
                 $articleData['invoice_id'] = $invoice_id;
-                $article = new InvoiceArticles($articleData);
+                $article = new InvoiceItems($articleData);
                 $article->save();
                 return $article;
             });

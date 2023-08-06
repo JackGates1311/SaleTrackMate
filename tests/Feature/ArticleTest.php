@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Article;
+use App\Models\GoodsOrServices;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Tests\TestData;
@@ -61,15 +61,15 @@ class ArticleTest extends TestCase
         $this->assertNotEmpty($response->json()['article']);
 
         // UPDATE
-        $updatedData = array_merge($articles[1] , ['name' => 'Updated Article Name']);
+        $updatedData = array_merge($articles[1] , ['name' => 'Updated GoodsOrServices Name']);
         $response = $this->putJson('/api/articles/' . $id, $updatedData);
         $response->assertStatus(200);
-        $this->assertEquals('Updated Article Name', $response->json('data.name'));
+        $this->assertEquals('Updated GoodsOrServices Name', $response->json('data.name'));
 
         // DELETE
         $response = $this->deleteJson('/api/articles/' . $id);
         $response->assertStatus(200);
-        $this->assertNull(Article::find($id));
+        $this->assertNull(GoodsOrServices::find($id));
     }
 
     public function getCompanyId(): string
