@@ -55,6 +55,7 @@ footer {
 
 .carousel-paragraph {
     padding-bottom: 12vh;
+    font-size: 8pt;
 }
 
 @media (min-width: 768px) {
@@ -74,4 +75,8 @@ footer {
     .carousel-paragraph {
         padding-bottom: 2vh; /* Further adjust padding for even larger screens */
     }
+}
+
+a {
+    text-decoration: none;
 }

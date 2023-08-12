@@ -19,63 +19,72 @@
                      alt="Analyze Analytics Image">
                 <div class="carousel-caption p-5">
                     <h5>Analyze Analytics of Invoices</h5>
-                    <p class="carousel-paragraph">Access detailed financial insights: revenue, expenses, profit margins, and more</p>
+                    <p>Access detailed financial insights: revenue, expenses, profit margins, and more</p>
+                    <p class="carousel-paragraph">Image created by <i>RadiasaTutorial Rti</i> from <a href="http://vecteezy.com">Vecteezy</a></p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="{{ asset('images/image1.jpg') }}" alt="Easy Recipient and Article Selection Image">
                 <div class="carousel-caption p-5">
                     <h5>Management of Recipients</h5>
-                    <p class="carousel-paragraph">Efficiently manage recipient info for invoicing. Add, update, and organize clients easily</p>
+                    <p>Efficiently manage recipient info for invoicing. Add, update, and organize clients easily</p>
+                    <p class="carousel-paragraph">Image created by <i>flatart</i> from <a href="http://vecteezy.com">Vecteezy</a></p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="{{ asset('images/image2.jpg') }}" alt="Simplified Fiscal Year Management Image">
                 <div class="carousel-caption p-5">
                     <h5>Fiscal Year Management</h5>
-                    <p class="carousel-paragraph">Track income and expenses by managing fiscal years. Organize financial records with ease</p>
+                    <p>Track income and expenses by managing fiscal years. Organize financial records with ease</p>
+                    <p class="carousel-paragraph">Image created by <i>RadiasaTutorial Rti</i> from <a href="http://vecteezy.com">Vecteezy</a></p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="{{ asset('images/image3.jpg') }}" alt="Goods and Services Management Image">
                 <div class="carousel-caption p-5">
                     <h5>Goods and Services Management</h5>
-                    <p class="carousel-paragraph">Efficiently manage products, taxes, and billing for accurate invoicing.</p>
+                    <p>Efficiently manage products, taxes, and billing for accurate invoicing.</p>
+                    <p class="carousel-paragraph">Image created by <i>RadiasaTutorial Rti</i> from <a href="http://vecteezy.com">Vecteezy</a></p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="{{ asset('images/image4.jpg') }}" alt="Recipients Management Image">
                 <div class="carousel-caption p-5">
                     <h5>Recipients Management</h5>
-                    <p class="carousel-paragraph">Efficiently organize recipient info with additions and updates for streamlined invoicing.</p>
+                    <p>Efficiently organize recipient info with additions and updates for streamlined invoicing.</p>
+                    <p class="carousel-paragraph">Image created by <i>studiogstock</i> from <a href="http://vecteezy.com">Vecteezy</a></p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="{{asset('images/image5.jpg')}}" alt="Invoice Management Image">
                 <div class="carousel-caption p-5">
                     <h5>Invoice Management</h5>
-                    <p class="carousel-paragraph">Manage invoices through easy creation and closure, recipient selection, and item selection.</p>
+                    <p>Manage invoices through easy creation and closure, recipient selection, and item selection.</p>
+                    <p class="carousel-paragraph">Image created by <i>RadiasaTutorial Rti</i> from <a href="http://vecteezy.com">Vecteezy</a></p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="{{asset('images/image6.jpg')}}" alt="Printing Invoices Image">
                 <div class="carousel-caption p-5">
                     <h5>Export of Invoices</h5>
-                    <p class="carousel-paragraph">Easily export invoices as PDF or XML files for sharing, and print them when required.</p>
+                    <p>Easily export invoices as PDF or XML files for sharing, and print them when required.</p>
+                    <p class="carousel-paragraph">Image created by <i>RadiasaTutorial Rti</i> from <a href="http://vecteezy.com">Vecteezy</a></p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="{{asset('images/image7.jpg')}}" alt="Company Information Management Image">
                 <div class="carousel-caption p-5">
                     <h5>Company Data Management</h5>
-                    <p class="carousel-paragraph">Update and view company details, including contact info, address, company name, and relevant data.</p>
+                    <p>Update and view company details, including contact info, address, company name, and relevant data.</p>
+                    <p class="carousel-paragraph">Image created by <i>husein signart</i> from <a href="http://vecteezy.com">Vecteezy</a></p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="{{asset('images/image8.jpg')}}" alt="Secure Data Encryption Image">
                 <div class="carousel-caption p-5">
                     <h5>Secure Data Encryption</h5>
-                    <p class="carousel-paragraph">Enhance security with user authentication for sensitive data protection.</p>
+                    <p>Enhance security with user authentication for sensitive data protection.</p>
+                    <p class="carousel-paragraph">Image created by <i>rizal.medanguide from</i> <a href="http://vecteezy.com">Vecteezy</a></p>
                 </div>
             </div>
         </div>
