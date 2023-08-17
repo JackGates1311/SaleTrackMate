@@ -2,17 +2,38 @@
 
 namespace App\Models;
 
-use App\Enums\AccountType;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticate;
 
-class User extends Model
+
+/**
+ * @mixin Builder
+ * @property string $username
+ * @property string $email
+ * @property string $password
+ * @property string $first_name
+ * @property string|null $middle_name
+ * @property string $last_name
+ * @property string $country
+ * @property string $city
+ * @property string $address
+ * @property string $postal_code
+ * @property string $phone
+ * @property string|null $fax
+ * @property bool $is_active
+ */
+class User extends Authenticate
 {
-    use HasFactory, HasUuids;
+    use HasApiTokens, HasFactory, Notifiable, HasUuids;
 
     public $incrementing = false;
+
     protected $table = "users";
+
     protected $fillable = [
         'username',
         'email',
@@ -29,6 +50,4 @@ class User extends Model
         'is_active',
         'account_type',
     ];
-
-    protected AccountType $account_type;
 }

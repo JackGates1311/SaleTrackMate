@@ -4,6 +4,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArticleDetailsController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'companies'], function () {
@@ -50,3 +51,7 @@ Route::group(['prefix' => 'invoices'], function () {
 
 });
 
+Route::group(['prefix' => 'user'], function () {
+    Route::post('/register', [UserController::class, 'register'])->name('register');
+    Route::post('/login', [UserController::class, 'login'])->name('login');
+});

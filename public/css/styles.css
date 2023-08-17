@@ -37,7 +37,7 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.75);
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.75));
     color: #fff;
     padding: 10px;
 }
@@ -79,4 +79,68 @@ footer {
 
 a {
     text-decoration: none;
+}
+
+/* Additional styling for the login page */
+.gradient-form {
+    background: linear-gradient(to bottom, #faf8f8, #e3e7e8);
+}
+
+.gradient-form-black {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.75));
+}
+
+.card {
+    border: none;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.btn-primary,
+.btn-primary:focus,
+.btn-primary:active {
+    background: #000000;
+    opacity: 0.6;
+    border-color: #000000;
+    border-radius: 1rem;
+}
+
+.btn-primary:hover {
+    background: #000000;
+    border-color: #000000;
+    opacity: 0.75;
+}
+
+.form-control, .form-select {
+    border-radius: 1rem;
+    background-color: #e3e7e8;
+    border: none;
+}
+
+label {
+    padding-left: 0.5rem;
+}
+
+#description-section {
+    border-color: #000000;
+    display: flex;
+    justify-content: center;
+}
+
+.description-text {
+    text-align: justify;
+    max-width: 80%; /* Adjust this value as needed */
+    margin: 0 auto;
+}
+
+.btn-outline-secondary {
+    border-radius: 1rem;
+    color: black;
+    opacity: 0.9;
+    border-color: #000000;
+}
+
+.btn-outline-secondary:hover {
+    background: #000000;
+    opacity: 0.75;
 }

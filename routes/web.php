@@ -17,10 +17,15 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::post('/login', function () {
-   return '404';
+Route::get('/login', function () {
+   return view('login');
 })->name('login');
 
-Route::post('/register', function () {
-    return '500';
+Route::get('/register', function () {
+    $step = 1;
+    return view('register', ['step' => $step]);
 })->name('register');
+
+Route::get('/about', function (){
+    return '500';
+})->name('about');
