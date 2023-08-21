@@ -19,21 +19,38 @@
                                 <div class="text-center">
                                     <h4 class="mt-1 mb-5 pb-1">Log In to SaleTrackMate</h4>
                                 </div>
-                                <form>
+                                <form accept-charset="UTF-8" method="POST" action="{{ route('login') }}">
+                                    @csrf <!-- {{ csrf_field() }} -->
                                     <div class="form-outline mb-4">
                                         <label class="form-label" for="email">Email:</label>
-                                        <input type="email" id="email" class="form-control"
-                                               placeholder="Your email address"/>
+                                        <input type="email" id="email" name="email"
+                                               class="form-control"
+                                               placeholder="Your email address"
+                                               value="{{old('email')}}" required/>
                                     </div>
 
                                     <div class="form-outline mb-4">
                                         <label class="form-label" for="password">Password:</label>
-                                        <input type="password" id="password" class="form-control"
-                                               placeholder="Your password"/>
+                                        <input type="password" id="password" name="password"
+                                               class="form-control"
+                                               placeholder="Your password" minlength="8" required/>
                                     </div>
+
+                                    @if ($errors->has('message'))
+                                        <div class="alert alert-danger mb-4">
+                                            {{ $errors->first('message') }}
+                                        </div>
+                                    @endif
+
+                                    @if (Session::has('success'))
+                                        <div class="alert alert-success mb-4">
+                                            {{ session('success') }}
+                                        </div>
+                                    @endif
+
                                     <div class="text-center pt-1 mb-4 pb-1">
                                         <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3 w-100"
-                                                type="button">Log In
+                                                type="submit">Log In
                                         </button>
                                     </div>
 
