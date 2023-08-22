@@ -136,8 +136,7 @@
                                     </div>
                                     @if ($errors->has('error'))
                                         <div class="alert alert-danger mb-4 text-center">
-                                            {{ $errors->first('error') }}
-                                        </div>
+                                            {{$errors->first('error')}}</div>
                                     @endif
                                     <div class="text-center pt-1 mb-4 pb-1">
                                         <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3 w-100"

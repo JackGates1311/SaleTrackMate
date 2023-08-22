@@ -38,14 +38,12 @@
 
                                     @if ($errors->has('message'))
                                         <div class="alert alert-danger mb-4">
-                                            {{ $errors->first('message') }}
-                                        </div>
+                                            {{$errors->first('message')}}</div>
                                     @endif
 
                                     @if (Session::has('success'))
                                         <div class="alert alert-success mb-4">
-                                            {{ session('success') }}
-                                        </div>
+                                            {{session('success')}}</div>
                                     @endif
 
                                     <div class="text-center pt-1 mb-4 pb-1">

@@ -148,7 +148,21 @@ label {
 .alert {
     border-radius: 1rem;
     margin-bottom: 1px;
-    height: 40px;
-    line-height:40px;
-    padding:0 20px;
+    height: auto;
+    min-height: 40px;
+    line-height: 20px;
+    padding: 10px 20px;
+}
+
+.contact-us {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ffffff;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.contact-us img {
+    filter: brightness(0) invert(1);
 }

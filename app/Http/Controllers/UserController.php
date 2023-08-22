@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Services\UserService;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Routing\Redirector;
 
 class UserController extends Controller
 {
@@ -36,13 +38,19 @@ class UserController extends Controller
         $result = $this->userService->login($request->except('_token'));
 
         if ($result['success']) {
-            return view('business_user_dashboard');
+            session(['user' => $result['user']]);
+            return redirect()->route('dashboard')->with(['user' => $result['user']]);
 
-            // next thing is to save token in Laravel session with $user data!
-            // add check for is_active account!
             // make check if user is administrator or business user!
         } else {
             return redirect()->route('login')->withErrors(['message' => $result['message']])->withInput();
         }
+    }
+
+    public function logout(): Redirector|Application|RedirectResponse
+    {
+        $this->userService->logout();
+
+        return redirect('/');
     }
 }

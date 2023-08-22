@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,5 +32,12 @@ Route::get('/register', function () {
 Route::post('/register', [UserController::class, 'register'])->name('register');
 
 Route::get('/about', function (){
-    return '500';
+    return view('about');
 })->name('about');
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::match(['get', 'post'], '/logout', [UserController::class, 'logout'])->name('logout');
+});
+
+

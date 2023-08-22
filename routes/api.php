@@ -54,4 +54,5 @@ Route::group(['prefix' => 'invoices'], function () {
 Route::group(['prefix' => 'user'], function () {
     Route::post('/register', [UserControllerApi::class, 'register'])->name('register');
     Route::post('/login', [UserControllerApi::class, 'login'])->name('login');
+    Route::match(['get', 'post'],'/logout', [UserControllerApi::class, 'logout'])->name('logout');
 });

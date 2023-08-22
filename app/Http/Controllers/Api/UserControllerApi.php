@@ -6,6 +6,7 @@ use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class UserControllerApi extends Controller
 {
@@ -41,6 +42,21 @@ class UserControllerApi extends Controller
                 'token_expiration' => $result['token_expiration']]);
         } else {
             return response()->json(['message' => $result['message'], 'error' => $result['error']], 401);
+        }
+    }
+
+    public function logout(Request $request): JsonResponse
+    {
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+
+        if($token != null)
+        {
+            $token->delete();
+            $this->userService->logout();
+
+            return response()->json(['message' => 'Logged out successfully']);
+        } else {
+            return response()->json(['message' => 'User is already logged out']);
         }
     }
 }

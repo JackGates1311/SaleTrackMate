@@ -76,7 +76,12 @@ class UserService
 
         $user = $this->userModel->where('email', $credentials['email'])->firstOrFail();
 
-        return $this->generateSuccessResponse($user, 'User Logged In successfully');
+        if($user->is_active){
+            return $this->generateSuccessResponse($user, 'User Logged In successfully');
+        } else {
+            return ['success' => false, 'message' => 'Account pending administrator approval',
+                'error' => 'Account pending administrator approval'];
+        }
     }
 
     private function generateSuccessResponse(User $user, string $message): array
@@ -96,5 +101,10 @@ class UserService
     private function isDuplicateEntryError(QueryException $exception, string $email): bool
     {
         return str_contains($exception->getMessage(), "Duplicate entry '$email'");
+    }
+
+    public function logout(): void
+    {
+        Auth::guard('web')->logout();
     }
 }
