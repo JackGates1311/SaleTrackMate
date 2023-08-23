@@ -163,6 +163,22 @@ label {
     margin-top: 20px;
 }
 
-.contact-us img {
+.contact-us img, .invoice-search-form img {
     filter: brightness(0) invert(1);
+}
+
+.invoice-search-form label {
+    padding: 0;
+    margin: 0;
+}
+
+.scrollable-list {
+    max-height: calc(40vh - 150px);
+    overflow-y: auto;
+}
+
+@media (min-width: 992px) {
+    .scrollable-list {
+        max-height: calc(55vh - 250px);
+    }
 }

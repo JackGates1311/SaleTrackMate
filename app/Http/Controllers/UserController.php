@@ -38,8 +38,8 @@ class UserController extends Controller
         $result = $this->userService->login($request->except('_token'));
 
         if ($result['success']) {
-            session(['user' => $result['user']]);
-            return redirect()->route('dashboard')->with(['user' => $result['user']]);
+            session(['user_data' => $result['user']]);
+            return redirect()->route('invoices')->with(['user' => $result['user']]);
 
             // make check if user is administrator or business user!
         } else {
@@ -50,6 +50,8 @@ class UserController extends Controller
     public function logout(): Redirector|Application|RedirectResponse
     {
         $this->userService->logout();
+
+        session()->forget('user_data');
 
         return redirect('/');
     }

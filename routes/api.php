@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\InvoiceControllerApi;
 use App\Http\Controllers\Api\UserControllerApi;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArticleDetailsController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\InvoiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'companies'], function () {
@@ -43,11 +43,11 @@ Route::group(['prefix' => 'articlesDetails'], function () {
 
 Route::group(['prefix' => 'invoices'], function () {
 
-    Route::get('/', [InvoiceController::class, 'index'])->name('index');
-    Route::get('/{id}', [InvoiceController::class, 'show'])->name('show');
-    Route::post('/', [InvoiceController::class, 'store'])->name('store');
-    Route::get('/{id}/pdf', [InvoiceController::class, 'exportAsPdf'])->name('exportAsPdf');
-    Route::get('/{id}/xml', [InvoiceController::class, 'exportAsXml'])->name('exportAsXml');
+    Route::get('/', [InvoiceControllerApi::class, 'index'])->name('index');
+    Route::get('/{id}', [InvoiceControllerApi::class, 'show'])->name('show');
+    Route::post('/', [InvoiceControllerApi::class, 'store'])->name('store');
+    Route::get('/{id}/pdf', [InvoiceControllerApi::class, 'exportAsPdf'])->name('exportAsPdf');
+    Route::get('/{id}/xml', [InvoiceControllerApi::class, 'exportAsXml'])->name('exportAsXml');
 
 });
 

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +16,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
+    if(session()->get('user_data') != '' && session()->get('user_data') != null) {
+        return view('invoices');
+    } else {
+        return view('index');
+    }
 });
 
 Route::get('/login', function () {
@@ -36,7 +40,7 @@ Route::get('/about', function (){
 })->name('about');
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices');
     Route::match(['get', 'post'], '/logout', [UserController::class, 'logout'])->name('logout');
 });
 

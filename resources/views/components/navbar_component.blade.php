@@ -9,15 +9,24 @@
         <!-- Collapsible navigation links -->
         <div class="collapse navbar-collapse text-center text-lg-left" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('login') ? 'active' : '' }}" href="{{ route('login') }}">Log In</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('register') ? 'active' : '' }}" href="{{ route('register') }}">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('about') ? 'active' : '' }}" href="{{ route('about') }}">About Us</a>
-                </li>
+                @if (session()->get('user_data') != '' && session()->get('user_data') != null)
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('invoices') ? 'active' : '' }}" href="{{ route('invoices') }}">Invoice Management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="justify-content-end nav-link {{ request()->is('logout') ? 'active' : '' }}" href="{{ route('logout') }}">Log Out</a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('login') ? 'active' : '' }}" href="{{ route('login') }}">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('register') ? 'active' : '' }}" href="{{ route('register') }}">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('about') ? 'active' : '' }}" href="{{ route('about') }}">About Us</a>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>

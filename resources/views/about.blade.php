@@ -27,7 +27,6 @@
                         <div class="col-lg-6 d-flex align-items-center gradient-form-black p-4"
                              id="description-section">
                             <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                                <h3 class="text-center mb-4">Contact Us</h3>
                                 <div class="contact-us mb-3">
                                     <img src="{{ asset('images/res/call.png') }}" alt="arrow_forward" width="32" height="32">
                                     +381 70 12 34 567
