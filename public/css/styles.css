@@ -172,13 +172,22 @@ label {
     margin: 0;
 }
 
-.scrollable-list {
-    max-height: calc(40vh - 150px);
-    overflow-y: auto;
+.search-form {
+    height: 200px;
 }
 
-@media (min-width: 992px) {
-    .scrollable-list {
-        max-height: calc(55vh - 250px);
+.invoices-list {
+    height: calc(100vh - 320px);
+    overflow-y: auto;
+    border-color: black;
+    border-radius: 1rem;
+}
+
+@media (max-height: 991px) {
+    .invoices-list {
+        height: calc(100vh - 420px);
+        overflow-y: auto;
+        border-color: black;
+        border-radius: 1rem;
     }
 }

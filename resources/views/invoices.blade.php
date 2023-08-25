@@ -9,9 +9,11 @@
 @component('components.navbar_component')
 @endcomponent
 
-<div class="container mt-3">
+<div class="vh-100 d-flex flex-column">
+<div class="container mt-3 flex-grow-1">
     <div class="row">
         <div class="col-lg-4">
+            <div class="search-form">
             <form class="invoice-search-form mb-4" action="#" method="GET">
                 <label for="search"></label>
                 <div class="input-group">
@@ -21,10 +23,14 @@
                     </button>
                 </div>
             </form>
-            <a href="#" class="btn btn-primary btn-block gradient-custom-2 w-100 mb-3">Create New Invoice</a>
+                <a href="#" class="btn btn-primary btn-block gradient-custom-2 w-100 mb-3">Create New Invoice</a>
+                <h5 class="m-2">Invoices:</h5>
+            </div>
+
+            <div class="invoices-list">
             <!-- Invoices List -->
-            <h5 class="p-1">Invoices:</h5>
-            <div class="list-group mt-4 scrollable-list">
+
+            <div class="list-group scrollable-list">
                 @php
                     $invoices = [
                         ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
@@ -42,6 +48,23 @@
                                                 ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
                         ['id' => 2, 'invoice_number' => 'INV2021002', 'total_amount' => 150.00],
                         ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
+                                                                        ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
+                        ['id' => 2, 'invoice_number' => 'INV2021002', 'total_amount' => 150.00],
+                        ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
+                                                                        ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
+                        ['id' => 2, 'invoice_number' => 'INV2021002', 'total_amount' => 150.00],
+                        ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
+                                                                        ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
+                        ['id' => 2, 'invoice_number' => 'INV2021002', 'total_amount' => 150.00],
+                        ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
+                                                ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
+                                                                        ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
+                        ['id' => 2, 'invoice_number' => 'INV2021002', 'total_amount' => 150.00],
+                        ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
+                                                ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
+                                                                        ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
+                        ['id' => 2, 'invoice_number' => 'INV2021002', 'total_amount' => 150.00],
+                        ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
                     ];
                 @endphp
                 @foreach($invoices as $invoice)
@@ -49,6 +72,7 @@
                         Invoice #{{ $invoice['id'] }}
                     </a>
                 @endforeach
+            </div>
             </div>
         </div>
         <div class="col-lg-8 mt-3">
@@ -123,6 +147,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 </body>
 </html>
