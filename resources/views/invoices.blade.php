@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <title>Invoice Management - SaleTrackMate</title>
+    <title>Invoices - SaleTrackMate</title>
     @component('components.header_component')
     @endcomponent
 </head>
@@ -9,9 +9,9 @@
 @component('components.navbar_component')
 @endcomponent
 
-<div class="vh-100 d-flex flex-column">
+<div class="vh-100 d-flex flex-column gradient-form">
 <div class="container mt-3 flex-grow-1">
-    <div class="row">
+    <div class="row bg-white">
         <div class="col-lg-4">
             <div class="search-form">
             <form class="invoice-search-form mb-4" action="#" method="GET">
@@ -109,7 +109,10 @@
                 <div class="card-body">
                     <div class="d-inline-flex w-100 justify-content-between">
                         <h5 class="card-title">Recipient Information</h5>
-                        <button class="btn btn-primary mb-3">Export Invoice</button>
+                        <div class="d-inline-flex justify-content-end gap-2">
+                            <button class="btn btn-primary mb-3">Export Invoice</button>
+                            <button class="btn btn-primary mb-3">Close Invoice</button>
+                        </div>
                     </div>
 
                     <p><strong>Recipient:</strong> {{ $invoice['recipient'] }}</p>
