@@ -16,6 +16,12 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('recipients') ? 'active' : '' }}" href="#">Recipients</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('analytics') ? 'active' : '' }}" href="#">Analytics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('analytics') ? 'active' : '' }}" href="#">Goods and Services</a>
+                    </li>
                 @else
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('login') ? 'active' : '' }}" href="{{ route('login') }}">Log In</a>
@@ -38,6 +44,15 @@
                             <li><a class="dropdown-item" href="#">Action</a></li>
                             <li><a class="dropdown-item" href="#">Another action</a></li>
                             <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Admin Actions
+                        </a>
+                        <ul class="dropdown-menu text-center" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">Backup & Restore</a></li>
+                            <li><a class="dropdown-item" href="#">Manage Requests</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

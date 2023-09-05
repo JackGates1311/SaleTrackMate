@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,8 +19,21 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function index(): Factory|View|Application
+    public function index(): View
     {
+        // Set the session variable directly
+        session(['account_edit' => false]);
+
+        // Return the "account" view
+        return view('account');
+    }
+
+    public function edit(): View
+    {
+        // Set the session variable directly
+        session(['account_edit' => true]);
+
+        // Return the "account" view
         return view('account');
     }
 

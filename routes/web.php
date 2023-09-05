@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    if(session()->get('user_data') != '' && session()->get('user_data') != null) {
+    if (session()->get('user_data') != '' && session()->get('user_data') != null) {
         return redirect('/invoices');
     } else {
         return view('index');
@@ -24,7 +24,7 @@ Route::get('/', function () {
 });
 
 Route::get('/login', function () {
-   return view('login');
+    return view('login');
 })->name('login');
 
 Route::post('/login', [UserController::class, 'login'])->name('login');
@@ -35,13 +35,14 @@ Route::get('/register', function () {
 
 Route::post('/register', [UserController::class, 'register'])->name('register');
 
-Route::get('/about', function (){
+Route::get('/about', function () {
     return view('about');
 })->name('about');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices');
     Route::get('/account', [UserController::class, 'index'])->name('account');
+    Route::get('/account/edit', [UserController::class, 'edit'])->name('account_edit');
     Route::match(['get', 'post'], '/logout', [UserController::class, 'logout'])->name('logout');
 });
 

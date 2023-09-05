@@ -15,7 +15,7 @@
                 <div class="card rounded-3 text-black border-0">
                     <div class="row g-0">
                         <div class="col-lg-12">
-                            <div class="card-body p-md-5 mx-md-4">
+                            <div class="card-body p-3">
                                 <div class="text-center">
                                     <h4 class="mt-1 mb-5 pb-1">Register to SaleTrackMate</h4>
                                 </div>
@@ -72,7 +72,7 @@
                                                 <label class="form-label" for="password">Password:</label>
                                                 <input type="password" id="password" name="password"
                                                        class="form-control" placeholder="Your password"
-                                                       value="{{old('password')}}" minlength="8" required />
+                                                       value="{{old('password')}}" minlength="8" required/>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
@@ -80,7 +80,7 @@
                                                 <label class="form-label" for="password_repeat">Repeat Password:</label>
                                                 <input type="password" id="password_repeat" name="passwordRepeat"
                                                        class="form-control" placeholder="Repeat your password"
-                                                       value="{{old('password_repeat')}}" minlength="8" required />
+                                                       value="{{old('password_repeat')}}" minlength="8" required/>
                                             </div>
                                         </div>
                                     </div>
@@ -138,8 +138,8 @@
                                         <div class="alert alert-danger mb-4 text-center">
                                             {{$errors->first('error')}}</div>
                                     @endif
-                                    <div class="text-center pt-1 mb-4 pb-1">
-                                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3 w-100"
+                                    <div class="text-center pt-1">
+                                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 w-100"
                                                 type="submit">Register
                                         </button>
                                     </div>
