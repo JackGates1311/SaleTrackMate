@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @method static find($id)
  * @method where(string $string, $companyId)
+ * @method static create($validated_data)
  */
 class Company extends Model
 {
@@ -34,6 +35,7 @@ class Company extends Model
         'email',
         'url',
         'logo_url',
+        'user_id'
     ];
 
     public function articles(): HasMany
@@ -50,4 +52,27 @@ class Company extends Model
     {
         return $this->belongsTo(Invoice::class, 'issuer_company_id', 'id');
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public static array $rules = [
+        'company_id' => 'required|string|max:255',
+        'tax_code' => 'required|string|max:255',
+        'reg_id' => 'nullable|string|max:255',
+        'vat_id' => 'nullable|string|max:255',
+        'name' => 'required|string|max:255',
+        'category' => 'required|string|max:255',
+        'country' => 'required|string|max:255',
+        'place' => 'required|string|max:255',
+        'postal_code' => 'required|string|max:255',
+        'address' => 'required|string|max:255',
+        'phone_num' => 'nullable|string|max:255',
+        'fax' => 'nullable|string|max:255',
+        'email' => 'nullable|string|email|max:255',
+        'url' => 'nullable|string|url|max:255',
+        'logo_url' => 'nullable|string|url|max:255',
+    ];
 }
