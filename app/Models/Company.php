@@ -43,9 +43,9 @@ class Company extends Model
         return $this->hasMany(GoodsOrServices::class);
     }
 
-    public function findByCompanyId($companyId)
+    public function findByCompanyId($company_id)
     {
-        return $this->where('company_id', $companyId)->first();
+        return $this->where('company_id', $company_id)->first();
     }
 
     public function invoice(): BelongsTo
@@ -55,7 +55,12 @@ class Company extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function bankAccounts(): HasMany // fix not use
+    {
+        return $this->hasMany(BankAccount::class);
     }
 
     public static array $rules = [
@@ -74,5 +79,6 @@ class Company extends Model
         'email' => 'nullable|string|email|max:255',
         'url' => 'nullable|string|url|max:255',
         'logo_url' => 'nullable|string|url|max:255',
+        'user_id' => 'required|uuid'
     ];
 }

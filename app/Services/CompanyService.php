@@ -7,17 +7,25 @@ use App\Models\Company;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CompanyService
 {
+    private BankAccountService $bankAccountService;
+
+    public function __construct(BankAccountService $bankAccountService)
+    {
+        $this->bankAccountService = $bankAccountService;
+    }
+
     public function index(): array
     {
-        return ['companies' => Company::all()->toArray()];
+        return ['companies' => Company::with('bankAccounts')->get()->toArray()];
     }
 
     public function show($id): array
     {
-        $company = Company::find($id);
+        $company = Company::with('bankAccounts')->find($id);
 
         if (!$company) {
             return ['success' => false, 'message' => Constants::COMPANY_NOT_FOUND . ' ' . $id];
@@ -26,13 +34,35 @@ class CompanyService
         return ['success' => true, 'message' => 'OK', 'company' => $company->toArray()];
     }
 
-    public function store(Request $request): array
+    public function store(Request $request, string $user_id): array
     {
+        $request['user_id'] = $user_id;
+
         $validated_data = $request->validate(Company::$rules);
 
         try {
-            $company = Company::create($validated_data);
-            return ['success' => true, 'message' => Constants::COMPANY_SAVE_SUCCESS, 'company' => $company];
+
+            DB::beginTransaction();
+
+            try {
+
+                $company = Company::create($validated_data);
+
+                foreach ($request->toArray()['bank_accounts'] as $bank_account) {
+                    $this->bankAccountService->store($bank_account, $company->id);
+                }
+
+                DB::commit();
+
+                $company['bank_accounts'] = $request->toArray()['bank_accounts'];
+
+                return ['success' => true, 'message' => Constants::COMPANY_SAVE_SUCCESS, 'company' => $company];
+
+            } catch (Exception $e) {
+                DB::rollBack();
+                return ['success' => false, 'message' => 'Failed to save company: ' . $e->getMessage()];
+            }
+
         } catch (Exception $e) {
             return ['success' => false, 'message' => 'Failed to save company: ' . $e->getMessage()];
         }
@@ -68,6 +98,10 @@ class CompanyService
 
         if (!$companies) {
             return ['success' => false, 'message' => Constants::COMPANY_NOT_FOUND . ' with ID: ' . $id];
+        }
+
+        foreach ($companies as $company) {
+            $company->load('bankAccounts');
         }
 
         return ['success' => true, 'companies' => $companies];

@@ -41,7 +41,15 @@ class CompanyControllerApi extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $result = $this->companyService->store($request);
+        $user = auth('sanctum')->user();
+
+        $user_id = '';
+
+        if (isset($user->id)) {
+            $user_id = $user->id;
+        }
+
+        $result = $this->companyService->store($request, $user_id);
 
         if ($result['success']) {
             return response()->json([

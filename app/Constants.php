@@ -20,4 +20,6 @@ class Constants
     const INVOICE_DELETE_SUCCESS = "Invoice deleted successfully";
     const INVOICE_SAVE_FAIL = "Invoice not saved successfully";
     const USER_NOT_FOUND = "User not found";
+    const BANK_ACCOUNT_SAVE_SUCCESS = "Bank account saved successfully";
+    const BANK_ACCOUNT_SAVE_FAIL = "Failed to save bank account: ";
 }

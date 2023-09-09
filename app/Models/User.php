@@ -27,6 +27,7 @@ use Illuminate\Foundation\Auth\User as Authenticate;
  * @property string|null $fax
  * @property bool $is_active
  * @property array $companies
+ * @property string $id
  */
 class User extends Authenticate
 {
