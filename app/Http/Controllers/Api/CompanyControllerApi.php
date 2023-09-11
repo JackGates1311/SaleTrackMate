@@ -9,7 +9,6 @@ use Illuminate\Routing\Controller;
 
 class CompanyControllerApi extends Controller
 {
-
     private CompanyService $companyService;
 
     public function __construct(CompanyService $companyService)
@@ -79,9 +78,17 @@ class CompanyControllerApi extends Controller
         }
     }
 
-    public function findByUserId($id): JsonResponse
+    public function findByUserId(): JsonResponse
     {
-        $result = $this->companyService->findByUserId($id);
+        $user = auth('api')->user();
+
+        $user_id = '';
+
+        if (isset($user->id)) {
+            $user_id = $user->id;
+        }
+
+        $result = $this->companyService->findByUserId($user_id);
 
         if ($result['success']) {
             return response()->json([

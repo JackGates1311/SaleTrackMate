@@ -12,20 +12,22 @@ use Illuminate\Support\Facades\DB;
 class CompanyService
 {
     private BankAccountService $bankAccountService;
+    private FiscalYearService $fiscalYearService;
 
-    public function __construct(BankAccountService $bankAccountService)
+    public function __construct(BankAccountService $bankAccountService, FiscalYearService $fiscalYearService)
     {
         $this->bankAccountService = $bankAccountService;
+        $this->fiscalYearService = $fiscalYearService;
     }
 
     public function index(): array
     {
-        return ['companies' => Company::with('bankAccounts')->get()->toArray()];
+        return ['companies' => Company::with('bankAccounts', 'fiscalYears')->get()->toArray()];
     }
 
     public function show($id): array
     {
-        $company = Company::with('bankAccounts')->find($id);
+        $company = Company::with('bankAccounts', 'fiscalYears')->find($id);
 
         if (!$company) {
             return ['success' => false, 'message' => Constants::COMPANY_NOT_FOUND . ' ' . $id];
@@ -52,9 +54,12 @@ class CompanyService
                     $this->bankAccountService->store($bank_account, $company->id);
                 }
 
+                $fiscal_year = $this->fiscalYearService->store(date('Y'), $company->id);
+
                 DB::commit();
 
                 $company['bank_accounts'] = $request->toArray()['bank_accounts'];
+                $company['fiscal_years'] = $fiscal_year['fiscal_year'];
 
                 return ['success' => true, 'message' => Constants::COMPANY_SAVE_SUCCESS, 'company' => $company];
 
@@ -102,6 +107,7 @@ class CompanyService
 
         foreach ($companies as $company) {
             $company->load('bankAccounts');
+            $company->load('fiscalYears');
         }
 
         return ['success' => true, 'companies' => $companies];

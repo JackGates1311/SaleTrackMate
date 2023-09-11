@@ -22,4 +22,5 @@ class Constants
     const USER_NOT_FOUND = "User not found";
     const BANK_ACCOUNT_SAVE_SUCCESS = "Bank account saved successfully";
     const BANK_ACCOUNT_SAVE_FAIL = "Failed to save bank account: ";
+    const FISCAL_YEAR_SAVE_SUCCESS = "Fiscal year saved successfully";
 }

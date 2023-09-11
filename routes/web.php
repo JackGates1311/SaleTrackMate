@@ -39,7 +39,7 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:web')->group(function () {
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices');
     Route::get('/account', [UserController::class, 'index'])->name('account');
     Route::get('/account/edit', [UserController::class, 'edit'])->name('account_edit');

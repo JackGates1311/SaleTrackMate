@@ -58,9 +58,20 @@ class Company extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function bankAccounts(): HasMany // fix not use
+    /**
+     * @noinspection PhpUnused
+     */
+    public function bankAccounts(): HasMany
     {
         return $this->hasMany(BankAccount::class);
+    }
+
+    /**
+     * @noinspection PhpUnused
+     */
+    public function fiscalYears(): HasMany
+    {
+        return $this->hasMany(FiscalYear::class);
     }
 
     public static array $rules = [
