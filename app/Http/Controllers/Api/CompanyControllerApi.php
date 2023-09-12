@@ -3,17 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Services\CompanyService;
+use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Validation\ValidationException;
 
 class CompanyControllerApi extends Controller
 {
     private CompanyService $companyService;
+    private UserService $userService;
 
-    public function __construct(CompanyService $companyService)
+    public function __construct(CompanyService $companyService, UserService $userService)
     {
         $this->companyService = $companyService;
+        $this->userService = $userService;
     }
 
     public function index(): JsonResponse
@@ -40,15 +44,7 @@ class CompanyControllerApi extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $user = auth('sanctum')->user();
-
-        $user_id = '';
-
-        if (isset($user->id)) {
-            $user_id = $user->id;
-        }
-
-        $result = $this->companyService->store($request, $user_id);
+        $result = $this->companyService->store($request, $this->userService->getUserIdApi());
 
         if ($result['success']) {
             return response()->json([
@@ -62,9 +58,12 @@ class CompanyControllerApi extends Controller
         }
     }
 
+    /**
+     * @throws ValidationException
+     */
     public function update(Request $request, $id): JsonResponse
     {
-        $result = $this->companyService->update($request, $id);
+        $result = $this->companyService->update($request->toArray(), $id, $this->userService->getUserIdApi());
 
         if ($result['success']) {
             return response()->json([
@@ -100,4 +99,8 @@ class CompanyControllerApi extends Controller
             ], 500);
         }
     }
+
+    /**
+     * @return string
+     */
 }

@@ -13,10 +13,12 @@ use Illuminate\Support\Facades\Validator;
 class UserService
 {
     private User $user_model;
+    private CompanyService $companyService;
 
-    public function __construct(User $user_model)
+    public function __construct(User $user_model, CompanyService $companyService)
     {
         $this->user_model = $user_model;
+        $this->companyService = $companyService;
     }
 
     public function register(array $userData): array
@@ -92,8 +94,39 @@ class UserService
         return str_contains($exception->getMessage(), "Duplicate entry '$email'");
     }
 
+    public function getUserCompanies(): array
+    {
+        $result = $this->companyService->findByUserId($this->getUserIdWeb());
+
+        return $result['companies']->toArray();
+    }
+
     public function logout(): void
     {
         Auth::guard('web')->logout();
+    }
+
+    public function getUserIdApi(): string
+    {
+        $user = auth('api')->user();
+
+        $user_id = '';
+
+        if (isset($user->id)) {
+            $user_id = $user->id;
+        }
+        return $user_id;
+    }
+
+    public function getUserIdWeb(): string
+    {
+        $user = auth('web')->user();
+
+        $user_id = '';
+
+        if (isset($user->id)) {
+            $user_id = $user->id;
+        }
+        return $user_id;
     }
 }

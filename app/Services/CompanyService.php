@@ -8,6 +8,8 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class CompanyService
 {
@@ -73,9 +75,14 @@ class CompanyService
         }
     }
 
-    public function update(Request $request, $id): array
+    /**
+     * @throws ValidationException
+     */
+    public function update(array $data, $id, string $user_id): array
     {
-        $validated_data = $request->validate(Company::$rules);
+        $data['user_id'] = $user_id;
+
+        $validated_data = Validator::make($data, Company::$rules)->validate();
 
         $company = Company::find($id);
 

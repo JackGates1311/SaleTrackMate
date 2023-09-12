@@ -24,7 +24,7 @@
                    aria-selected="false" href="#companies"
                    @if ($companies && count($companies) > 0)
                        onclick="window.location.href =
-                    '{{ route('account', ['company' => $companies[0]['id']]) }}'" @endif
+                    '{{ route('companies', ['company' => $companies[0]['id']]) }}'" @endif
                 >My Companies</a>
             </li>
         </ul>

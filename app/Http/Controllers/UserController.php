@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CompanyService;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\View;
@@ -14,30 +13,22 @@ use Illuminate\Routing\Redirector;
 class UserController extends Controller
 {
     private UserService $userService;
-    private CompanyService $companyService;
 
-    public function __construct(UserService $userService, CompanyService $companyService)
+    public function __construct(UserService $userService)
     {
         $this->userService = $userService;
-        $this->companyService = $companyService;
     }
 
     public function index(): View
     {
-        // Set the session variable directly
         session(['account_edit' => false]);
-
-        // Return the "account" view
-        return view('account', ['companies' => $this->getUserCompanies()]);
+        return view('account', ['companies' => $this->userService->getUserCompanies()]);
     }
 
     public function edit(): View
     {
-        // Set the session variable directly
         session(['account_edit' => true]);
-
-        // Return the "account" view
-        return view('account', ['companies' => $this->getUserCompanies()]);
+        return view('account', ['companies' => $this->userService->getUserCompanies()]);
     }
 
     public function register(Request $request): RedirectResponse|View
@@ -75,20 +66,5 @@ class UserController extends Controller
         session()->forget('user_data');
 
         return redirect('/');
-    }
-
-    public function getUserCompanies(): array
-    {
-        $user = auth('web')->user();
-
-        $user_id = '';
-
-        if (isset($user->id)) {
-            $user_id = $user->id;
-        }
-
-        $result = $this->companyService->findByUserId($user_id);
-
-        return $result['companies']->toArray();
     }
 }

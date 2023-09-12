@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -23,17 +24,21 @@ Route::get('/', function () {
     }
 });
 
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
+Route::group(['prefix' => 'login'], function () {
+    Route::get('/', function () {
+        return view('login');
+    })->name('login');
 
-Route::post('/login', [UserController::class, 'login'])->name('login');
+    Route::post('/', [UserController::class, 'login'])->name('login');
+});
 
-Route::get('/register', function () {
-    return view('register');
-})->name('register');
+Route::group(['prefix' => 'register'], function () {
+    Route::get('/', function () {
+        return view('register');
+    })->name('register');
 
-Route::post('/register', [UserController::class, 'register'])->name('register');
+    Route::post('/', [UserController::class, 'register'])->name('register');
+});
 
 Route::get('/about', function () {
     return view('about');
@@ -41,8 +46,17 @@ Route::get('/about', function () {
 
 Route::middleware('auth:web')->group(function () {
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices');
-    Route::get('/account', [UserController::class, 'index'])->name('account');
-    Route::get('/account/edit', [UserController::class, 'edit'])->name('account_edit');
+    Route::group(['prefix' => 'account'], function () {
+        Route::get('/', [UserController::class, 'index'])->name('account');
+        Route::get('/edit', [UserController::class, 'edit'])->name('account_edit');
+    });
+    Route::group(['prefix' => 'companies'], function () {
+        Route::get('/', [CompanyController::class, 'index'])->name('companies');
+        Route::get('/edit', [CompanyController::class, 'edit'])->name('company_edit');
+        Route::post('/edit', [CompanyController::class, 'update'])->name('company_edit_save');
+        Route::get('/create', [CompanyController::class, 'createView'])->name('create_company_view');
+        Route::post('/create', [CompanyController::class, 'create'])->name('create_company');
+    });
     Route::match(['get', 'post'], '/logout', [UserController::class, 'logout'])->name('logout');
 });
 
