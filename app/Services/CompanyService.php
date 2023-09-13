@@ -50,21 +50,25 @@ class CompanyService
 
             try {
 
-                $company = Company::create($validated_data);
+                if (count($request->toArray()['bank_accounts']) > 0) {
+                    $company = Company::create($validated_data);
 
-                foreach ($request->toArray()['bank_accounts'] as $bank_account) {
-                    $this->bankAccountService->store($bank_account, $company->id);
+                    foreach ($request->toArray()['bank_accounts'] as $bank_account) {
+                        $this->bankAccountService->store($bank_account, $company->id);
+                    }
+
+                    $fiscal_year = $this->fiscalYearService->store(date('Y'), $company->id);
+
+                    DB::commit();
+
+                    $company['bank_accounts'] = $request->toArray()['bank_accounts'];
+                    $company['fiscal_years'] = $fiscal_year['fiscal_year'];
+
+                    return ['success' => true, 'message' => Constants::COMPANY_SAVE_SUCCESS, 'company' => $company];
+                } else {
+                    DB::rollBack();
+                    return ['success' => false, 'message' => 'Company must have at least one bank account'];
                 }
-
-                $fiscal_year = $this->fiscalYearService->store(date('Y'), $company->id);
-
-                DB::commit();
-
-                $company['bank_accounts'] = $request->toArray()['bank_accounts'];
-                $company['fiscal_years'] = $fiscal_year['fiscal_year'];
-
-                return ['success' => true, 'message' => Constants::COMPANY_SAVE_SUCCESS, 'company' => $company];
-
             } catch (Exception $e) {
                 DB::rollBack();
                 return ['success' => false, 'message' => 'Failed to save company: ' . $e->getMessage()];

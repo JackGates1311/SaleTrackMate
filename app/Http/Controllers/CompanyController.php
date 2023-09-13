@@ -62,8 +62,9 @@ class CompanyController extends Controller
         return view('account', ['companies' => []]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-
+        // think how to add bank_accounts into $request
+        dd($request->except('_token'));
     }
 }

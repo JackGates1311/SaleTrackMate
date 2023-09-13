@@ -256,3 +256,16 @@ label {
 .form-select:hover {
     cursor: pointer;
 }
+
+.btn-form-control {
+    opacity: 0.75;
+}
+
+.btn-form-control:hover {
+    opacity: 1;
+}
+
+.btn-form-control:active, .btn-form-control:focus {
+    background-color: #e3e7e8;
+    opacity: 1;
+}

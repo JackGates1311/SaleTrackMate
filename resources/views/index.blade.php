@@ -119,7 +119,6 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-
 </section>
 
 <footer class="text-center py-3">
