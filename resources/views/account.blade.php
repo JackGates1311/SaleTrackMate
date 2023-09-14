@@ -36,8 +36,13 @@
             </div>
             <div class="tab-pane fade {{!request()->has('company') ? '' : 'show active'}}" id="companies"
                  role="tabpanel" aria-labelledby="my-companies-tab">
-                @component('components.my_companies_tab_component', ['companies' => $companies])
-                @endcomponent
+                @if(session('manage_bank_accounts') && isset($bank_accounts) && count($bank_accounts) > 0)
+                    @component('components.manage_bank_accounts_component', ['bank_accounts' => $bank_accounts])
+                    @endcomponent
+                @else
+                    @component('components.my_companies_tab_component', ['companies' => $companies])
+                    @endcomponent
+                @endif
             </div>
         </div>
     </div>

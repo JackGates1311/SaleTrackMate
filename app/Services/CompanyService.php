@@ -6,7 +6,6 @@ use App\Constants;
 use App\Models\Company;
 use App\Models\User;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -38,11 +37,14 @@ class CompanyService
         return ['success' => true, 'message' => 'OK', 'company' => $company->toArray()];
     }
 
-    public function store(Request $request, string $user_id): array
+    /**
+     * @throws ValidationException
+     */
+    public function store(array $data, string $user_id): array
     {
-        $request['user_id'] = $user_id;
+        $data['user_id'] = $user_id;
 
-        $validated_data = $request->validate(Company::$rules);
+        $validated_data = Validator::make($data, Company::$rules)->validate();
 
         try {
 
@@ -50,10 +52,10 @@ class CompanyService
 
             try {
 
-                if (count($request->toArray()['bank_accounts']) > 0) {
+                if (count($data['bank_accounts']) > 0) {
                     $company = Company::create($validated_data);
 
-                    foreach ($request->toArray()['bank_accounts'] as $bank_account) {
+                    foreach ($data['bank_accounts'] as $bank_account) {
                         $this->bankAccountService->store($bank_account, $company->id);
                     }
 
@@ -61,7 +63,7 @@ class CompanyService
 
                     DB::commit();
 
-                    $company['bank_accounts'] = $request->toArray()['bank_accounts'];
+                    $company['bank_accounts'] = $data['bank_accounts'];
                     $company['fiscal_years'] = $fiscal_year['fiscal_year'];
 
                     return ['success' => true, 'message' => Constants::COMPANY_SAVE_SUCCESS, 'company' => $company];

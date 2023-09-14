@@ -1,6 +1,16 @@
 <label class="form-label" for="country">Country:</label>
 <select class="form-select" id="country" name="country" required>
-    <option value="{{old('country')}}">@if((old('country'))) Country selected @else Your country @endif</option>
+    @if(isset($selected_country))
+        <option value="{{$selected_country}}">
+            {{$selected_country}}
+        </option>
+    @else
+        <option value="{{old('country')}}">@if((old('country')))
+                Country selected
+            @else
+                Your country
+            @endif</option>
+    @endif
     <option value="AF">Afghanistan</option>
     <option value="AX">Aland Islands</option>
     <option value="AL">Albania</option>

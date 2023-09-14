@@ -27,6 +27,7 @@ class CompanyController extends Controller
     {
         session(['company_edit' => false]);
         session(['company_create' => false]);
+        session(['manage_bank_accounts' => false]);
         return view('account', ['companies' => $this->userService->getUserCompanies()]);
     }
 
@@ -34,6 +35,7 @@ class CompanyController extends Controller
     {
         session(['company_edit' => true]);
         session(['company_create' => false]);
+        session(['manage_bank_accounts' => false]);
         return view('account', ['companies' => $this->userService->getUserCompanies()]);
     }
 
@@ -58,13 +60,24 @@ class CompanyController extends Controller
     {
         session(['company_edit' => false]);
         session(['company_create' => true]);
+        session(['manage_bank_accounts' => false]);
 
         return view('account', ['companies' => []]);
     }
 
-    public function create(Request $request)
+    /**
+     * @throws ValidationException
+     */
+    public function create(Request $request): RedirectResponse
     {
-        // think how to add bank_accounts into $request
-        dd($request->except('_token'));
+        $result = $this->companyService->store($request->except('_token'), $this->userService->getUserIdWeb());
+
+        if ($result['success']) {
+            return redirect()->route('companies', ['company' => $result['company']['id']])->with(
+                ['message' => $result['message']]);
+        } else {
+            return redirect()->route('companies', ['company' => $result['company']['id']])->
+            withErrors(['message' => $result['message']]);
+        }
     }
 }

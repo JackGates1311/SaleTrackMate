@@ -81,7 +81,7 @@ class Company extends Model
         'vat_id' => 'nullable|string|max:255',
         'name' => 'required|string|max:255',
         'category' => 'required|string|max:255',
-        'country' => 'required|string|max:255',
+        'country' => 'required|string|min:2|max:2',
         'place' => 'required|string|max:255',
         'postal_code' => 'required|string|max:255',
         'address' => 'required|string|max:255',

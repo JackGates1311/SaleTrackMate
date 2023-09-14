@@ -42,9 +42,12 @@ class CompanyControllerApi extends Controller
         }
     }
 
+    /**
+     * @throws ValidationException
+     */
     public function store(Request $request): JsonResponse
     {
-        $result = $this->companyService->store($request, $this->userService->getUserIdApi());
+        $result = $this->companyService->store($request->toArray(), $this->userService->getUserIdApi());
 
         if ($result['success']) {
             return response()->json([

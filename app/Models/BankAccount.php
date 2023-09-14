@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @method static create(array $validated_data)
+ * @method static find($id)
  */
 class BankAccount extends Model
 {

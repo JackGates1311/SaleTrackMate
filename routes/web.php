@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\UserController;
@@ -56,6 +57,10 @@ Route::middleware('auth:web')->group(function () {
         Route::post('/edit', [CompanyController::class, 'update'])->name('company_edit_save');
         Route::get('/create', [CompanyController::class, 'createView'])->name('create_company_view');
         Route::post('/create', [CompanyController::class, 'create'])->name('create_company');
+    });
+    Route::group(['prefix' => 'bank_accounts'], function () {
+        Route::get('/', [BankAccountController::class, 'index'])->name('bank_accounts');
+        Route::get('/edit', [BankAccountController::class, 'edit'])->name('bank_account_edit');
     });
     Route::match(['get', 'post'], '/logout', [UserController::class, 'logout'])->name('logout');
 });

@@ -23,4 +23,7 @@ class Constants
     const BANK_ACCOUNT_SAVE_SUCCESS = "Bank account saved successfully";
     const BANK_ACCOUNT_SAVE_FAIL = "Failed to save bank account: ";
     const FISCAL_YEAR_SAVE_SUCCESS = "Fiscal year saved successfully";
+    const BANK_ACCOUNT_NOT_FOUND = "Bank account not found with ID";
+    const BANK_ACCOUNT_UPDATE_SUCCESS = "Bank account updated successfully";
+    const BANK_ACCOUNT_UPDATE_FAIL = "Failed to update bank account: ";
 }

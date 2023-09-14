@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BankAccountControllerApi;
 use App\Http\Controllers\Api\CompanyControllerApi;
 use App\Http\Controllers\Api\InvoiceControllerApi;
 use App\Http\Controllers\Api\UserControllerApi;
@@ -9,17 +10,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->group(function () {
     Route::group(['prefix' => 'companies'], function () {
-
         Route::get('/', [CompanyControllerApi::class, 'index'])->name('index');
         Route::get('/{id}', [CompanyControllerApi::class, 'show'])->name('show');
         Route::post('/', [CompanyControllerApi::class, 'store'])->name('store');
         Route::put('/{id}', [CompanyControllerApi::class, 'update'])->name('update');
         Route::get('/user', [CompanyControllerApi::class, 'findByUserId'])->name('findByUserId');
+    });
 
+    Route::group(['prefix' => 'bank_accounts'], function () {
+        Route::get('/company/{id}', [BankAccountControllerApi::class, 'findByCompanyId'])
+            ->name('findByCompanyId');
+        Route::post('/', [BankAccountControllerApi::class, 'store'])->name('store');
+        Route::put('/{id}', [BankAccountControllerApi::class, 'update'])->name('update');
     });
 
     Route::group(['prefix' => 'articles'], function () {
-
         Route::get('/', [ArticleController::class, 'index'])->name('index');
         Route::get('/details', [ArticleController::class, 'indexWithDetails'])->
         name('indexWithDetails');
@@ -29,27 +34,22 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/', [ArticleController::class, 'store'])->name('store');
         Route::put('/{id}', [ArticleController::class, 'update'])->name('update');
         Route::delete('/{id}', [ArticleController::class, 'destroy'])->name('destroy');
-
     });
 
     Route::group(['prefix' => 'articlesDetails'], function () {
-
         Route::get('/', [ArticleDetailsController::class, 'index'])->name('index');
         Route::get('/{id}', [ArticleDetailsController::class, 'show'])->name('show');
         Route::post('/', [ArticleDetailsController::class, 'store'])->name('store');
         Route::put('/{id}', [ArticleDetailsController::class, 'update'])->name('update');
         Route::delete('/{id}', [ArticleDetailsController::class, 'destroy'])->name('destroy');
-
     });
 
     Route::group(['prefix' => 'invoices'], function () {
-
         Route::get('/', [InvoiceControllerApi::class, 'index'])->name('index');
         Route::get('/{id}', [InvoiceControllerApi::class, 'show'])->name('show');
         Route::post('/', [InvoiceControllerApi::class, 'store'])->name('store');
         Route::get('/{id}/pdf', [InvoiceControllerApi::class, 'exportAsPdf'])->name('exportAsPdf');
         Route::get('/{id}/xml', [InvoiceControllerApi::class, 'exportAsXml'])->name('exportAsXml');
-
     });
 });
 
