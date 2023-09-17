@@ -22,6 +22,7 @@ Route::middleware('auth:api')->group(function () {
             ->name('findByCompanyId');
         Route::post('/', [BankAccountControllerApi::class, 'store'])->name('store');
         Route::put('/{id}', [BankAccountControllerApi::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [BankAccountControllerApi::class, 'destroy'])->name('destroy');
     });
 
     Route::group(['prefix' => 'articles'], function () {

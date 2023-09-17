@@ -55,4 +55,15 @@ class BankAccountControllerApi extends Controller
             return response()->json(['message' => $result['message']], 500);
         }
     }
+
+    public function destroy($id): JsonResponse
+    {
+        $result = $this->bankAccountService->destroy($id);
+
+        if ($result['success']) {
+            return response()->json(['message' => $result['message'], 'bank_account' => $result['bank_account']], 202);
+        } else {
+            return response()->json(['message' => $result['message']], 500);
+        }
+    }
 }

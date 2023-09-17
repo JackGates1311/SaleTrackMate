@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @method static create(array $validated_data)
  * @method static find($id)
+ * @method static where(string $string, $company_id)
  */
 class BankAccount extends Model
 {

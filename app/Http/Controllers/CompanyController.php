@@ -28,6 +28,7 @@ class CompanyController extends Controller
         session(['company_edit' => false]);
         session(['company_create' => false]);
         session(['manage_bank_accounts' => false]);
+        session(['edit_bank_account' => false]);
         return view('account', ['companies' => $this->userService->getUserCompanies()]);
     }
 
@@ -36,6 +37,7 @@ class CompanyController extends Controller
         session(['company_edit' => true]);
         session(['company_create' => false]);
         session(['manage_bank_accounts' => false]);
+        session(['edit_bank_account' => false]);
         return view('account', ['companies' => $this->userService->getUserCompanies()]);
     }
 
@@ -61,7 +63,7 @@ class CompanyController extends Controller
         session(['company_edit' => false]);
         session(['company_create' => true]);
         session(['manage_bank_accounts' => false]);
-
+        session(['edit_bank_account' => false]);
         return view('account', ['companies' => []]);
     }
 

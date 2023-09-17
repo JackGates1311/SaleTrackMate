@@ -61,6 +61,9 @@ Route::middleware('auth:web')->group(function () {
     Route::group(['prefix' => 'bank_accounts'], function () {
         Route::get('/', [BankAccountController::class, 'index'])->name('bank_accounts');
         Route::get('/edit', [BankAccountController::class, 'edit'])->name('bank_account_edit');
+        Route::post('/edit', [BankAccountController::class, 'update'])->name('bank_account_edit_save');
+        Route::post('/delete', [BankAccountController::class, 'delete'])->name('bank_account_delete');
+        Route::post('/create', [BankAccountController::class, 'create'])->name('create_bank_account');
     });
     Route::match(['get', 'post'], '/logout', [UserController::class, 'logout'])->name('logout');
 });

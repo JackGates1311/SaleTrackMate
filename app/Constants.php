@@ -26,4 +26,5 @@ class Constants
     const BANK_ACCOUNT_NOT_FOUND = "Bank account not found with ID";
     const BANK_ACCOUNT_UPDATE_SUCCESS = "Bank account updated successfully";
     const BANK_ACCOUNT_UPDATE_FAIL = "Failed to update bank account: ";
+    const BANK_ACCOUNT_DELETE_SUCCESS = "Bank account successfully removed";
 }

@@ -49,7 +49,7 @@
 
                                 <div
                                     class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">
-                                    <a data-bs-toggle="modal" data-bs-target="#showBankAccountsModal"
+                                    <a data-bs-toggle="modal" data-bs-target="#bankAccountsModal"
                                        class="btn btn-primary mb-3 mb-lg-0 me-lg-2" {{ session('company_edit') ? 'hidden' : ''}}>
                                         Show Bank Accounts
                                     </a>
@@ -300,8 +300,8 @@
 @endif
 
 @if(!session('company_create'))
-    @component('components.show_bank_accounts_modal_component',
-                                    ['bank_accounts' => $selected_company['bank_accounts'] ?? []])
+    @component('components.bank_accounts_modal_component',
+                                    ['bank_accounts' => $selected_company['bank_accounts'] ?? [], 'read_only' => true])
     @endcomponent
 @endif
 
