@@ -48,7 +48,8 @@
                         ['bank_accounts' => $bank_accounts, 'editable' => session('edit_bank_account')])
                     @endcomponent
                 @else
-                    @component('components.my_companies_tab_component', ['companies' => $companies])
+                    @component('components.my_companies_tab_component', ['companies' => $companies,
+                        'selected_company' => $selected_company  ?? session('selected_company') ?? $companies[0]])
                     @endcomponent
                 @endif
             </div>

@@ -5,22 +5,34 @@
                 Identifier:</label>
             <input type="text" class="form-control" name="bank_accounts[0][bank_identifier]"
                    id="bank_identifier" placeholder="Company bank identifier"
-                   value="{{$mode == "create" ? '' : $bank_account['bank_identifier']}}"
-                   required {{($mode == "edit" || $mode == "create")  ? '' : 'readonly'}}>
+                   value="{{($mode == "create" || $mode == "company_create") ? '' : $bank_account['bank_identifier']}}"
+                   required {{($mode == "edit" || $mode == "create" || $mode == "company_create")  ? '' : 'readonly'}}>
         </div>
-        <div class="{{$mode == "manage" ? 'col-xl-3' : 'col-xl-4'}} col-md-12 col-sm-12 mb-3">
+        <div
+            class="{{($mode == "manage" || $mode == "company_create") ? 'col-xl-3' : 'col-xl-4'}} col-md-12 col-sm-12 mb-3">
             <label for="bank_name" class="form-label">Bank Name:</label>
             <input id="bank_name" type="text" class="form-control"
                    name="bank_accounts[0][name]" placeholder="Company bank name"
-                   value="{{$mode == "create" ? '' :  $bank_account['name']}}"
-                   required {{($mode == "edit" || $mode == "create") ? '' : 'readonly'}}>
+                   value="{{($mode == "create" || $mode == "company_create") ? '' :  $bank_account['name']}}"
+                   required {{($mode == "edit" || $mode == "create" || $mode == "company_create") ? '' : 'readonly'}}>
         </div>
         <div class="col-xl-4 col-md-12 col-sm-12 mb-3">
             <label for="iban" class="form-label">IBAN:</label>
             <input type="text" class="form-control" id="iban" name="bank_accounts[0][iban]"
-                   placeholder="Company bank iban" value="{{$mode == "create" ? '' : $bank_account['iban']}}"
-                   required {{($mode == "edit" || $mode == "create") ? '' : 'readonly'}}>
+                   placeholder="Company bank iban"
+                   value="{{($mode == "create" || $mode == "company_create") ? '' : $bank_account['iban']}}"
+                   required {{($mode == "edit" || $mode == "create" || $mode == "company_create") ? '' : 'readonly'}}>
         </div>
+        @if($mode == "company_create")
+            <div class="col-xl-1 mb-3 d-flex justify-content-end align-items-end">
+                <button class="form-control btn-form-control mt-1" type="button"
+                        onclick="removeBankAccount(this)">
+                    <img src="{{ asset('images/res/delete.png') }}" alt="delete" width="21"
+                         height="21">
+                    <span class="visually-hidden">Remove</span>
+                </button>
+            </div>
+        @endif
         @if($mode == "manage")
             <div class="col-xl-1 mb-xl-3 d-flex justify-content-center align-items-end">
                 <a class="form-control btn-form-control mt-1 text-center"
@@ -44,4 +56,7 @@
             </div>
         @endif
     </div>
+    @if($mode == "company_create")
+        <hr/>
+    @endif
 </div>

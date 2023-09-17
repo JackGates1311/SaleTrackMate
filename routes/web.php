@@ -57,6 +57,7 @@ Route::middleware('auth:web')->group(function () {
         Route::post('/edit', [CompanyController::class, 'update'])->name('company_edit_save');
         Route::get('/create', [CompanyController::class, 'createView'])->name('create_company_view');
         Route::post('/create', [CompanyController::class, 'create'])->name('create_company');
+        Route::get('/selectCompany', [CompanyController::class, 'selectCompany'])->name('selectCompany');
     });
     Route::group(['prefix' => 'bank_accounts'], function () {
         Route::get('/', [BankAccountController::class, 'index'])->name('bank_accounts');

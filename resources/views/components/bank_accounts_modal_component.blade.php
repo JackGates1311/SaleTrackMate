@@ -15,7 +15,7 @@
                         @endif
                         <div id="bank-accounts">
                             @foreach($bank_accounts as $index=>$bank_account)
-                                @component('components.bank_accounts_form_component', ['bank_account' => $bank_account,
+                                @component('components.forms.bank_accounts_form_component', ['bank_account' => $bank_account,
                                     'mode' => 'read'])
                                 @endcomponent
                                 @if(!$loop->last)
@@ -23,7 +23,7 @@
                                 @endif
                             @endforeach
                             @if(!$read_only)
-                                @component('components.bank_accounts_form_component', ['bank_account' => [],
+                                @component('components.forms.bank_accounts_form_component', ['bank_account' => [],
                                     'mode' => 'create'])
                                 @endcomponent
                             @endif

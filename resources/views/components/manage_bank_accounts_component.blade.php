@@ -24,7 +24,7 @@
                         @endif
                         <div id="bank-accounts">
                             @foreach($bank_accounts as $index=>$bank_account)
-                                @component('components.bank_accounts_form_component', ['bank_account' => $bank_account,
+                                @component('components.forms.bank_accounts_form_component', ['bank_account' => $bank_account,
                                     'mode' => $editable ? 'edit' : 'manage'])
                                 @endcomponent
                                 <hr/>
@@ -44,7 +44,7 @@
                         @else
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <a href="{{route('company_edit', ['company', request()->query('company')])}}"
+                                    <a href="{{route('company_edit', ['company' => request()->query('company')])}}"
                                        class="btn btn-outline-secondary mt-2 w-100">Back to Edit Company</a>
                                 </div>
                                 <div class="col-lg-6">
