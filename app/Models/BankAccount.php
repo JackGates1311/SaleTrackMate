@@ -34,6 +34,7 @@ class BankAccount extends Model
         'bank_identifier' => 'required|string|max:255',
         'name' => 'required|string|max:255',
         'iban' => 'required|string|max:255',
-        'company_id' => 'required|uuid'
+        'company_id' => 'nullable|uuid|required_without:recipient_id',
+        'recipient_id' => 'nullable|uuid|required_without:company_id',
     ];
 }

@@ -47,7 +47,7 @@ class CompanyControllerApi extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $result = $this->companyService->store($request->toArray(), $this->userService->getUserIdApi());
+        $result = $this->companyService->store($request->toArray(), $this->userService->getUserIdApi(), false);
 
         if ($result['success']) {
             return response()->json([

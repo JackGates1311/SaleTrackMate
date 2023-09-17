@@ -40,7 +40,7 @@ class CompanyService
     /**
      * @throws ValidationException
      */
-    public function store(array $data, string $user_id): array
+    public function store(array $data, string $user_id, bool $isRecipient): array
     {
         $data['user_id'] = $user_id;
 
@@ -56,7 +56,7 @@ class CompanyService
                     $company = Company::create($validated_data);
 
                     foreach ($data['bank_accounts'] as $bank_account) {
-                        $this->bankAccountService->store($bank_account, $company->id);
+                        $this->bankAccountService->store($bank_account, $company->id, $isRecipient);
                     }
 
                     $fiscal_year = $this->fiscalYearService->store(date('Y'), $company->id);

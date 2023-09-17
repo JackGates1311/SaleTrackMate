@@ -85,7 +85,7 @@ class CompanyController extends Controller
      */
     public function create(Request $request): RedirectResponse
     {
-        $result = $this->companyService->store($request->except('_token'), $this->userService->getUserIdWeb());
+        $result = $this->companyService->store($request->except('_token'), $this->userService->getUserIdWeb(), false);
 
         if ($result['success']) {
             return redirect()->route('companies', ['company' => $result['company']['id']])->with(

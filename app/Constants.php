@@ -27,4 +27,6 @@ class Constants
     const BANK_ACCOUNT_UPDATE_SUCCESS = "Bank account updated successfully";
     const BANK_ACCOUNT_UPDATE_FAIL = "Failed to update bank account: ";
     const BANK_ACCOUNT_DELETE_SUCCESS = "Bank account successfully removed";
+    const RECIPIENT_SAVE_SUCCESS = "Recipient saved successfully";
+    const RECIPIENT_SAVE_FAIL = "Failed to save recipient";
 }

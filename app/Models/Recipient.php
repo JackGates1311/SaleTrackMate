@@ -5,7 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @method static create(array $validated_data)
+ */
 class Recipient extends Model
 {
     use HasFactory, HasUuids;
@@ -23,5 +27,29 @@ class Recipient extends Model
         'phone_num',
         'fax',
         'email',
+    ];
+
+    public function bankAccounts(): HasMany
+    {
+        return $this->hasMany(BankAccount::class);
+    }
+
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+
+    public static array $rules = [
+        'tax_code' => 'required|string|max:255',
+        'reg_id' => 'nullable|string|max:1',
+        'vat_id' => 'nullable|string|max:1',
+        'name' => 'required|string|max:255',
+        'place' => 'required|string|max:255',
+        'postal_code' => 'required|string|max:10',
+        'address' => 'required|string|max:255',
+        'phone_num' => 'nullable|string|max:1',
+        'fax' => 'nullable|string|max:1',
+        'email' => 'nullable|string|email|max:255',
     ];
 }

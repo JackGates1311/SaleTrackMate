@@ -14,9 +14,13 @@ class BankAccountService
     /**
      * @throws ValidationException
      */
-    public function store(array $data, string $company_id): array
+    public function store(array $data, string $id, bool $isRecipient): array
     {
-        $data['company_id'] = $company_id;
+        if ($isRecipient) {
+            $data['recipient_id'] = $id;
+        } else {
+            $data['company_id'] = $id;
+        }
 
         $validated_data = Validator::make($data, BankAccount::$rules)->validate();
 

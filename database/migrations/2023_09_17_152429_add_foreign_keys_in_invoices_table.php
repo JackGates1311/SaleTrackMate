@@ -10,10 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('bank_accounts', function (Blueprint $table) {
+        Schema::table('invoices', function (Blueprint $table) {
             $table->foreignUuid('company_id')->references('id')->on('companies')
-                ->onDelete('cascade');
-            $table->foreignUuid('recipient_id')->references('id')->on('recipients')
                 ->onDelete('cascade');
         });
     }
@@ -23,7 +21,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('bank_accounts', function (Blueprint $table) {
+        Schema::table('invoices', function (Blueprint $table) {
             //
         });
     }
