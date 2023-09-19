@@ -10,8 +10,8 @@ class CreateInvoiceClosuresTable extends Migration
     {
         Schema::create('invoice_closures', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->dateTime('closure_date');
-            $table->decimal('closure_amount');
+            $table->dateTime('closure_date')->nullable();
+            $table->decimal('closure_amount')->default(0);
             $table->timestamps();
         });
     }

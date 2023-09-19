@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @method static find($id)
+ */
 class Invoice extends Model
 {
     use HasFactory, HasUuids;
@@ -33,24 +36,41 @@ class Invoice extends Model
         'total_rebate',
         'status',
         'type',
+        'issuer_company_id',
+        'recipient_company_id',
+        'fiscal_year_id'
     ];
 
     protected InvoiceStatus $status;
     protected InvoiceType $type;
 
-    public function issuerCompany(): BelongsTo
+    /**
+     * @noinspection PhpUnused
+     */
+    public function issuer(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'issuer_company_id', 'id');
     }
 
-    public function recipientCompany(): BelongsTo
+    public function recipient(): BelongsTo
     {
         return $this->belongsTo(Recipient::class, 'recipient_company_id', 'id');
     }
 
-    public function articles(): HasMany
+    /**
+     * @noinspection PhpUnused
+     */
+    public function invoiceItems(): HasMany
     {
-        return $this->HasMany(InvoiceItems::class, 'invoice_id', 'id');
+        return $this->HasMany(InvoiceItem::class, 'invoice_id', 'id');
+    }
+
+    /**
+     * @noinspection PhpUnused
+     */
+    public function fiscalYear(): BelongsTo
+    {
+        return $this->belongsTo(FiscalYear::class, 'fiscal_year_id', 'id');
     }
 
     public static array $rules = [
@@ -70,6 +90,8 @@ class Invoice extends Model
         'total_rebate' => 'required|numeric',
         'status' => 'required|in:STAGING,SENT,CANCELLED',
         'type' => 'required|in:INVOICE,PROFORMA',
-        'company_id' => 'required|uuid',
+        'issuer_company_id' => 'required|uuid',
+        'recipient_company_id' => 'required|uuid',
+        'fiscal_year_id' => 'required|uuid',
     ];
 }

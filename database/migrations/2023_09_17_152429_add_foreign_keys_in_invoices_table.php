@@ -11,7 +11,11 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('invoices', function (Blueprint $table) {
-            $table->foreignUuid('company_id')->references('id')->on('companies')
+            $table->foreignUuid('issuer_company_id')->references('id')->on('companies')
+                ->onDelete('cascade');
+            $table->foreignUuid('recipient_company_id')->references('id')->on('recipients')
+                ->onDelete('cascade');
+            $table->foreignUuid('fiscal_year_id')->references('id')->on('fiscal_years')
                 ->onDelete('cascade');
         });
     }
@@ -21,8 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('invoices', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('invoices');
     }
 };

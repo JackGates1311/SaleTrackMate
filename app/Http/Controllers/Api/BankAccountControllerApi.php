@@ -24,7 +24,7 @@ class BankAccountControllerApi extends Controller
     public function store(Request $request): JsonResponse
     {
         $result = $this->bankAccountService->store($request->except('company_id'),
-            $request->toArray()['company_id']);
+            $request->toArray()['company_id'], false);
 
         if ($result['success']) {
             return response()->json(['message' => $result['message'], 'bank_account' => $request->toArray()], 201);

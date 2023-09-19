@@ -29,6 +29,9 @@ class Recipient extends Model
         'email',
     ];
 
+    /**
+     * @noinspection PhpUnused
+     */
     public function bankAccounts(): HasMany
     {
         return $this->hasMany(BankAccount::class);
@@ -42,14 +45,14 @@ class Recipient extends Model
 
     public static array $rules = [
         'tax_code' => 'required|string|max:255',
-        'reg_id' => 'nullable|string|max:1',
-        'vat_id' => 'nullable|string|max:1',
+        'reg_id' => 'nullable|string|max:255',
+        'vat_id' => 'nullable|string|max:255',
         'name' => 'required|string|max:255',
         'place' => 'required|string|max:255',
         'postal_code' => 'required|string|max:10',
         'address' => 'required|string|max:255',
-        'phone_num' => 'nullable|string|max:1',
-        'fax' => 'nullable|string|max:1',
+        'phone_num' => 'nullable|string|max:255',
+        'fax' => 'nullable|string|max:255',
         'email' => 'nullable|string|email|max:255',
     ];
 }

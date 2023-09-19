@@ -81,7 +81,7 @@ class BankAccountController extends Controller
     public function create(Request $request): RedirectResponse
     {
         $result = $this->bankAccountService->store($request->except('_token')['bank_accounts'][0],
-            $request->query('company'));
+            $request->query('company'), false);
 
         if ($result['success']) {
             return redirect()->route('bank_accounts', ['company' => $result['bank_account']['company_id']])->with(

@@ -43,6 +43,9 @@ class Company extends Model
         return $this->hasMany(GoodsOrServices::class);
     }
 
+    /**
+     * @noinspection PhpUnused
+     */
     public function findByCompanyId($company_id)
     {
         return $this->where('company_id', $company_id)->first();
@@ -83,7 +86,7 @@ class Company extends Model
         'category' => 'required|string|max:255',
         'country' => 'required|string|min:2|max:2',
         'place' => 'required|string|max:255',
-        'postal_code' => 'required|string|max:255',
+        'postal_code' => 'required|string|max:10',
         'address' => 'required|string|max:255',
         'phone_num' => 'nullable|string|max:255',
         'fax' => 'nullable|string|max:255',

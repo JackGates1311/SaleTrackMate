@@ -5,22 +5,16 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('fiscal_years', function (Blueprint $table) {
-            $table->foreignUuid('company_id')->references('id')->on('companies')
+        Schema::table('invoice_items', function (Blueprint $table) {
+            $table->foreignUuid('invoice_id')->references('id')->on('invoices')
                 ->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('fiscal_years');
+        Schema::dropIfExists('invoice_items');
     }
 };

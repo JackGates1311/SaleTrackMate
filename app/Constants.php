@@ -18,7 +18,7 @@ class Constants
     const INVOICE_NOT_FOUND = "Invoice not found with ID";
     const INVOICE_SAVE_SUCCESS = "Invoice saved successfully";
     const INVOICE_DELETE_SUCCESS = "Invoice deleted successfully";
-    const INVOICE_SAVE_FAIL = "Invoice not saved successfully";
+    const INVOICE_SAVE_FAIL = "Failed to save invoice";
     const USER_NOT_FOUND = "User not found";
     const BANK_ACCOUNT_SAVE_SUCCESS = "Bank account saved successfully";
     const BANK_ACCOUNT_SAVE_FAIL = "Failed to save bank account: ";
@@ -29,4 +29,10 @@ class Constants
     const BANK_ACCOUNT_DELETE_SUCCESS = "Bank account successfully removed";
     const RECIPIENT_SAVE_SUCCESS = "Recipient saved successfully";
     const RECIPIENT_SAVE_FAIL = "Failed to save recipient";
+    const INVOICE_ITEM_SAVE_FAIL = "Failed to save invoice item";
+    const INVOICE_ITEM_SAVE_SUCCESS = "Invoice item saved successfully";
+    const INVOICE_CLOSURE_SAVE_SUCCESS = "Invoice closure data saved successfully";
+    const INVOICE_CLOSURE_SAVE_FAIL = "Failed to save invoice closure data";
+    const INVOICE_UPDATE_SUCCESS = "Invoice updated successfully";
+    const INVOICE_UPDATE_FAIL = "Failed to update invoice";
 }

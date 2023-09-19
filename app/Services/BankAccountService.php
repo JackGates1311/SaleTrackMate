@@ -31,7 +31,7 @@ class BankAccountService
                 'bank_account' => $bank_account];
         } catch (Exception $e) {
             return ['success' => false,
-                'message' => Constants::BANK_ACCOUNT_SAVE_FAIL . ' ' . $e->getMessage()];
+                'message' => Constants::BANK_ACCOUNT_SAVE_FAIL . ': ' . $e->getMessage()];
         }
     }
 
