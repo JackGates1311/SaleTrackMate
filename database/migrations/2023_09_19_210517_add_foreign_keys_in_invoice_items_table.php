@@ -10,6 +10,10 @@ return new class extends Migration {
         Schema::table('invoice_items', function (Blueprint $table) {
             $table->foreignUuid('invoice_id')->references('id')->on('invoices')
                 ->onDelete('cascade');
+
+            $table->foreignUuid('good_or_service_id')->nullable();
+
+            $table->foreign('good_or_service_id')->references('id')->on('goods_or_services');
         });
     }
 

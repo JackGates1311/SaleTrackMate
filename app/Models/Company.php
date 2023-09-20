@@ -40,7 +40,7 @@ class Company extends Model
 
     public function articles(): HasMany
     {
-        return $this->hasMany(GoodsOrServices::class);
+        return $this->hasMany(GoodOrService::class);
     }
 
     /**

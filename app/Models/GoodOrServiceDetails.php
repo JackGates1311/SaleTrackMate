@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @method static find($id)
+ * @method static create(array $validated_data)
  */
-class GoodsOrServicesDetails extends Model
+class GoodOrServiceDetails extends Model
 {
     use HasFactory, HasUuids;
 
@@ -27,8 +27,15 @@ class GoodsOrServicesDetails extends Model
         'color',
     ];
 
-    public function article(): BelongsTo
-    {
-        return $this->belongsTo(GoodsOrServices::class, 'article_id', 'id');
-    }
+    public static array $rules = [
+        'url' => 'nullable|url',
+        'category' => 'nullable|string|max:255',
+        'supplier' => 'nullable|string|max:255',
+        'country_origin' => 'nullable|string|max:255',
+        'country_origin_code' => 'nullable|string|max:255',
+        'weight' => 'nullable|numeric',
+        'dimensions' => 'nullable|string|max:255',
+        'color' => 'nullable|string|max:255',
+    ];
+
 }

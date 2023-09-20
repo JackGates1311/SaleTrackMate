@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants;
-use App\Models\GoodsOrServices;
+use App\Models\GoodOrService;
 use App\Models\Company;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,14 +13,14 @@ class ArticleController extends Controller
 {
     public function index(): JsonResponse
     {
-        $articles = GoodsOrServices::all();
+        $articles = GoodOrService::all();
 
         return response()->json(['articles' => $articles]);
     }
 
     public function indexWithDetails(): JsonResponse
     {
-        $articles = GoodsOrServices::with('articleDetails')->get();
+        $articles = GoodOrService::with('articleDetails')->get();
 
         return response()->json(['articles' => $articles]);
     }
@@ -44,7 +44,7 @@ class ArticleController extends Controller
 
     public function show($id): JsonResponse
     {
-        $article = GoodsOrServices::find($id);
+        $article = GoodOrService::find($id);
         if (!$article) {
             return response()->json(['message' => Constants::ARTICLE_NOT_FOUND . ' ' . $id], 404);
         }
@@ -54,7 +54,7 @@ class ArticleController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $article = new GoodsOrServices($request->toArray());
+        $article = new GoodOrService($request->toArray());
         $article->save();
 
         return response()->json([
@@ -65,8 +65,8 @@ class ArticleController extends Controller
 
     public function update(Request $request, $id): JsonResponse
     {
-        $article = GoodsOrServices::find($id);
-        if(!$article) {
+        $article = GoodOrService::find($id);
+        if (!$article) {
             return response()->json(['message' => Constants::ARTICLE_NOT_FOUND . ' ' . $id], 404);
         }
 
@@ -92,7 +92,7 @@ class ArticleController extends Controller
 
     public function destroy($id): JsonResponse
     {
-        $article = GoodsOrServices::find($id);
+        $article = GoodOrService::find($id);
         if (!$article) {
             return response()->json(['message' => Constants::ARTICLE_NOT_FOUND . ' ' . $id], 404);
         }
