@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\GoodsOrServicesDetails;
+use App\Models\GoodOrServiceDetails;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Tests\TestData;
@@ -37,7 +37,7 @@ class ArticleDetailsTest extends TestCase
         $this->assertNotEmpty($response->json()['articles']);
 
         // UPDATE
-        $updatedData = array_merge($articlesDetailsUpdated[1] , ['supplier' => 'Updated Supplier']);
+        $updatedData = array_merge($articlesDetailsUpdated[1], ['supplier' => 'Updated Supplier']);
         $response = $this->putJson('/api/articlesDetails/' . $articlesDetailsUpdated[1]['id'], $updatedData);
         $response->assertStatus(200);
         $this->assertEquals('Updated Supplier', $response->json('data.supplier'));
@@ -45,7 +45,7 @@ class ArticleDetailsTest extends TestCase
         // DELETE
         $response = $this->deleteJson('/api/articlesDetails/' . $articlesDetailsUpdated[1]['id']);
         $response->assertStatus(200);
-        $this->assertNull(GoodsOrServicesDetails::find($articlesDetailsUpdated[1]['id']));
+        $this->assertNull(GoodOrServiceDetails::find($articlesDetailsUpdated[1]['id']));
     }
 
     public function createArticlesDetails($articlesDetails): array
@@ -61,8 +61,7 @@ class ArticleDetailsTest extends TestCase
         $articlesIds = [];
 
         // CREATE ARTICLES
-        foreach ($articles as $article)
-        {
+        foreach ($articles as $article) {
             $article += ['company_id' => $companyId];
 
             $response = $this->postJson('/api/articles', $article);
@@ -75,8 +74,7 @@ class ArticleDetailsTest extends TestCase
         $articlesDetailsUpdated = [];
 
         // CREATE ARTICLE DETAILS
-        foreach ($articlesDetails as $index => $articleDetails)
-        {
+        foreach ($articlesDetails as $index => $articleDetails) {
             $articleDetails += ['article_id' => $articlesIds[$index]];
 
             $response = $this->postJson('/api/articlesDetails', $articleDetails);

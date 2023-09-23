@@ -10,9 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('fiscal_years', function (Blueprint $table) {
-            $table->foreignUuid('company_id')->references('id')->on('companies')
-                ->onDelete('cascade');
+        Schema::table('price_discounts', function (Blueprint $table) {
+            $table->foreignUuid('good_or_service_id')->references('id')->on('goods_or_services');
         });
     }
 
@@ -21,6 +20,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-
+        Schema::table('price_discounts', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\GoodsOrServices;
+use App\Models\GoodOrService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Tests\TestData;
@@ -29,15 +29,13 @@ class ArticleTest extends TestCase
         $this->assertEmpty($response->json()['articles']);
 
         // CREATE
-        foreach ($articles as $index => $article)
-        {
+        foreach ($articles as $index => $article) {
             $article += ['company_id' => $this->getCompanyId()];
 
             $response = $this->postJson('/api/articles', $article);
             $response->assertStatus(201);
 
-            if($index == 1)
-            {
+            if ($index == 1) {
                 $id = $response->json('data.id');
             }
         }
@@ -61,15 +59,15 @@ class ArticleTest extends TestCase
         $this->assertNotEmpty($response->json()['article']);
 
         // UPDATE
-        $updatedData = array_merge($articles[1] , ['name' => 'Updated GoodsOrServices Name']);
+        $updatedData = array_merge($articles[1], ['name' => 'Updated GoodOrService Name']);
         $response = $this->putJson('/api/articles/' . $id, $updatedData);
         $response->assertStatus(200);
-        $this->assertEquals('Updated GoodsOrServices Name', $response->json('data.name'));
+        $this->assertEquals('Updated GoodOrService Name', $response->json('data.name'));
 
         // DELETE
         $response = $this->deleteJson('/api/articles/' . $id);
         $response->assertStatus(200);
-        $this->assertNull(GoodsOrServices::find($id));
+        $this->assertNull(GoodOrService::find($id));
     }
 
     public function getCompanyId(): string

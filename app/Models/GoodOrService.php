@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
@@ -29,6 +30,8 @@ class GoodOrService extends Model
         'warranty_len',
         'type',
         'company_id',
+        'price_id',
+        'tax_category_id',
         'good_or_service_details_id'
     ];
 
@@ -43,7 +46,9 @@ class GoodOrService extends Model
         'warranty_len' => 'nullable|integer|min:0',
         'type' => 'required|in:GOOD,SERVICE',
         'company_id' => 'required|string|max:255',
-        'good_or_service_details_id' => 'nullable|string|max:255',
+        'price_id' => 'required|uuid',
+        'tax_category_id' => 'required|uuid',
+        'good_or_service_details_id' => 'nullable|uuid',
     ];
 
     public function company(): BelongsTo
@@ -54,5 +59,25 @@ class GoodOrService extends Model
     public function goodOrServiceDetails(): HasOne
     {
         return $this->hasOne(GoodOrServiceDetails::class, 'good_or_service_details_id', 'id');
+    }
+
+    public function priceDiscounts(): HasMany
+    {
+        return $this->hasMany(PriceDiscount::class, '', 'id');
+    }
+
+    public function unitOfMeasure(): HasOne
+    {
+        return $this->hasOne(UnitOfMeasure::class, 'unit_of_measure_id', 'id');
+    }
+
+    public function price(): HasOne
+    {
+        return $this->hasOne(Price::class, 'price_id', 'id');
+    }
+
+    public function taxCategory(): HasOne
+    {
+        return $this->hasOne(TaxCategory::class, 'tax_category_id', 'id');
     }
 }

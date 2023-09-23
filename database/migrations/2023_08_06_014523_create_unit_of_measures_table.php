@@ -10,7 +10,7 @@ class CreateUnitOfMeasuresTable extends Migration
     {
         Schema::create('unit_of_measures', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('abbrevation');
+            $table->string('abbreviation');
             $table->string('description');
             $table->string('full_name');
             $table->timestamps();
