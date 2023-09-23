@@ -33,6 +33,13 @@ class InvoiceService
     {
         $data['issuer_company_id'] = $issuer_company_id;
 
+        $calculated_invoice_values = $this->calculateInvoiceValues($data);
+
+        $data['total_base_amount'] = $calculated_invoice_values['total_base_amount'];
+        $data['total_price'] = $calculated_invoice_values['total_price'];
+        $data['total_vat'] = $calculated_invoice_values['total_vat'];
+        $data['total_rebate'] = $calculated_invoice_values['total_rebate'];
+
         try {
             DB::beginTransaction();
             try {
@@ -52,6 +59,13 @@ class InvoiceService
 
                     foreach ($data['invoice_items'] as $invoice_item) {
                         $invoice_item['invoice_id'] = $data['id'];
+
+                        $calculated_invoice_item_values = $this->calculateInvoiceItemValues($invoice_item);
+
+                        $invoice_item['base_amount'] = $calculated_invoice_item_values['base_amount'];
+                        $invoice_item['vat_price'] = $calculated_invoice_item_values['vat_price'];
+                        $invoice_item['total_price'] = $calculated_invoice_item_values['total_price'];
+
                         $this->invoiceItemService->store($invoice_item);
                     }
 
@@ -110,5 +124,34 @@ class InvoiceService
         } catch (Exception $e) {
             return ['success' => false, 'message' => Constants::INVOICE_UPDATE_FAIL . ': ' . $e->getMessage()];
         }
+    }
+
+    public function calculateInvoiceValues(array $data): array
+    {
+        $total_base_amount = collect($data['invoice_items'])->sum(function ($item) {
+            return $item['unit_price'] * $item['quantity'];
+        });
+
+        $total_price = collect($data['invoice_items'])->sum(function ($item) {
+            return $item['unit_price'] * $item['quantity'] - $item['rebate'];
+        });
+
+        $total_vat = collect($data['invoice_items'])->sum(function ($item) {
+            return ($item['unit_price'] * $item['quantity'] - $item['rebate']) * ($item['vat_percentage'] / 100);
+        });
+
+        $total_rebate = collect($data['invoice_items'])->sum('rebate');
+
+        return ['total_base_amount' => $total_base_amount, 'total_price' => $total_price,
+            'total_vat' => $total_vat, 'total_rebate' => $total_rebate];
+    }
+
+    public function calculateInvoiceItemValues(array $data): array
+    {
+        $base_amount = $data['unit_price'] * $data['quantity'];
+        $vat_price = ($data['unit_price'] * $data['quantity'] - $data['rebate']) * ($data['vat_percentage'] / 100);
+        $total_price = $data['base_amount'] + $data['vat_price'];
+
+        return ['base_amount' => $base_amount, 'vat_price' => $vat_price, 'total_price' => $total_price];
     }
 }
