@@ -37,25 +37,31 @@ class CompanyService
         return ['success' => true, 'message' => 'OK', 'company' => $company->toArray()];
     }
 
-    /**
-     * @throws ValidationException
-     */
     public function store(array $data, string $user_id): array
     {
+
         $data['user_id'] = $user_id;
 
-        $validated_data = Validator::make($data, Company::$rules)->validate();
+        try {
+            $validated_data = Validator::make($data, Company::$rules)->validate();
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
 
         try {
 
             DB::beginTransaction();
 
             try {
+                $company = Company::create($validated_data);
                 if (count($data['bank_accounts']) > 0) {
-                    $company = Company::create($validated_data);
-
                     foreach ($data['bank_accounts'] as $bank_account) {
-                        $this->bankAccountService->store($bank_account, $company->id, false);
+                        $result = $this->bankAccountService->store($bank_account, $company->id, false);
+                        if (!$result['success']) {
+                            DB::rollBack();
+                            return ['success' => false, 'message' => $result['message']];
+                        }
                     }
 
                     $fiscal_year = $this->fiscalYearService->store(date('Y'), $company->id);
@@ -66,6 +72,7 @@ class CompanyService
                     $company['fiscal_years'] = $fiscal_year['fiscal_year'];
 
                     return ['success' => true, 'message' => Constants::COMPANY_SAVE_SUCCESS, 'company' => $company];
+
                 } else {
                     DB::rollBack();
                     return ['success' => false, 'message' => 'Company must have at least one bank account'];
@@ -87,7 +94,11 @@ class CompanyService
     {
         $data['user_id'] = $user_id;
 
-        $validated_data = Validator::make($data, Company::$rules)->validate();
+        try {
+            $validated_data = Validator::make($data, Company::$rules)->validate();
+        } catch (ValidationException $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
 
         $company = Company::find($id);
 

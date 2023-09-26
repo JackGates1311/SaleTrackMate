@@ -36,8 +36,16 @@ class CompanyController extends Controller
         $this->selected_company = Company::with('bankAccounts',
             'fiscalYears')->find(request()->query('company'));
 
-        return view('account', ['companies' => $this->userService->getUserCompanies(),
-            'selected_company' => $this->selected_company]);
+        $user_companies = $this->userService->getUserCompanies();
+
+        if (!$user_companies) {
+            session(['company_create' => true]);
+            return view('account', ['companies' => [],
+                'selected_company' => []]);
+        } else {
+            return view('account', ['companies' => $user_companies,
+                'selected_company' => $this->selected_company]);
+        }
     }
 
     public function edit(): Factory|View|Application
@@ -66,8 +74,9 @@ class CompanyController extends Controller
             return redirect()->route('companies', ['company' => $result['company']['id']])->with(
                 ['selected_company' => $this->selected_company, 'message' => $result['message']]);
         } else {
-            return redirect()->route('companies', ['company' => $result['company']['id'],
-                'selected_company' => $this->selected_company])->withErrors(['message' => $result['message']]);
+            return back()
+                ->withErrors(['message' => $result['message']])
+                ->withInput();
         }
     }
 
@@ -80,19 +89,17 @@ class CompanyController extends Controller
         return view('account', ['companies' => [], 'selected_company' => []]);
     }
 
-    /**
-     * @throws ValidationException
-     */
-    public function create(Request $request): RedirectResponse
+    public function create(Request $request): Factory|View|RedirectResponse|Application
     {
-        $result = $this->companyService->store($request->except('_token'), $this->userService->getUserIdWeb(), false);
+        $result = $this->companyService->store($request->except('_token'), $this->userService->getUserIdWeb());
 
         if ($result['success']) {
             return redirect()->route('companies', ['company' => $result['company']['id']])->with(
                 ['message' => $result['message']]);
         } else {
-            return redirect()->route('companies', ['company' => $result['company']['id']])->
-            withErrors(['message' => $result['message']]);
+            return back()
+                ->withErrors(['message' => $result['message']])
+                ->withInput();
         }
     }
 

@@ -23,6 +23,13 @@ class GoodOrServiceService
 
     public function index(): array
     {
+        $goods_or_services = GoodOrService::all();
+
+        return ['good_or_services' => $goods_or_services];
+    }
+
+    public function indexWithDetails(): array
+    {
         $goods_or_services = GoodOrService::with('company', 'goodOrServiceDetails', 'price', 'priceDiscounts',
             'UnitOfMeasure', 'TaxCategory')->get()->toArray();
 
@@ -114,6 +121,25 @@ class GoodOrServiceService
                 'good_or_service' => $good_or_service];
         } catch (Exception $e) {
             return ['success' => false, 'message' => Constants::GOOD_OR_SERVICE_SAVE_FAIL . ": " . $e->getMessage()];
+        }
+    }
+
+    public function destroy($id): array
+    {
+        $good_or_service = GoodOrService::find($id);
+
+        if (!$good_or_service) {
+            return ['success' => false, 'message' => Constants::GOOD_OR_SERVICE_NOT_FOUND . ': ' . $id,
+                'good_or_service' => $good_or_service];
+        }
+
+        try {
+            $good_or_service->delete();
+            return ['success' => true, 'message' => Constants::GOOD_OR_SERVICE_DELETE_SUCCESS,
+                'good_or_service' => $good_or_service];
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => Constants::GOOD_OR_SERVICE_DELETE_FAIL . ': ' . $e->getMessage(),
+                'good_or_service' => $good_or_service];
         }
     }
 }

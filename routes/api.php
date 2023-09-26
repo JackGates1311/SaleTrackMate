@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\BankAccountControllerApi;
 use App\Http\Controllers\Api\CompanyControllerApi;
+use App\Http\Controllers\Api\GoodOrServiceControllerApi;
 use App\Http\Controllers\Api\InvoiceControllerApi;
 use App\Http\Controllers\Api\UserControllerApi;
 use App\Http\Controllers\ArticleController;
@@ -25,19 +26,19 @@ Route::middleware('auth:api')->group(function () {
         Route::delete('/delete/{id}', [BankAccountControllerApi::class, 'destroy'])->name('destroy');
     });
 
-    Route::group(['prefix' => 'articles'], function () {
-        Route::get('/', [ArticleController::class, 'index'])->name('index');
-        Route::get('/details', [ArticleController::class, 'indexWithDetails'])->
+    Route::group(['prefix' => 'good_or_services'], function () {
+        Route::get('/', [GoodOrServiceControllerApi::class, 'index'])->name('index');
+        Route::get('/details', [GoodOrServiceControllerApi::class, 'indexWithDetails'])->
         name('indexWithDetails');
-        Route::get('/company/{companyId}', [ArticleController::class, 'findByCompanyId'])->
+        Route::get('/company/{companyId}', [GoodOrServiceControllerApi::class, 'findByCompanyId'])->
         name('findByCompanyId');
-        Route::get('/{id}', [ArticleController::class, 'show'])->name('show');
-        Route::post('/', [ArticleController::class, 'store'])->name('store');
-        Route::put('/{id}', [ArticleController::class, 'update'])->name('update');
-        Route::delete('/{id}', [ArticleController::class, 'destroy'])->name('destroy');
+        Route::get('/{id}', [GoodOrServiceControllerApi::class, 'show'])->name('show');
+        Route::post('/', [GoodOrServiceControllerApi::class, 'store'])->name('store');
+        Route::put('/{id}', [GoodOrServiceControllerApi::class, 'update'])->name('update');
+        Route::delete('/{id}', [GoodOrServiceControllerApi::class, 'destroy'])->name('destroy');
     });
 
-    Route::group(['prefix' => 'articlesDetails'], function () {
+    Route::group(['prefix' => 'good_or_services_details'], function () {
         Route::get('/', [ArticleDetailsController::class, 'index'])->name('index');
         Route::get('/{id}', [ArticleDetailsController::class, 'show'])->name('show');
         Route::post('/', [ArticleDetailsController::class, 'store'])->name('store');

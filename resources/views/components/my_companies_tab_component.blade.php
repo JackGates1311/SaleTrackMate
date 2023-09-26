@@ -17,7 +17,22 @@
                             'selected_company' => $selected_company])
                         @endcomponent
                     @endif
+                    @if($errors->has('message'))
+                        <div class="alert alert-danger text-center {{session('company_create') ? 'mt-1' : 'mt-3'}}">
+                            {{$errors->first('message')}}
+                        </div>
+                        <hr/>
+                    @endif
+                    @if (Session::has('message'))
+                        <div class="alert alert-success text-center {{session('company_create') ? 'mt-1' : 'mt-3'}}">
+                            {{session('message')}}
+                        </div>
+                        <hr/>
+                    @endif
                 </div>
+                @if(!session('company_create') && !Session::has('message') && !$errors->has('message'))
+                    <hr/>
+                @endif
                 <form accept-charset="UTF-8" action="{{ $selected_company ? route('company_edit_save',
                             ['company' => $selected_company['id']]) : route('create_company')}}" method="POST">
                     @csrf <!-- {{ csrf_field() }} -->

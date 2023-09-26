@@ -11,10 +11,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('bank_accounts', function (Blueprint $table) {
-            $table->foreignUuid('company_id')->references('id')->on('companies')
-                ->onDelete('cascade');
-            $table->foreignUuid('recipient_id')->references('id')->on('recipients')
-                ->onDelete('cascade');
+
+            $table->foreignUuid('company_id')->nullable();
+            $table->foreign('company_id')->references('id')->on('companies');
+
+            $table->foreignUuid('recipient_id')->nullable();
+            $table->foreign('recipient_id')->references('id')->on('recipients');
         });
     }
 

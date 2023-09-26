@@ -5,7 +5,7 @@
                 Identifier:</label>
             <input type="text" class="form-control" name="bank_accounts[0][bank_identifier]"
                    id="bank_identifier" placeholder="Company bank identifier"
-                   value="{{($mode == "create" || $mode == "company_create") ? '' : $bank_account['bank_identifier']}}"
+                   value="{{($mode == "create" || $mode == "company_create") ? old('bank_identifier') : $bank_account['bank_identifier']}}"
                    required {{($mode == "edit" || $mode == "create" || $mode == "company_create")  ? '' : 'readonly'}}>
         </div>
         <div
@@ -13,14 +13,14 @@
             <label for="bank_name" class="form-label">Bank Name:</label>
             <input id="bank_name" type="text" class="form-control"
                    name="bank_accounts[0][name]" placeholder="Company bank name"
-                   value="{{($mode == "create" || $mode == "company_create") ? '' :  $bank_account['name']}}"
+                   value="{{($mode == "create" || $mode == "company_create") ? old('bank_name') :  $bank_account['name']}}"
                    required {{($mode == "edit" || $mode == "create" || $mode == "company_create") ? '' : 'readonly'}}>
         </div>
         <div class="col-xl-4 col-md-12 col-sm-12 mb-3">
             <label for="iban" class="form-label">IBAN:</label>
             <input type="text" class="form-control" id="iban" name="bank_accounts[0][iban]"
                    placeholder="Company bank iban"
-                   value="{{($mode == "create" || $mode == "company_create") ? '' : $bank_account['iban']}}"
+                   value="{{($mode == "create" || $mode == "company_create") ? old('bank_account') : $bank_account['iban']}}"
                    required {{($mode == "edit" || $mode == "create" || $mode == "company_create") ? '' : 'readonly'}}>
         </div>
         @if($mode == "company_create")

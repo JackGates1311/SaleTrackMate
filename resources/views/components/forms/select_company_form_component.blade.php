@@ -38,16 +38,4 @@
             </a>
         </div>
     </div>
-    @if($errors->has('message'))
-        <div class="alert alert-danger text-center mt-3">
-            {{$errors->first('message')}}
-        </div>
-    @endif
-
-    @if (Session::has('message'))
-        <div class="alert alert-success text-center mt-3">
-            {{session('message')}}
-        </div>
-    @endif
-    <hr/>
 </form>

@@ -70,4 +70,6 @@ class Constants
     const UNIT_OF_MEASURE_NOT_FOUND = "Unit of measure not found with ID";
     const UNIT_OF_MEASURE_UPDATE_SUCCESS = "Unit of measure updated successfully";
     const UNIT_OF_MEASURE_UPDATE_FAIL = "Failed to update unit of measure";
+    const GOOD_OR_SERVICE_DELETE_SUCCESS = "Good or service deleted successfully";
+    const GOOD_OR_SERVICE_DELETE_FAIL = "Failed to delete good or service:";
 }

@@ -24,7 +24,11 @@
                    aria-selected="false" href="#companies"
                    @if ($companies && count($companies) > 0)
                        onclick="window.location.href =
-                    '{{ route('companies', ['company' => $companies[0]['id']]) }}'" @endif
+                    '{{ route('companies', ['company' => $companies[0]['id']]) }}'"
+                   @else
+                       onclick="window.location.href =
+                    '{{ route('companies', ['company' => 'default']) }}'"
+                    @endif
                 >My Companies</a>
             </li>
         </ul>
@@ -49,7 +53,8 @@
                     @endcomponent
                 @else
                     @component('components.my_companies_tab_component', ['companies' => $companies,
-                        'selected_company' => $selected_company  ?? session('selected_company') ?? $companies[0]])
+                           'selected_company' => $selected_company  ?? session('selected_company') ?? $companies[0]
+                           ?? []])
                     @endcomponent
                 @endif
             </div>

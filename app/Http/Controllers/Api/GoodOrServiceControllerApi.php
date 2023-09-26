@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Services\GoodOrServiceService;
-use http\Message;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -21,6 +20,13 @@ class GoodOrServiceControllerApi extends Controller
     public function index(): JsonResponse
     {
         $result = $this->goodOrServiceService->index();
+
+        return response()->json(['goods_or_services' => $result['goods_or_services']]);
+    }
+
+    public function indexWithDetails(): JsonResponse
+    {
+        $result = $this->goodOrServiceService->indexWithDetails();
 
         return response()->json(['goods_or_services' => $result['goods_or_services']]);
     }
@@ -72,6 +78,18 @@ class GoodOrServiceControllerApi extends Controller
         if ($result['success']) {
             return response()->json(['message' => $result['message'],
                 'good_or_service' => $result['good_or_service']], 201);
+        } else {
+            return response()->json(['message' => $result['message']], 500);
+        }
+    }
+
+    public function destroy($id): JsonResponse
+    {
+        $result = $this->goodOrServiceService->destroy($id);
+
+        if ($result['success']) {
+            return response()->json(['message' => $result['message'],
+                'good_or_service' => $result['good_or_service']], 202);
         } else {
             return response()->json(['message' => $result['message']], 500);
         }
