@@ -5,7 +5,6 @@ use App\Http\Controllers\Api\CompanyControllerApi;
 use App\Http\Controllers\Api\GoodOrServiceControllerApi;
 use App\Http\Controllers\Api\InvoiceControllerApi;
 use App\Http\Controllers\Api\UserControllerApi;
-use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArticleDetailsController;
 use Illuminate\Support\Facades\Route;
 
@@ -52,6 +51,8 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/', [InvoiceControllerApi::class, 'store'])->name('store');
         Route::get('/{id}/pdf', [InvoiceControllerApi::class, 'exportAsPdf'])->name('exportAsPdf');
         Route::get('/{id}/xml', [InvoiceControllerApi::class, 'exportAsXml'])->name('exportAsXml');
+        Route::get('/company/{id}', [InvoiceControllerApi::class, 'findByCompanyId'])
+            ->name('findByCompanyId');
     });
 });
 

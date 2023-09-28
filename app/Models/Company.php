@@ -46,14 +46,10 @@ class Company extends Model
     /**
      * @noinspection PhpUnused
      */
-    public function findByCompanyId($company_id)
-    {
-        return $this->where('company_id', $company_id)->first();
-    }
 
-    public function invoice(): BelongsTo
+    public function invoices(): HasMany
     {
-        return $this->belongsTo(Invoice::class, 'issuer_company_id', 'id');
+        return $this->hasMany(Invoice::class, 'issuer_company_id', 'id');
     }
 
     public function user(): BelongsTo

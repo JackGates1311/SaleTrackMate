@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Constants;
+use App\Models\Company;
 use App\Models\Invoice;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -56,7 +57,6 @@ class InvoiceService
                     $invoice = new Invoice($invoice_validate_data);
                     $invoice->save();
                     $data['id'] = $invoice->getAttributes()['id'];
-
                     foreach ($data['invoice_items'] as $invoice_item) {
                         $invoice_item['invoice_id'] = $data['id'];
 
@@ -150,8 +150,25 @@ class InvoiceService
     {
         $base_amount = $data['unit_price'] * $data['quantity'];
         $vat_price = ($data['unit_price'] * $data['quantity'] - $data['rebate']) * ($data['vat_percentage'] / 100);
-        $total_price = $data['base_amount'] + $data['vat_price'];
+        $total_price = $base_amount + $vat_price;
 
         return ['base_amount' => $base_amount, 'vat_price' => $vat_price, 'total_price' => $total_price];
+    }
+
+    public function findByCompanyId($id): array
+    {
+        $company = (new Company)->find($id);
+
+        if (!$company) {
+            return ['success' => false, 'message' => Constants::COMPANY_NOT_FOUND . ': ' . $id];
+        } else {
+            $invoices = $company->invoices;
+        }
+
+        if (!$invoices) {
+            return ['success' => false, 'message' => Constants::INVOICE_NOT_FOUND . ': ' . $id];
+        }
+
+        return ['success' => true, 'invoices' => $invoices];
     }
 }

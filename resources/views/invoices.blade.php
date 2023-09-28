@@ -6,7 +6,7 @@
     @endcomponent
 </head>
 <body>
-@component('components.navbar_component')
+@component('components.navbar_component', ['companies' => $companies])
 @endcomponent
 
 <div class="vh-100 d-flex flex-column gradient-form">
@@ -30,126 +30,55 @@
                     <h5 class="m-2">Invoices:</h5>
                 </div>
                 <div class="invoices-list">
-                    <!-- Invoices List -->
-
-                    <div class="list-group scrollable-list">
-                        @php
-                            $invoices = [
-                                ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
-                                ['id' => 2, 'invoice_number' => 'INV2021002', 'total_amount' => 150.00],
-                                ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
-                                                        ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
-                                ['id' => 2, 'invoice_number' => 'INV2021002', 'total_amount' => 150.00],
-                                ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
-                                                        ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
-                                ['id' => 2, 'invoice_number' => 'INV2021002', 'total_amount' => 150.00],
-                                ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
-                                                        ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
-                                ['id' => 2, 'invoice_number' => 'INV2021002', 'total_amount' => 150.00],
-                                ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
-                                                        ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
-                                ['id' => 2, 'invoice_number' => 'INV2021002', 'total_amount' => 150.00],
-                                ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
-                                                                                ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
-                                ['id' => 2, 'invoice_number' => 'INV2021002', 'total_amount' => 150.00],
-                                ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
-                                                                                ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
-                                ['id' => 2, 'invoice_number' => 'INV2021002', 'total_amount' => 150.00],
-                                ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
-                                                                                ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
-                                ['id' => 2, 'invoice_number' => 'INV2021002', 'total_amount' => 150.00],
-                                ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
-                                                        ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
-                                                                                ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
-                                ['id' => 2, 'invoice_number' => 'INV2021002', 'total_amount' => 150.00],
-                                ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
-                                                        ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
-                                                                                ['id' => 1, 'invoice_number' => 'INV2021001', 'total_amount' => 100.00],
-                                ['id' => 2, 'invoice_number' => 'INV2021002', 'total_amount' => 150.00],
-                                ['id' => 3, 'invoice_number' => 'INV2021003', 'total_amount' => 200.00],
-                            ];
-                        @endphp
-                        @foreach($invoices as $invoice)
-                            <a href="{{ route('login', $invoice['id']) }}"
-                               class="list-group-item list-group-item-action">
-                                Invoice #{{ $invoice['id'] }}
-                            </a>
-                        @endforeach
-                    </div>
+                    @if(isset($invoices) && count($invoices) > 0)
+                        @component('components.invoice_list_component', ['invoices' => $invoices])
+                        @endcomponent
+                    @else
+                        <div id="invoices-not-found"
+                             class="d-flex-row p-4 justify-content-center align-items-center border border-1
+                             rounded-5">
+                            <h5 class="text-center">It looks like you haven't created any invoices yet for the selected
+                                company</h5>
+                            <p class="small text-center p-3">To create your first invoice for selected company,
+                                click on button <b><i>Create New Invoice</i></b></p>
+                        </div>
+                    @endif
                 </div>
             </div>
             <div class="col-lg-8 mt-3">
-                @php
-                    $invoice = [
-    'invoice_number' => 'INV123456',
-    'recipient' => 'John Doe',
-    'recipient_email' => 'john@example.com',
-    'recipient_address' => '123 Main St, Cityville, Country',
-    'items' => [
-    [
-        'item_name' => 'Product A',
-        'item_description' => 'Description for Product A',
-        'quantity' => 2,
-        'unit_price' => 50.00,
-        'total' => 100.00,
-    ],
-    [
-        'item_name' => 'Product B',
-        'item_description' => 'Description for Product B',
-        'quantity' => 3,
-        'unit_price' => 30.00,
-        'total' => 90.00,
-    ],
-    ],
-    'total_amount' => 190.00,
-    ];
-
-                @endphp
-                <div class="card">
-                    <div class="card-header">
-                        Invoice Details - Invoice #{{ $invoice['invoice_number'] }}
-                    </div>
-                    <div class="card-body">
-                        <div class="d-inline-flex w-100 justify-content-between">
-                            <h5 class="card-title">Recipient Information</h5>
-                            <div class="d-inline-flex justify-content-end gap-2">
-                                <button class="btn btn-primary mb-3">Export Invoice</button>
-                                <button class="btn btn-primary mb-3">Close Invoice</button>
-                            </div>
+                <div class="card border border-left">
+                    @if(isset($invoice) && count($invoice) > 0)
+                        @component('components.invoice_details_component', ['invoice' => $invoice])
+                        @endcomponent
+                    @else
+                        <div
+                            class="d-flex-row p-4 justify-content-center align-items-center border border-1
+                             rounded-5">
+                            <h4 class="text-center p-3">Welcome to SaleTrackMate Invoice Management System</h4>
+                            <p class="text-center p-2">
+                                Thank you for using our invoice management system. With our platform, you can
+                                efficiently manage and keep track of all your invoices in one place.
+                            </p>
+                            <p class="text-center p-2">
+                                If you're looking to access <b><i>invoice details</i></b>, simply click on
+                                <b><i>an invoice item</i></b> from the <b><i>list of invoices</i></b> on the left
+                                side of the page to explore and manage your invoices. You'll find a wealth of
+                                information about your invoices, such as due dates, payment status, goods or services,
+                                prices and many more.
+                            </p>
+                            <p class="text-center p-2">
+                                Our user-friendly interface makes it easy to navigate through your invoices and generate
+                                reports to keep your financial records organized and
+                                up-to-date.
+                            </p>
+                            <p class="text-center p-2">
+                                If you have any questions, please don't hesitate to contact me via the email listed in
+                                the <b><i>About</i></b> section of this page. I am here to help you make the most of our
+                                invoice management system.
+                                <br>
+                            </p>
                         </div>
-
-                        <p><strong>Recipient:</strong> {{ $invoice['recipient'] }}</p>
-                        <p><strong>Email:</strong> {{ $invoice['recipient_email'] }}</p>
-                        <p><strong>Address:</strong> {{ $invoice['recipient_address'] }}</p>
-
-                        <h5 class="card-title mt-4">Invoice Items</h5>
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>Item</th>
-                                <th>Description</th>
-                                <th>Quantity</th>
-                                <th>Unit Price</th>
-                                <th>Total</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($invoice['items'] as $item)
-                                <tr>
-                                    <td>{{ $item['item_name'] }}</td>
-                                    <td>{{ $item['item_description'] }}</td>
-                                    <td>{{ $item['quantity'] }}</td>
-                                    <td>{{ $item['unit_price'] }}</td>
-                                    <td>{{ $item['total'] }}</td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-
-                        <div class="text-end mt-4">
-                            <p><strong>Total Amount:</strong> {{ $invoice['total_amount'] }}</p>
-                        </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>

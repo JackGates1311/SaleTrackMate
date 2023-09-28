@@ -158,4 +158,15 @@ class InvoiceControllerApi extends Controller
             'data' => $invoice
         ]);
     }
+
+    public function findByCompanyId($id): JsonResponse
+    {
+        $result = $this->invoiceService->findByCompanyId($id);
+
+        if ($result['success']) {
+            return response()->json(['invoices' => $result['invoices']]);
+        } else {
+            return response()->json(['message' => $result['message']]);
+        }
+    }
 }
