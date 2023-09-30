@@ -102,14 +102,17 @@ a {
 
 .btn-primary,
 .btn-primary:focus,
-.btn-primary:active {
+.btn-primary:active,
+.btn-dropdown,
+.btn-dropdown:focus,
+.btn-dropdown:active {
     background: #000000;
     opacity: 0.6;
     border-color: #000000;
     border-radius: 1rem;
 }
 
-.btn-primary:hover {
+.btn-primary:hover, .btn-dropdown:hover {
     background: #000000;
     border-color: #000000;
     opacity: 0.75;
@@ -341,4 +344,28 @@ table {
 
 table:hover {
     overflow-x: scroll;
+}
+
+.card-body {
+    max-height: 75vh;
+    overflow-y: auto;
+}
+
+.table-header-cell {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.badge-small {
+    max-height: 24px;
+    min-width: 60px;
+}
+
+.bg-warning {
+    background-color: #FF4500FF !important;
+}
+
+.img-thumbnail {
+    border-radius: 1rem;
 }

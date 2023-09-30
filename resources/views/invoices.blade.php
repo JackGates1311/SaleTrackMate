@@ -27,7 +27,19 @@
                     </form>
                     <a href="#" class="btn btn-primary btn-block gradient-custom-2 w-100">Create New Invoice</a>
                     <hr/>
-                    <h5 class="m-2">Invoices:</h5>
+                    <div class="d-inline-flex justify-content-between w-100">
+                        <h5 class="mx-2">Invoices:</h5>
+                        <div>
+                            <button class="btn btn-secondary btn-dropdown btn-sm dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                2023
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>2022</li>
+                            </ul>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="invoices-list">
                     @if(isset($invoices) && count($invoices) > 0)
