@@ -135,7 +135,7 @@ class InvoiceControllerApi extends Controller
     {
         $requestArray = $request->toArray();
 
-        $result = $this->invoiceService->store($requestArray, $requestArray['issuer_company_id']);
+        $result = $this->invoiceService->store($requestArray, $requestArray['company_id']);
 
         if ($result['success']) {
             return response()->json(['message' => $result['message'], 'invoice' => $result['invoice']], 201);

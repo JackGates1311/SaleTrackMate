@@ -15,26 +15,34 @@ class InvoiceService
     /**
      * @throws ValidationException
      */
-
-    private RecipientService $recipientService;
     private InvoiceItemService $invoiceItemService;
+    private CompanyService $companyService;
     private InvoiceClosureService $invoiceClosureService;
     private FiscalYearService $fiscalYearService;
+    private InvoiceIssuerService $invoiceIssuerService;
+    private InvoiceRecipientService $invoiceRecipientService;
+    private BankAccountService $bankAccountService;
 
-    public function __construct(RecipientService      $recipientService, InvoiceItemService $invoiceItemService,
-                                InvoiceClosureService $invoiceClosureService, FiscalYearService $fiscalYearService)
+    public function __construct(InvoiceItemService      $invoiceItemService, CompanyService $companyService,
+                                InvoiceClosureService   $invoiceClosureService, FiscalYearService $fiscalYearService,
+                                InvoiceIssuerService    $invoiceIssuerService,
+                                InvoiceRecipientService $invoiceRecipientService,
+                                BankAccountService      $bankAccountService)
     {
         $this->invoiceItemService = $invoiceItemService;
-        $this->recipientService = $recipientService;
+        $this->companyService = $companyService;
         $this->invoiceClosureService = $invoiceClosureService;
         $this->fiscalYearService = $fiscalYearService;
+        $this->invoiceIssuerService = $invoiceIssuerService;
+        $this->invoiceRecipientService = $invoiceRecipientService;
+        $this->bankAccountService = $bankAccountService;
     }
 
-    public function store(array $data, string $issuer_company_id): array
+    public function store(array $data, string $company_id): array
     {
-        $data['issuer_company_id'] = $issuer_company_id;
-
         $calculated_invoice_values = $this->calculateInvoiceValues($data);
+
+        $data['company_id'] = $company_id;
 
         $data['total_base_amount'] = $calculated_invoice_values['total_base_amount'];
         $data['total_price'] = $calculated_invoice_values['total_price'];
@@ -44,11 +52,23 @@ class InvoiceService
         try {
             DB::beginTransaction();
             try {
-                $recipient = $this->recipientService->store($data['recipient_company']);
-                $fiscal_year = $this->fiscalYearService->store($data['fiscal_year'], $issuer_company_id);
+
+                //TODO add check if bank accounts belongs to recipient and issuer companies ...
+                //TODO also check for user auth there
+
+                $issuer_data = $this->companyService->show($company_id)['company'];
+                $issuer_bank_account = $this->bankAccountService->show($data['issuer_bank_account'])['bank_account']->
+                toArray();
+                $issuer_data['bank_name'] = $issuer_bank_account['name'];
+                $issuer_data['iban'] = $issuer_bank_account['iban'];
+
+                $issuer = $this->invoiceIssuerService->store($issuer_data);
+                $recipient = $this->invoiceRecipientService->store($data['recipient']);
+                $fiscal_year = $this->fiscalYearService->store($data['fiscal_year'], $company_id);
 
                 $data['fiscal_year_id'] = $fiscal_year['fiscal_year']['id'];
-                $data['recipient_company_id'] = $recipient['recipient']['id'];
+                $data['recipient_company_id'] = $recipient['invoice_recipient']['id'];
+                $data['issuer_company_id'] = $issuer['invoice_issuer']['id'];
 
                 $invoice_validate_data = Validator::make($data, Invoice::$rules)->validate();
 
@@ -72,6 +92,7 @@ class InvoiceService
                     $invoice_closure = $this->invoiceClosureService->store();
 
                     $data['invoice_closure'] = $invoice_closure['invoice_closure'];
+                    //$data['issuer']
 
                     DB::commit();
                     return ['success' => true, 'message' => Constants::INVOICE_SAVE_SUCCESS, 'invoice' => $data];

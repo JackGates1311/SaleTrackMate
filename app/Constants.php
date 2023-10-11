@@ -72,4 +72,8 @@ class Constants
     const UNIT_OF_MEASURE_UPDATE_FAIL = "Failed to update unit of measure";
     const GOOD_OR_SERVICE_DELETE_SUCCESS = "Good or service deleted successfully";
     const GOOD_OR_SERVICE_DELETE_FAIL = "Failed to delete good or service:";
+    const INVOICE_ISSUER_SAVE_SUCCESS = "Invoice issuer saved successfully";
+    const INVOICE_ISSUER_SAVE_FAIL = "Failed to save invoice issuer";
+    const INVOICE_RECIPIENT_SAVE_SUCCESS = "Invoice recipient saved successfully";
+    const INVOICE_RECIPIENT_SAVE_FAIL = "Failed to save invoice recipient";
 }

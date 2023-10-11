@@ -49,7 +49,7 @@ class Company extends Model
 
     public function invoices(): HasMany
     {
-        return $this->hasMany(Invoice::class, 'issuer_company_id', 'id');
+        return $this->hasMany(Invoice::class, 'company_id', 'id');
     }
 
     public function user(): BelongsTo

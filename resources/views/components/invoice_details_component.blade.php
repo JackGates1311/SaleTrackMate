@@ -45,7 +45,8 @@
                         </div>
                         <p><strong>Recipient:</strong> {{ $invoice['recipient']['name'] }}
                             ({{ $invoice['recipient']['place'] }})</p>
-                        <p class="text-danger"><strong>Recipient Bank Account:</strong> DATA NOT RETRIEVED!</p>
+                        <p><strong>Issuer Bank Account:</strong> {{$invoice['issuer']['iban']}}
+                            ({{$invoice['issuer']['bank_name']}})</p>
                         <p><strong>Invoice Date:</strong> {{ $invoice['invoice_date'] }}</p>
                         <p><strong>Invoice Type:</strong> {{ucwords(strtolower($invoice['type']))}}</p>
                         <p><strong>Due Date:</strong> {{ date('y-m-d - h:i A', strtotime($invoice['due_date'])) }}</p>
@@ -69,32 +70,27 @@
                     <div class="accordion-body">
                         <div class="d-inline-flex justify-content-between w-100 gap-3">
                             <div>
-                                <p><strong>Name:</strong> {{ $invoice['issuer']['name'] }}</p>
-                                <p><strong>Company ID:</strong> {{ $invoice['issuer']['company_id'] }}</p>
-                                <p><strong>Tax Code:</strong> {{ $invoice['issuer']['tax_code'] }}</p>
-                                <p><strong>Registration ID:</strong> {{ $invoice['issuer']['reg_id'] }}</p>
-                                <p><strong>VAT ID:</strong> {{ $invoice['issuer']['vat_id'] }}</p>
-                                <p><strong>Category:</strong> {{ $invoice['issuer']['category'] }}</p>
-                                <p><strong>Country:</strong> {{ $invoice['issuer']['country'] }}</p>
-                                <p><strong>Place:</strong> {{ $invoice['issuer']['place'] }}</p>
-                                <p><strong>Postal Code:</strong> {{ $invoice['issuer']['postal_code'] }}</p>
-                                <p><strong>Address:</strong> {{ $invoice['issuer']['address'] }}</p>
-                                <p><strong>Phone Number:</strong> {{ $invoice['issuer']['phone_num'] }}</p>
-                                <p><strong>Fax:</strong> {{ $invoice['issuer']['fax'] }}</p>
-                                <p><strong>Email:</strong> {{ $invoice['issuer']['email'] }}</p>
+                                <p><strong>Name:</strong> {{ $invoice['issuer']['name'] ?? '' }}</p>
+                                <p><strong>Company ID:</strong> {{ $invoice['issuer']['company_id'] ?? '' }}</p>
+                                <p><strong>Tax Code:</strong> {{ $invoice['issuer']['tax_code'] ?? '' }}</p>
+                                <p><strong>Registration ID:</strong> {{ $invoice['issuer']['reg_id'] ?? '' }}</p>
+                                <p><strong>VAT ID:</strong> {{ $invoice['issuer']['vat_id'] ?? '' }}</p>
+                                <p><strong>Country:</strong> {{ $invoice['issuer']['country'] ?? '' }}</p>
+                                <p><strong>Place:</strong> {{ $invoice['issuer']['place'] ?? '' }}</p>
+                                <p><strong>Postal Code:</strong> {{ $invoice['issuer']['postal_code'] ?? '' }}</p>
+                                <p><strong>Address:</strong> {{ $invoice['issuer']['address'] ?? '' }}</p>
+                                <p><strong>Bank Name:</strong>
+                                    {{ $invoice['issuer']['bank_name'] ?? '' }}
+                                </p>
+                                <p><strong>IBAN:</strong>
+                                    {{ $invoice['issuer']['iban'] ?? '' }}
+                                </p>
+                                <p><strong>Phone Number:</strong> {{ $invoice['issuer']['phone_num'] ?? '' }}</p>
+                                <p><strong>Fax:</strong> {{ $invoice['issuer']['fax'] ?? '' }}</p>
+                                <p><strong>Email:</strong> {{ $invoice['issuer']['email'] ?? '' }}</p>
                                 <p><strong>Website:</strong> <a
-                                        href="{{ $invoice['issuer']['url'] }}">{{ $invoice['issuer']['url'] }}
-                                    </a></p>
-                                <p class="text-danger"><strong>Bank Accounts:</strong>FIX THAT</p>
-                            </div>
-                            <div>
-                                @if($invoice['issuer']['logo_url'] == null)
-                                    <img class="img-thumbnail" src="{{ asset('images/res/image_not_found.png')}}"
-                                         alt="Issuer Company Logo" width="128">
-                                @else
-                                    <img class="img-thumbnail" src="{{ $invoice['issuer']['logo_url']}}"
-                                         alt="Default issuer company logo" width="128">
-                                @endif
+                                        href="{{ $invoice['issuer']['url'] ?? '' }}">{{ $invoice['issuer']['url'] ?? '' }}</a>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -111,21 +107,25 @@
                 </h2>
                 <div id="recipientCollapse" class="accordion-collapse collapse" aria-labelledby="recipientHeading">
                     <div class="accordion-body">
-                        <p><strong>Name:</strong> {{ $invoice['recipient']['name'] }}</p>
-                        <p><strong>Tax Code:</strong> {{ $invoice['recipient']['tax_code'] }}</p>
-                        <p><strong>Registration ID:</strong> {{ $invoice['recipient']['reg_id'] }}</p>
-                        <p><strong>VAT ID:</strong> {{ $invoice['recipient']['vat_id'] }}</p>
-                        <p><strong>Place:</strong> {{ $invoice['recipient']['place'] }}</p>
-                        <p><strong>Postal Code:</strong> {{ $invoice['recipient']['postal_code'] }}</p>
-                        <p><strong>Address:</strong> {{ $invoice['recipient']['address'] }}</p>
-                        <p><strong>Phone Number:</strong> {{ $invoice['recipient']['phone_num'] }}</p>
-                        <p><strong>Fax:</strong> {{ $invoice['recipient']['fax'] }}</p>
-                        <p><strong>Email:</strong> {{ $invoice['recipient']['email'] }}</p>
-                        <p><strong>Bank Accounts:</strong></p>
+                        <p><strong>Name:</strong> {{ $invoice['recipient']['name'] ?? '' }}</p>
+                        <p><strong>Tax Code:</strong> {{ $invoice['recipient']['tax_code'] ?? '' }}</p>
+                        <p><strong>Registration ID:</strong> {{ $invoice['recipient']['reg_id'] ?? '' }}</p>
+                        <p><strong>VAT ID:</strong> {{ $invoice['recipient']['vat_id'] ?? '' }}</p>
+                        <p><strong>Place:</strong> {{ $invoice['recipient']['place'] ?? '' }}</p>
+                        <p><strong>Postal Code:</strong> {{ $invoice['recipient']['postal_code'] ?? '' }}</p>
+                        <p><strong>Address:</strong> {{ $invoice['recipient']['address'] ?? '' }}</p>
+                        <p><strong>Bank Name:</strong>
+                            {{ $invoice['recipient']['bank_name'] ?? '' }}
+                        </p>
+                        <p><strong>IBAN:</strong>
+                            {{ $invoice['recipient']['iban'] ?? '' }}
+                        </p>
+                        <p><strong>Phone Number:</strong> {{ $invoice['recipient']['phone_num'] ?? '' }}</p>
+                        <p><strong>Fax:</strong> {{ $invoice['recipient']['fax'] ?? '' }}</p>
+                        <p><strong>Email:</strong> {{ $invoice['recipient']['email'] ?? '' }}</p>
                     </div>
                 </div>
             </div>
-
             <!-- Invoice Details -->
             <div class="accordion-item">
                 <h2 class="accordion-header" id="invoiceDetailsHeading">

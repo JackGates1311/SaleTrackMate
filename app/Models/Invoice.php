@@ -36,6 +36,7 @@ class Invoice extends Model
         'total_rebate',
         'status',
         'type',
+        'company_id',
         'issuer_company_id',
         'recipient_company_id',
         'fiscal_year_id'
@@ -47,14 +48,14 @@ class Invoice extends Model
     /**
      * @noinspection PhpUnused
      */
-    public function issuer(): BelongsTo
+    public function issuer(): belongsTo //TODO figure out why hasOne relation returns null?!
     {
-        return $this->belongsTo(Company::class, 'issuer_company_id', 'id');
+        return $this->belongsTo(InvoiceIssuer::class, 'issuer_company_id', 'id');
     }
 
-    public function recipient(): BelongsTo
+    public function recipient(): belongsTo
     {
-        return $this->belongsTo(Recipient::class, 'recipient_company_id', 'id');
+        return $this->belongsTo(InvoiceRecipient::class, 'recipient_company_id', 'id');
     }
 
     /**
@@ -90,6 +91,7 @@ class Invoice extends Model
         'total_rebate' => 'required|numeric',
         'status' => 'required|in:STAGING,SENT,CANCELLED',
         'type' => 'required|in:INVOICE,PROFORMA',
+        'company_id' => 'required|uuid',
         'issuer_company_id' => 'required|uuid',
         'recipient_company_id' => 'required|uuid',
         'fiscal_year_id' => 'required|uuid',
