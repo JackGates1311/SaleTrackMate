@@ -25,7 +25,9 @@
                             </button>
                         </div>
                     </form>
-                    <a href="#" class="btn btn-primary btn-block gradient-custom-2 w-100">Create New Invoice</a>
+                    <a href="{{route('create_invoice', ['company' => request()->query('company')])}}"
+                       class="btn btn-primary btn-block gradient-custom-2 w-100">Create
+                        New Invoice</a>
                     <hr/>
                     <div class="d-inline-flex justify-content-between w-100">
                         <h5 class="mx-2">Invoices:</h5>

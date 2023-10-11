@@ -17,8 +17,9 @@
                         <div class="col-lg-12">
                             <div class="card-body p-3">
                                 <div class="text-center">
-                                    <h4 class="mt-1 mb-5 pb-1">Register to SaleTrackMate</h4>
+                                    <h4 class="mt-1 mb-3 pb-1">Register to SaleTrackMate</h4>
                                 </div>
+                                <hr/>
                                 <form accept-charset="UTF-8" action="{{ route('register') }}" method="POST">
                                     @csrf <!-- {{ csrf_field() }} -->
                                     <div class="row">

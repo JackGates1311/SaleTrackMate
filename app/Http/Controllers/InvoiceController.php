@@ -44,4 +44,9 @@ class InvoiceController extends Controller
             return view('invoices', ['companies' => $companies, 'invoices' => $invoices, 'invoice' => $invoice]);
         }
     }
+
+    public function createView(): Factory|View|Application
+    {
+        return view('create_invoice');
+    }
 }
