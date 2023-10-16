@@ -27,6 +27,7 @@ class Recipient extends Model
         'phone_num',
         'fax',
         'email',
+        'company_id',
     ];
 
     /**
@@ -54,5 +55,6 @@ class Recipient extends Model
         'phone_num' => 'nullable|string|max:255',
         'fax' => 'nullable|string|max:255',
         'email' => 'nullable|string|email|max:255',
+        'company_id' => 'uuid|required',
     ];
 }

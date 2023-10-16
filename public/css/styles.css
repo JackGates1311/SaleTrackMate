@@ -222,16 +222,20 @@ label {
     background-color: #faf8f8;
 }
 
-.nav-tabs {
-    background-color: transparent;
-}
-
 .nav-tabs .nav-link {
     background-color: #e3e7e8;
     color: #000000;
     font-weight: normal;
     border: 1px solid #faf8f8;
     opacity: 0.75;
+    border-radius: 1rem 1rem 0 0;
+}
+
+.nav-tabs .nav-link.active {
+    color: #000000;
+    border: 1px solid #faf8f8;
+    border-radius: 1rem 1rem 0 0;
+    opacity: 1;
 }
 
 #my-account-tab {
@@ -244,11 +248,19 @@ label {
     border-radius: 0 1rem 0 0;
 }
 
-.nav-tabs .nav-link.active {
-    color: #000000;
+#issuer-data-tab {
     border: 1px solid #faf8f8;
     border-radius: 1rem 0 0 0;
-    opacity: 1;
+}
+
+#recipient-data-tab, #invoice-data-tab {
+    border: 1px solid #faf8f8;
+    border-radius: 0;
+}
+
+#invoice-items-tab {
+    border: 1px solid #faf8f8;
+    border-radius: 0 1rem 0 0;
 }
 
 .tab-content {
@@ -274,9 +286,6 @@ label {
     background-color: #e3e7e8;
     opacity: 1;
 }
-
-
-/*hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh*/
 
 /* Override link styles to remove underlines */
 .accordion-button:link, .accordion-button:visited {
@@ -368,4 +377,11 @@ table:hover {
 
 .img-thumbnail {
     border-radius: 1rem;
+}
+
+@media screen and (max-width: 375px) {
+    ::-webkit-scrollbar {
+        -webkit-appearance: none;
+        display: none; /* Safari and Chrome */
+    }
 }

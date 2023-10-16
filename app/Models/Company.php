@@ -73,6 +73,11 @@ class Company extends Model
         return $this->hasMany(FiscalYear::class);
     }
 
+    public function recipients(): HasMany
+    {
+        return $this->hasMany(Recipient::class);
+    }
+
     public static array $rules = [
         'company_id' => 'required|string|max:255',
         'tax_code' => 'required|string|max:255',

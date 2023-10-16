@@ -3,6 +3,7 @@
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\RecipientController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -69,6 +70,10 @@ Route::middleware('auth:web')->group(function () {
         Route::post('/edit', [BankAccountController::class, 'update'])->name('bank_account_edit_save');
         Route::post('/delete', [BankAccountController::class, 'delete'])->name('bank_account_delete');
         Route::post('/create', [BankAccountController::class, 'create'])->name('create_bank_account');
+    });
+    Route::group(['prefix' => 'recipient'], function () {
+        Route::get('/selectRecipient', [RecipientController::class, 'selectRecipient'])->
+        name('selectRecipient');
     });
     Route::match(['get', 'post'], '/logout', [UserController::class, 'logout'])->name('logout');
 });
