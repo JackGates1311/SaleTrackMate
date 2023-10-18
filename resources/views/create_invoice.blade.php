@@ -11,11 +11,7 @@
 <div class="h-100 pt-5 d-flex flex-column gradient-form">
     <div class="container mt-lg-4 mt-2 h-100">
         <div id="tabContainer" class="tabContainer">
-            <ul class="nav nav-tabs flex-nowrap" id="tabs"
-                style="
-                overflow-x: scroll !important;
-                white-space: nowrap !important;
-                overflow-y: hidden !important;">
+            <ul class="nav nav-tabs flex-nowrap" id="tabs">
                 <li class="nav-item" id="tabHeader_1">
                     <a class="nav-link active" id="issuer-data-tab" href="#tabpage_1" role="tab"
                        aria-selected="true">Issuer Data</a>
@@ -36,7 +32,9 @@
                 @endif
             </ul>
         </div>
-        <form class="vh-100" accept-charset="UTF-8" action="#" method="POST">
+        <form class="vh-100" accept-charset="UTF-8" action="{{route('create_invoice',
+            ['company_id' => request()->query('company')])}}" method="POST" id="create-invoice-form"
+              onsubmit="return validateForm();">
             <div class="tab-content h-50" id="tabscontent">
                 @csrf <!-- {{ csrf_field() }} -->
                 <div class="tab-pane show active" id="tabpage_1" role="tabpanel">
@@ -63,22 +61,35 @@
                     @endcomponent
                 </div>
                 <div class="tab-pane" id="tabpage_4" role="tabpanel">
-                    <h2>Page 4</h2>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the industry's standard dummy text ever since the 1500s.
-                    </p>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the industry's standard dummy text ever since the 1500s.
-                    </p>
+                    <div class="text-center">
+                        <h4 class="m-3">Invoice Items</h4>
+                    </div>
+                    <hr/>
+                    <div class="d-flex w-100 justify-content-end align-content-end gap-2" role="group">
+                        <a type="button" class="btn btn-primary" id="add-bank-account"
+                           onclick="addInvoiceItem()">
+                            Add New Invoice Item
+                        </a>
+                    </div>
+                    <hr/>
+                    <div id="invoice-items">
+                        @component('components.forms.invoice_items_form_component')
+                        @endcomponent
+                    </div>
                 </div>
             </div>
             @if(isset($issuer) && count($issuer) > 0)
-                <div class="d-flex w-100 justify-content-end align-content-end gap-2 card-header" role="group"
+                <div class="d-flex w-100 justify-content-end align-content-end gap-2 mt-3" role="group"
                      aria-label="Navigation Buttons">
-                    <button type="button" class="btn btn-primary w-25" onclick="goToTabByDelta(-1)">Back</button>
-                    <button type="button" class="btn btn-primary w-25" onclick="goToTabByDelta(1)">Next</button>
+                    <button type="button" class="btn btn-primary w-25" id="back-button" onclick="goToTabByDelta(-1)"
+                            hidden>Back
+                    </button>
+                    <button type="button" class="btn btn-primary w-25" id="next-button" onclick="goToTabByDelta(1)">
+                        Next
+                    </button>
+                    <button type="button" class="btn btn-primary w-25" id="save-button" onclick="validateForm()" hidden>
+                        Create Invoice
+                    </button>
                 </div>
             @endif
         </form>

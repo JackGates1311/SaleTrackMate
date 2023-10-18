@@ -1,4 +1,5 @@
 let activeTabIndex = 1;
+let invoiceItemIndex = 1;
 let numberOfTabs;
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -134,7 +135,52 @@ function goToTabByIndex(newActiveTabIndex) {
         const activeTab = tabContainer.querySelector(".nav-link.active");
         activeTab.classList.remove("active");
         targetTab.classList.add("active");
+
+        // Check if the new tab is the first or last tab
+        if (newActiveTabIndex === 1) {
+            document.getElementById("back-button").setAttribute("hidden", "");
+            document.getElementById("next-button").removeAttribute("hidden");
+            document.getElementById("save-button").setAttribute("hidden", "");
+        } else if (newActiveTabIndex === numberOfTabs) {
+            document.getElementById("back-button").removeAttribute("hidden");
+            document.getElementById("next-button").setAttribute("hidden", "");
+            document.getElementById("save-button").removeAttribute("hidden");
+        } else {
+            document.getElementById("back-button").removeAttribute("hidden");
+            document.getElementById("next-button").removeAttribute("hidden");
+            document.getElementById("save-button").setAttribute("hidden", "");
+        }
     }
 }
 
+function addInvoiceItem() {
+    const template = document.querySelector('.invoice-item').outerHTML;
+    const newIndex = invoiceItemIndex++;
+    const newTemplate = template.replace(/\[0]/g, `[${newIndex}]`);
+    const container = document.createElement('div');
+    container.innerHTML = newTemplate;
+    document.getElementById('invoice-items').appendChild(container.firstChild);
+}
+
+function removeInvoiceItem(button) {
+    let invoiceItemRow = button.closest('.invoice-item');
+    if (document.querySelectorAll('.invoice-item').length > 1) {
+        invoiceItemRow.remove();
+    }
+}
+
+function validateForm() {
+    const form = document.getElementById('create-invoice-form');
+    if (form.checkValidity()) {
+        form.submit();
+    } else {
+        const formControls = form.elements;
+        for (let i = 0; i < formControls.length; i++) {
+            if (formControls[i].nodeName === 'INPUT' && !formControls[i].checkValidity()) {
+                alert(`Field: ${formControls[i].name} is invalid`);
+                break;
+            }
+        }
+    }
+}
 

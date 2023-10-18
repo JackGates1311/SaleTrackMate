@@ -11,7 +11,7 @@
 <section class="min-vh-100 gradient-form d-flex justify-content-center align-items-center">
     <div class="container pb-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-xl-10">
+            <div class="col-xl-12">
                 <div class="card rounded-3 text-black border-0">
                     <div class="row g-0">
                         <div class="col-lg-12">

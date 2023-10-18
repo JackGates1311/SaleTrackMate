@@ -31,7 +31,7 @@ class RecipientController extends Controller
             }
         }
 
-        return redirect()->route('create_invoice', ['recipient' => $selected_recipient_id])->
+        return redirect()->route('create_invoice_view', ['recipient' => $selected_recipient_id])->
         with(['companies' => $recipients, 'selected_company' => $this->selected_recipient]);
     }
 }

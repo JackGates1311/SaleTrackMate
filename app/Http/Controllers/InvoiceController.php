@@ -6,6 +6,7 @@ use App\Services\CompanyService;
 use App\Services\InvoiceService;
 use App\Services\RecipientService;
 use App\Services\UserService;
+use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -67,5 +68,32 @@ class InvoiceController extends Controller
         }
 
         return view('create_invoice', ['issuer' => $issuer, 'recipients' => $recipients]);
+    }
+
+    public function create(Request $request)
+    {
+        $requestArray = $request->toArray();
+
+        $requestArray = $this->castInvoiceValues($requestArray);
+
+        dd($requestArray); // TODO implement logic to save invoice and return message about success or fail (look at company create method)
+    }
+
+    /**
+     * @param array $requestArray
+     * @return array
+     */
+    public function castInvoiceValues(array $requestArray): array
+    {
+        $requestArray['fiscal_year'] = (int)$requestArray['fiscal_year'];
+
+        foreach ($requestArray['invoice_items'] as $i => $invoice_item) {
+            $requestArray['invoice_items'][$i]['unit_price'] = (float)$invoice_item['unit_price'];
+            $requestArray['invoice_items'][$i]['quantity'] = (float)$invoice_item['quantity'];
+            $requestArray['invoice_items'][$i]['rebate'] = (float)$invoice_item['rebate'];
+            $requestArray['invoice_items'][$i]['vat_percentage'] = (float)$invoice_item['vat_percentage'];
+        }
+
+        return $requestArray;
     }
 }

@@ -238,6 +238,12 @@ label {
     opacity: 1;
 }
 
+#tabContainer {
+    overflow-x: scroll !important;
+    white-space: nowrap !important;
+    overflow-y: hidden !important;
+}
+
 #my-account-tab {
     border: 1px solid #faf8f8;
     border-radius: 1rem 0 0 0;
@@ -261,6 +267,12 @@ label {
 #invoice-items-tab {
     border: 1px solid #faf8f8;
     border-radius: 0 1rem 0 0;
+}
+
+#invoice-items {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    max-height: calc(50vh - 180px);
 }
 
 .tab-content {

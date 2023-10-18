@@ -1,5 +1,6 @@
 <label class="form-label" for="country">Country:</label>
-<select class="form-select" id="country" name="country" required>
+<select class="form-select" id="country" name="{{substr($entity, 0, -1) ?? ''}}country{{substr($entity, -1) ?? ''}}"
+        required>
     @if(isset($selected_country))
         <option value="{{$selected_country}}">
             {{$selected_country}}
