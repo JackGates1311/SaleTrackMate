@@ -5,49 +5,52 @@
                 Name:
             </label>
             <input type="text" class="form-control" name="invoice_items[0][name]" id="invoice_item_name"
-                   placeholder="Name" value="" required>
+                   placeholder="Name" value="{{$invoice_item['name'] ?? ''}}" required>
         </div>
         <div class="col-xl-1 col-md-12 col-sm-12 mb-3">
             <label for="invoice_item_unit" class="form-label">
                 Unit:
             </label>
             <input type="text" class="form-control" name="invoice_items[0][unit]" id="invoice_item_unit"
-                   placeholder="Unit" value="" required>
+                   placeholder="Unit" value="{{$invoice_item['unit'] ?? ''}}" required>
         </div>
         <div class="col-xl-2 col-md-12 col-sm-12 mb-3">
             <label for="invoice_item_unit_price" class="form-label">
                 Unit price:
             </label>
             <input type="number" class="form-control" name="invoice_items[0][unit_price]" step="0.01"
-                   id="invoice_item_unit_price" placeholder="Unit price" value="0" required>
+                   id="invoice_item_unit_price" placeholder="Unit price" min="0.01"
+                   value="{{$invoice_item['unit_price'] ?? '0.01'}}" required>
         </div>
         <div class="col-xl-1 col-md-12 col-sm-12 mb-3">
             <label for="invoice_item_quantity" class="form-label">
                 Quantity:
             </label>
-            <input type="number" class="form-control" name="invoice_items[0][quantity]" step="0.01"
-                   id="invoice_item_quantity" placeholder="Qt." value="1" required>
+            <input type="number" class="form-control" name="invoice_items[0][quantity]" step="0.01" min="0.01"
+                   id="invoice_item_quantity" placeholder="Qt." value="{{$invoice_item['quantity'] ?? '1'}}"
+                   required>
         </div>
         <div class="col-xl-2 col-md-12 col-sm-12 mb-3">
             <label for="invoice_item_rebate" class="form-label">
                 Rebate (%):
             </label>
             <input type="number" class="form-control" name="invoice_items[0][rebate]"
-                   id="invoice_item_rebate" placeholder="Rebate (%)" value="0">
+                   id="invoice_item_rebate" placeholder="Rebate (%)" value="{{$invoice_item['rebate'] ?? '0'}}"
+                   min="0">
         </div>
         <div class="col-xl-1 col-md-12 col-sm-12 mb-3">
             <label for="invoice_item_vat" class="form-label">
                 VAT (%):
             </label>
             <input type="number" class="form-control" name="invoice_items[0][vat_percentage]" id="invoice_item_vat"
-                   placeholder="VAT" value="0" required>
+                   placeholder="VAT" value="{{$invoice_item['vat_percentage'] ?? '0'}}" required>
         </div>
         <div class="col-xl-2 col-md-12 col-sm-12 mb-3">
             <label for="invoice_item_image_url" class="form-label">
                 Image URL:
             </label>
             <input type="text" class="form-control" name="invoice_items[0][image_url]" pattern="https?://.+"
-                   id="invoice_item_image_url" placeholder="Image URL" value="">
+                   id="invoice_item_image_url" placeholder="Image URL" value="{{$invoice_item['image_url'] ?? ''}}">
         </div>
         <div class="col-xl-1 mb-3 d-flex justify-content-end align-items-end">
             <button class="form-control btn-form-control mt-1 me-xl-3" type="button"

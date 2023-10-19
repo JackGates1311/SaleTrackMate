@@ -179,10 +179,6 @@ label {
     margin: 0;
 }
 
-.search-form {
-    height: 200px;
-}
-
 .invoices-list {
     height: calc(100vh - 320px);
     overflow-y: auto;

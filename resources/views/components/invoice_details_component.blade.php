@@ -53,7 +53,7 @@
                         <p><strong>Payment Method:</strong>
                             {{ ucwords(strtolower(str_replace('_', ' ', $invoice['payment_method']))) }} (Local
                             Currency)</p>
-                        <p><strong>Total Price:</strong> {{ $invoice['total_price'] }} </p>
+                        <p><strong>Total Price (without VAT):</strong> {{ $invoice['total_price'] }} </p>
                     </div>
                 </div>
             </div>
@@ -180,7 +180,6 @@
                                 <thead>
                                 <tr>
                                     <th class="text-nowrap text-center table-header-cell">Item</th>
-                                    <th class="text-nowrap text-center table-header-cell">Description</th>
                                     <th class="text-nowrap text-center table-header-cell">Unit</th>
                                     <th class="text-nowrap text-center table-header-cell">Unit Price</th>
                                     <th class="text-nowrap text-center table-header-cell">Quantity</th>
@@ -195,7 +194,6 @@
                                 <tbody>
                                 @foreach($invoice['invoice_items'] as $item)
                                     <tr>
-                                        <td class="text-nowrap text-center">{{ $item['name'] }}</td>
                                         <td class="text-nowrap text-center">{{ $item['name'] }}</td>
                                         <td class="text-nowrap text-center">{{ $item['unit'] }}</td>
                                         <td class="text-nowrap text-center">{{ $item['unit_price'] }}</td>

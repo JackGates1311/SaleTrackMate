@@ -26,24 +26,27 @@
                         </div>
                     </form>
                     <a href="{{route('create_invoice', ['company' => request()->query('company')])}}"
-                       class="btn btn-primary btn-block gradient-custom-2 w-100">Create
+                       class="btn btn-primary btn-block gradient-custom-2 w-100 mb-4">Create
                         New Invoice</a>
+                    @if (Session::has('message'))
+                        <div class="alert alert-success mb-4">
+                            {{session('message')}}</div>
+                    @endif
                     <hr/>
-                    <div class="d-inline-flex justify-content-between w-100">
-                        <h5 class="mx-2">Invoices:</h5>
-                        <div>
-                            <button class="btn btn-secondary btn-dropdown btn-sm dropdown-toggle" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                2023
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>2022</li>
-                            </ul>
-                        </div>
-                    </div>
-
                 </div>
-                <div class="invoices-list">
+                <div class="d-inline-flex justify-content-between w-100">
+                    <h5 class="mx-2">Invoices:</h5>
+                    <div>
+                        <button class="btn btn-secondary btn-dropdown btn-sm dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            2023
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>2022</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="invoices-list my-3">
                     @if(isset($invoices) && count($invoices) > 0)
                         @component('components.invoice_list_component', ['invoices' => $invoices])
                         @endcomponent

@@ -3,8 +3,11 @@ let invoiceItemIndex = 1;
 let numberOfTabs;
 
 window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById("invoice_date").valueAsDate = new Date();
-    document.getElementById("invoice_date").min = new Date().toISOString().split("T")[0];
+    if (document.getElementById("invoice_date").value === null ||
+        document.getElementById("invoice_date").value === "") {
+        document.getElementById("invoice_date").valueAsDate = new Date();
+        document.getElementById("invoice_date").min = new Date().toISOString().split("T")[0];
+    }
 });
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -15,9 +18,18 @@ window.addEventListener('DOMContentLoaded', () => {
     let todayDate = new Date();
     todayDate.setDate(todayDate.getDate());
 
-    document.getElementById('due_date').value = dueDate.toISOString().slice(0, -8);
+    if (document.getElementById('due_date').value === null ||
+        document.getElementById("due_date").value === "") {
+        document.getElementById('due_date').value = dueDate.toISOString().slice(0, -8);
+    }
+
     document.getElementById('due_date').min = todayDate.toISOString().slice(0, -8);
-    document.getElementById('payment_deadline').value = dueDate.toISOString().slice(0, -8);
+
+    if (document.getElementById('payment_deadline').value === null ||
+        document.getElementById("payment_deadline").value === "") {
+        document.getElementById('payment_deadline').value = dueDate.toISOString().slice(0, -8);
+    }
+
     document.getElementById('payment_deadline').min = todayDate.toISOString().slice(0, -8);
 });
 
@@ -25,7 +37,11 @@ window.addEventListener('DOMContentLoaded', () => {
     let deliveryDate = new Date();
     deliveryDate.setDate(deliveryDate.getDate());
     deliveryDate.setMinutes(deliveryDate.getMinutes() - deliveryDate.getTimezoneOffset());
-    document.getElementById('delivery_date').value = deliveryDate.toISOString().slice(0, -8);
+
+    if (document.getElementById('delivery_date').value === null ||
+        document.getElementById('delivery_date').value === "") {
+        document.getElementById('delivery_date').value = deliveryDate.toISOString().slice(0, -8);
+    }
 });
 
 function validateDates() {

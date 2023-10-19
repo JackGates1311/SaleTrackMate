@@ -73,14 +73,26 @@
                     </div>
                     <hr/>
                     <div id="invoice-items">
-                        @component('components.forms.invoice_items_form_component')
-                        @endcomponent
+                        @if(!empty(old('invoice_items', [])) || $errors->has('message'))
+                            @foreach(old('invoice_items', []) as $invoice_item)
+                                @component('components.forms.invoice_items_form_component',
+                                    ['invoice_item' => $invoice_item])
+                                @endcomponent
+                            @endforeach
+                        @else
+                            @component('components.forms.invoice_items_form_component', ['invoice_item' => []])
+                            @endcomponent
+                        @endif
                     </div>
                 </div>
             </div>
             @if(isset($issuer) && count($issuer) > 0)
                 <div class="d-flex w-100 justify-content-end align-content-end gap-2 mt-3" role="group"
                      aria-label="Navigation Buttons">
+                    @if ($errors->has('message'))
+                        <div class="alert alert-danger w-75 me-3">
+                            {{$errors->first('message')}}</div>
+                    @endif
                     <button type="button" class="btn btn-primary w-25" id="back-button" onclick="goToTabByDelta(-1)"
                             hidden>Back
                     </button>

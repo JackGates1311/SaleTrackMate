@@ -70,13 +70,21 @@ class InvoiceController extends Controller
         return view('create_invoice', ['issuer' => $issuer, 'recipients' => $recipients]);
     }
 
-    public function create(Request $request)
+    public function create(Request $request): RedirectResponse
     {
-        $requestArray = $request->toArray();
+        $requestArray = $request->except('_token');
 
         $requestArray = $this->castInvoiceValues($requestArray);
 
-        dd($requestArray); // TODO implement logic to save invoice and return message about success or fail (look at company create method)
+        $result = $this->invoiceService->store($requestArray, $requestArray['company_id']);
+
+        if ($result['success']) {
+            return redirect()->route('invoices', ['company' => $result['invoice']['company_id'],
+                'invoice' => $result['invoice']['id']])->with(['message' =>
+                $result['invoice']['invoice_num'] . ' ' . $result['message']]);
+        } else {
+            return back()->withErrors(['message' => $result['message']])->withInput(request()->all());
+        }
     }
 
     /**

@@ -1,12 +1,15 @@
-<label class="form-label" for="country">Country:</label>
-<select class="form-select" id="country" name="{{substr($entity, 0, -1) ?? ''}}country{{substr($entity, -1) ?? ''}}"
+<label class="form-label" for="country">
+    {{isset($entity) ? ucfirst(substr($entity, 0, -2)) . ' Country:' : 'Country:'}}</label>
+<select class="form-select" id="country"
+        name="{{isset($entity) ? substr($entity, 0, -1) . 'country' . substr($entity, -1) : 'country'}}"
         required>
     @if(isset($selected_country))
         <option value="{{$selected_country}}">
             {{$selected_country}}
         </option>
     @else
-        <option value="{{old('country')}}">@if((old('country')))
+        <option value="{{old('country')}}">
+            @if((old('country')))
                 Country selected
             @else
                 Your country
