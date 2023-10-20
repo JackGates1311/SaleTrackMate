@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Recipient;
 use App\Services\RecipientService;
+use App\Services\UserService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -11,11 +16,26 @@ use Illuminate\Http\Request;
 class RecipientController extends Controller
 {
     private ?Recipient $selected_recipient;
-    private RecipientService $recipientService;
 
-    public function __construct(RecipientService $recipientService)
+    private ?Company $selected_company;
+    private RecipientService $recipientService;
+    private UserService $userService;
+
+    public function __construct(RecipientService $recipientService, UserService $userService)
     {
         $this->recipientService = $recipientService;
+        $this->userService = $userService;
+        $this->selected_company = null;
+    }
+
+    public function index(): Factory|View|Application
+    {
+        $this->selected_company = Company::with('bankAccounts',
+            'fiscalYears')->find(request()->query('company'));
+
+        $user_companies = $this->userService->getUserCompanies();
+
+        return view('recipients', ['companies' => $user_companies, 'selected_company' => $this->selected_company]);
     }
 
     public function selectRecipient(Request $request): RedirectResponse

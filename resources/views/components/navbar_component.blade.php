@@ -16,7 +16,8 @@
                            href="{{ route('invoices', ['company' => request()->query('company')]) }}">Invoices</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('recipients') ? 'active' : '' }}" href="#">Recipients</a>
+                        <a class="nav-link {{ request()->is('recipients') ? 'active' : '' }}"
+                           href="{{ route('recipients', ['company' => request()->query('company')]) }}">Recipients</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('analytics') ? 'active' : '' }}" href="#">Analytics</a>

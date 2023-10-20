@@ -47,11 +47,13 @@ Route::get('/about', function () {
 })->name('about');
 
 Route::middleware('auth:web')->group(function () {
-
     Route::group(['prefix' => 'invoices'], function () {
         Route::get('/', [InvoiceController::class, 'index'])->name('invoices');
         Route::get('/create', [InvoiceController::class, 'createView'])->name('create_invoice_view');
         Route::post('/create', [InvoiceController::class, 'create'])->name('create_invoice');
+    });
+    Route::group(['prefix' => 'recipients'], function () {
+        Route::get('/', [RecipientController::class, 'index'])->name('recipients');
     });
     Route::group(['prefix' => 'account'], function () {
         Route::get('/', [UserController::class, 'index'])->name('account');

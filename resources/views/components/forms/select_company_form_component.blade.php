@@ -1,4 +1,5 @@
 <form method="GET" action="{{route('selectCompany')}}">
+    <input type="hidden" name="entity" value="{{ $entity }}">
     <label class="mb-2" for="companySelect">Company:</label>
     <div class="d-flex flex-column flex-lg-row">
         <div
@@ -15,27 +16,34 @@
             </select>
         </div>
 
-        <div
-            class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">
-            <a data-bs-toggle="modal" data-bs-target="#bankAccountsModal"
-               class="btn btn-primary mb-3 mb-lg-0 me-lg-2" {{ session('company_edit') ? 'hidden' : ''}}>
-                Show Bank Accounts
-            </a>
-            <a href="{{route('bank_accounts', ['company' => $selected_company['id']])}}"
-               class="btn btn-primary mb-3 mb-lg-0 me-lg-2" {{ session('company_edit') ? '' : 'hidden'}}>
-                Manage Bank Accounts
-            </a>
-            <a href="{{ session('company_edit') ?
+        @if($entity == 'companies')
+            <div
+                class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">
+                <a data-bs-toggle="modal" data-bs-target="#bankAccountsModal"
+                   class="btn btn-primary mb-3 mb-lg-0 me-lg-2" {{ session('company_edit') ? 'hidden' : ''}}>
+                    Show Bank Accounts
+                </a>
+                <a href="{{route('bank_accounts', ['company' => $selected_company['id']])}}"
+                   class="btn btn-primary mb-3 mb-lg-0 me-lg-2" {{ session('company_edit') ? '' : 'hidden'}}>
+                    Manage Bank Accounts
+                </a>
+                <a href="{{ session('company_edit') ?
                                     route('companies', ['company' => $selected_company['id']]) :
                                     route('company_edit', ['company' => $selected_company['id']]) }}"
-               class="btn btn-primary mb-3 mb-lg-0 me-lg-2"
-                {{ session('company_edit') ? 'hidden' : ''}}>
-                Edit Company
-            </a>
-            <a href="{{ route('create_company_view', ['company' => request()->query('company')]) }}"
-               class="btn btn-primary" {{ session('company_edit') ? 'hidden' : ''}}>
-                Add New Company
-            </a>
-        </div>
+                   class="btn btn-primary mb-3 mb-lg-0 me-lg-2"
+                    {{ session('company_edit') ? 'hidden' : ''}}>
+                    Edit Company
+                </a>
+                <a href="{{ route('create_company_view', ['company' => request()->query('company')]) }}"
+                   class="btn btn-primary" {{ session('company_edit') ? 'hidden' : ''}}>
+                    Add New Company
+                </a>
+            </div>
+        @else
+            <div
+                class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">
+                <p>recipients...</p>
+            </div>
+        @endif
     </div>
 </form>

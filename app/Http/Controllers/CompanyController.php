@@ -107,6 +107,8 @@ class CompanyController extends Controller
     {
         $selected_company_id = $request->input('company');
 
+        $entity = $request->input('entity');
+
         $companies = $this->companyService->findByUserId($this->userService->getUserIdWeb())['companies'];
 
         foreach ($companies as $company) {
@@ -116,7 +118,12 @@ class CompanyController extends Controller
             }
         }
 
-        return redirect()->route('companies', ['company' => $selected_company_id])->
-        with(['companies' => $companies, 'selected_company' => $this->selected_company]);
+        if ($entity == 'companies') {
+            return redirect()->route('companies', ['company' => $selected_company_id])->
+            with(['companies' => $companies, 'selected_company' => $this->selected_company]);
+        } else {
+            return redirect()->route('recipients', ['company' => $selected_company_id])->
+            with(['companies' => $companies, 'selected_company' => $this->selected_company]);
+        }
     }
 }

@@ -14,7 +14,7 @@
                 <div class="form-group pb-2">
                     @if(isset($companies) && count($companies) > 0)
                         @component('components.forms.select_company_form_component', ['companies' => $companies,
-                            'selected_company' => $selected_company])
+                            'selected_company' => $selected_company, 'entity' => 'companies'])
                         @endcomponent
                     @endif
                     @if($errors->has('message'))
