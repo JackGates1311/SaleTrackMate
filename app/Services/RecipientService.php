@@ -8,7 +8,6 @@ use App\Models\Recipient;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class RecipientService
 {
@@ -19,15 +18,23 @@ class RecipientService
         $this->bankAccountService = $bankAccountService;
     }
 
-    /**
-     * @throws ValidationException
-     */
+    public function show($id): array
+    {
+        $recipient = Recipient::with('bankAccounts')->find($id);
+
+        if (!$recipient) {
+            return ['success' => false, 'message' => Constants::RECIPIENT_NOT_FOUND . ' with ID: ' . $id];
+        }
+
+        return ['success' => true, 'message' => 'OK', 'recipient' => $recipient->toArray()];
+    }
+
     public function store(array $data, string $company_id): array
     {
         $data['company_id'] = $company_id;
-        $validated_data = Validator::make($data, Recipient::$rules)->validate();
 
         try {
+            $validated_data = Validator::make($data, Recipient::$rules)->validate();
 
             DB::beginTransaction();
 
@@ -72,6 +79,52 @@ class RecipientService
             return ['success' => false, 'message' => Constants::RECIPIENT_NOT_FOUND . ' with ID: ' . $id];
         }
 
+        foreach ($recipients as $recipient) {
+            $recipient->load('bankAccounts');
+        }
+
         return ['success' => true, 'recipients' => $recipients];
+    }
+
+    public function update(array $data, string $id): array
+    {
+        $recipient = Recipient::find($id);
+
+        $data['company_id'] = $recipient->company_id;
+
+        try {
+            $validated_data = Validator::make($data, Recipient::$rules)->validate();
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+
+        if (!$recipient) {
+            return ['success' => false, 'message' => Constants::RECIPIENT_NOT_FOUND . ' with ID: ' . $id];
+        }
+
+        try {
+            $recipient->update($validated_data);
+            return ['success' => true, 'message' => Constants::RECIPIENT_UPDATE_SUCCESS,
+                'recipient' => $recipient];
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => Constants::RECIPIENT_UPDATE_FAIL . ' ' . $e->getMessage()];
+        }
+    }
+
+    public function destroy($id): array
+    {
+        $recipient = Recipient::find($id);
+
+        if (!$recipient) {
+            return ['success' => false, 'message' => Constants::RECIPIENT_NOT_FOUND . ' with ID: ' . $id];
+        }
+
+        try {
+            $recipient->delete();
+            return ['success' => true, 'message' => Constants::RECIPIENT_DELETE_SUCCESS, 'recipient' => $recipient];
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => Constants::RECIPIENT_DELETE_FAIL . ' ' . $e->getMessage(),
+                'recipient' => $recipient];
+        }
     }
 }

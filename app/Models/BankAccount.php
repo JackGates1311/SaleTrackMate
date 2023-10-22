@@ -22,7 +22,8 @@ class BankAccount extends Model
         'bank_identifier',
         'name',
         'iban',
-        'company_id'
+        'company_id',
+        'recipient_id'
     ];
 
     private function company(): BelongsTo // fix not use

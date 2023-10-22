@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @method static create(array $validated_data)
+ * @method static find(string $id)
  */
 class Recipient extends Model
 {

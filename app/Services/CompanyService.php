@@ -6,6 +6,9 @@ use App\Constants;
 use App\Models\Company;
 use App\Models\User;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -134,5 +137,10 @@ class CompanyService
         }
 
         return ['success' => true, 'companies' => $companies];
+    }
+
+    public function findSelectedCompany($id): Model|Collection|Builder|array|null
+    {
+        return Company::with('bankAccounts', 'fiscalYears')->find($id);
     }
 }

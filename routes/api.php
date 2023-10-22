@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\BankAccountControllerApi;
 use App\Http\Controllers\Api\CompanyControllerApi;
 use App\Http\Controllers\Api\GoodOrServiceControllerApi;
 use App\Http\Controllers\Api\InvoiceControllerApi;
+use App\Http\Controllers\Api\RecipientControllerApi;
 use App\Http\Controllers\Api\UserControllerApi;
 use App\Http\Controllers\ArticleDetailsController;
 use Illuminate\Support\Facades\Route;
@@ -53,6 +54,15 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{id}/xml', [InvoiceControllerApi::class, 'exportAsXml'])->name('exportAsXml');
         Route::get('/company/{id}', [InvoiceControllerApi::class, 'findByCompanyId'])
             ->name('findByCompanyId');
+    });
+
+    Route::group(['prefix' => 'recipients'], function () {
+        Route::get('/company/{id}', [RecipientControllerApi::class, 'getByCompanyId'])->
+        name('getByCompanyId');
+        Route::get('/{id}', [RecipientControllerApi::class, 'show'])->name('show');
+        Route::post('/', [RecipientControllerApi::class, 'store'])->name('store');
+        Route::put('/{id}', [RecipientControllerApi::class, 'update'])->name('update');
+        Route::delete('/{id}', [RecipientControllerApi::class, 'destroy'])->name('destroy');
     });
 });
 

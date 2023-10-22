@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Recipient;
+use App\Services\CompanyService;
 use App\Services\RecipientService;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
@@ -20,18 +21,20 @@ class RecipientController extends Controller
     private ?Company $selected_company;
     private RecipientService $recipientService;
     private UserService $userService;
+    private CompanyService $companyService;
 
-    public function __construct(RecipientService $recipientService, UserService $userService)
+    public function __construct(RecipientService $recipientService, UserService $userService,
+                                CompanyService   $companyService)
     {
         $this->recipientService = $recipientService;
         $this->userService = $userService;
+        $this->companyService = $companyService;
         $this->selected_company = null;
     }
 
     public function index(): Factory|View|Application
     {
-        $this->selected_company = Company::with('bankAccounts',
-            'fiscalYears')->find(request()->query('company'));
+        $this->selected_company = $this->companyService->findSelectedCompany(request()->query('company'));
 
         $user_companies = $this->userService->getUserCompanies();
 

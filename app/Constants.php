@@ -77,4 +77,8 @@ class Constants
     const INVOICE_RECIPIENT_SAVE_SUCCESS = "Invoice recipient saved successfully";
     const INVOICE_RECIPIENT_SAVE_FAIL = "Failed to save invoice recipient";
     const RECIPIENT_NOT_FOUND = "Recipient not found";
+    const RECIPIENT_UPDATE_SUCCESS = "Recipient updated successfully";
+    const RECIPIENT_UPDATE_FAIL = "Failed to update recipient:";
+    const RECIPIENT_DELETE_SUCCESS = "Recipient deleted successfully";
+    const RECIPIENT_DELETE_FAIL = "Failed to delete recipient:";
 }

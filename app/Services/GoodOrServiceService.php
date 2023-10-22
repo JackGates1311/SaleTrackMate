@@ -129,8 +129,7 @@ class GoodOrServiceService
         $good_or_service = GoodOrService::find($id);
 
         if (!$good_or_service) {
-            return ['success' => false, 'message' => Constants::GOOD_OR_SERVICE_NOT_FOUND . ': ' . $id,
-                'good_or_service' => $good_or_service];
+            return ['success' => false, 'message' => Constants::GOOD_OR_SERVICE_NOT_FOUND . ': ' . $id];
         }
 
         try {

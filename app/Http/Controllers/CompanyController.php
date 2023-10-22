@@ -33,8 +33,7 @@ class CompanyController extends Controller
         session(['manage_bank_accounts' => false]);
         session(['edit_bank_account' => false]);
 
-        $this->selected_company = Company::with('bankAccounts',
-            'fiscalYears')->find(request()->query('company'));
+        $this->selected_company = $this->companyService->findSelectedCompany(request()->query('company'));
 
         $user_companies = $this->userService->getUserCompanies();
 
@@ -55,8 +54,7 @@ class CompanyController extends Controller
         session(['manage_bank_accounts' => false]);
         session(['edit_bank_account' => false]);
 
-        $this->selected_company = Company::with('bankAccounts',
-            'fiscalYears')->find(request()->query('company'));
+        $this->selected_company = $this->companyService->findSelectedCompany(request()->query('company'));
 
         return view('account', ['companies' => $this->userService->getUserCompanies(),
             'selected_company' => $this->selected_company]);
