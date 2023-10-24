@@ -54,6 +54,11 @@ Route::middleware('auth:web')->group(function () {
     });
     Route::group(['prefix' => 'recipients'], function () {
         Route::get('/', [RecipientController::class, 'index'])->name('recipients');
+        Route::get('/create', [RecipientController::class, 'createView'])->name('create_recipient_view');
+        Route::post('/create', [RecipientController::class, 'create'])->name('create_recipient');
+        Route::get('/edit', [RecipientController::class, 'edit'])->name('recipient_edit');
+        Route::post('/edit', [RecipientController::class, 'update'])->name('recipient_edit_save');
+        Route::post('/delete', [RecipientController::class, 'delete'])->name('recipient_delete');
     });
     Route::group(['prefix' => 'account'], function () {
         Route::get('/', [UserController::class, 'index'])->name('account');
@@ -73,10 +78,6 @@ Route::middleware('auth:web')->group(function () {
         Route::post('/edit', [BankAccountController::class, 'update'])->name('bank_account_edit_save');
         Route::post('/delete', [BankAccountController::class, 'delete'])->name('bank_account_delete');
         Route::post('/create', [BankAccountController::class, 'create'])->name('create_bank_account');
-    });
-    Route::group(['prefix' => 'recipient'], function () {
-        Route::get('/selectRecipient', [RecipientController::class, 'selectRecipient'])->
-        name('selectRecipient');
     });
     Route::match(['get', 'post'], '/logout', [UserController::class, 'logout'])->name('logout');
 });

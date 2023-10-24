@@ -42,7 +42,10 @@
         @else
             <div
                 class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">
-                <p>recipients...</p>
+                <a href=" {{route('create_recipient_view', ['company' => request()->query('company')])}} "
+                   class="btn btn-primary mb-3 mb-lg-0 me-lg-2">
+                    Add New Recipient
+                </a>
             </div>
         @endif
     </div>

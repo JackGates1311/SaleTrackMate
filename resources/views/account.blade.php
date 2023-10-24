@@ -49,7 +49,8 @@
                 @if((session('manage_bank_accounts') || session('edit_bank_account')) &&
                     isset($bank_accounts) && count($bank_accounts) > 0)
                     @component('components.manage_bank_accounts_component',
-                        ['bank_accounts' => $bank_accounts, 'editable' => session('edit_bank_account')])
+                        ['bank_accounts' => $bank_accounts, 'editable' => session('edit_bank_account'),
+                        'entity' => 'company'])
                     @endcomponent
                 @else
                     @component('components.my_companies_tab_component', ['companies' => $companies,

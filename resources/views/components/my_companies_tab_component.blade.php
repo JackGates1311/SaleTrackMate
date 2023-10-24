@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header text-center mt-2">
+            <div class="card-header text-center mt-2 mx-3">
                 @if(session('company_edit'))
                     <h4>Edit Company</h4>
                 @elseif(session('company_create'))

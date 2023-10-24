@@ -1,5 +1,5 @@
-<div class="modal fade" id="bankAccountsModal" tabindex="-1"
-     aria-labelledby="bankAccountsModal"
+<div class="modal fade" id="bankAccountsModal{{$index ?? ''}}" tabindex="-1"
+     aria-labelledby="bankAccountsModal{{$index ?? ''}}"
      aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -9,40 +9,44 @@
             </div>
             <div class="modal-body">
                 @if(!$read_only)
-                    <form method="POST" action="{{route('create_bank_account', ['company' =>
-                        request()->query('company')])}}">
-                        @csrf <!-- {{ csrf_field() }} -->
-                        @endif
-                        <div id="bank-accounts">
-                            @foreach($bank_accounts as $index=>$bank_account)
-                                @component('components.forms.bank_accounts_form_component', ['bank_account' => $bank_account,
-                                    'mode' => 'read'])
-                                @endcomponent
-                                @if(!$loop->last)
-                                    <hr/>
-                                @endif
-                            @endforeach
-                            @if(!$read_only)
-                                @component('components.forms.bank_accounts_form_component', ['bank_account' => [],
-                                    'mode' => 'create'])
-                                @endcomponent
-                            @endif
-                        </div>
-                        @if(!$read_only)
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <button type="button" class="btn btn-outline-secondary mt-2 w-100"
-                                            data-bs-dismiss="modal">
-                                        Cancel
-                                    </button>
-                                </div>
-                                <div class="col-lg-6">
-                                    <button type="submit" class="btn btn-primary mt-2 w-100">Save
-                                    </button>
-                                </div>
-                            </div>
-                    </form>
-                @endif
+                    @if($entity == 'company')
+                        <form method="POST" action="{{route('create_bank_account', ['company' =>
+                        request()->query('company')])}}">@endif
+                            @if($entity == 'recipient')
+                                <form method="POST" action="{{route('create_bank_account', ['company' =>
+                        request()->query('company'), 'recipient' => request()->query('recipient')])}}">@endif
+                                    @csrf <!-- {{ csrf_field() }} -->
+                                    @endif
+                                    <div id="bank-accounts">
+                                        @foreach($bank_accounts as $index=>$bank_account)
+                                            @component('components.forms.bank_accounts_form_component', ['bank_account' => $bank_account,
+                                                'mode' => 'read'])
+                                            @endcomponent
+                                            @if(!$loop->last)
+                                                <hr/>
+                                            @endif
+                                        @endforeach
+                                        @if(!$read_only)
+                                            @component('components.forms.bank_accounts_form_component', ['bank_account' => [],
+                                                'mode' => 'create'])
+                                            @endcomponent
+                                        @endif
+                                    </div>
+                                    @if(!$read_only)
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <button type="button" class="btn btn-outline-secondary mt-2 w-100"
+                                                        data-bs-dismiss="modal">
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <button type="submit" class="btn btn-primary mt-2 w-100">Save
+                                                </button>
+                                            </div>
+                                        </div>
+                                </form>
+                    @endif
             </div>
             @if($read_only)
                 <div class="modal-footer">

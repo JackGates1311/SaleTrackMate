@@ -27,8 +27,13 @@ class BankAccountController extends Controller
         session(['manage_bank_accounts' => true]);
         session(['edit_bank_account' => false]);
 
-        return view('account', ['companies' => [], 'bank_accounts' =>
-            $this->bankAccountService->findByCompanyId(request()->query('company'))['bank_accounts']]);
+        if (request()->has('recipient')) {
+            return view('manage_recipient_bank_accounts', ['bank_accounts' =>
+                $this->bankAccountService->findByRecipientId(request()->query('recipient'))['bank_accounts']]);
+        } else {
+            return view('account', ['companies' => [], 'bank_accounts' =>
+                $this->bankAccountService->findByCompanyId(request()->query('company'))['bank_accounts']]);
+        }
     }
 
     public function edit(): Factory|View|Application
@@ -42,20 +47,18 @@ class BankAccountController extends Controller
 
         $bank_accounts[0] = $bank_account;
 
-        return view('account', ['companies' => [], 'bank_accounts' => $bank_accounts]);
+        if (isset($bank_account['recipient_id'])) {
+            return view('manage_recipient_bank_accounts', ['companies' => [], 'bank_accounts' => $bank_accounts]);
+        } else {
+            return view('account', ['companies' => [], 'bank_accounts' => $bank_accounts]);
+        }
     }
 
     public function delete(): RedirectResponse
     {
         $result = $this->bankAccountService->destroy(request()->query('bank_account'));
 
-        if ($result['success']) {
-            return redirect()->route('bank_accounts', ['company' => $result['bank_account']['company_id']])->
-            with(['message' => $result['message']]);
-        } else {
-            return redirect()->route('bank_accounts', ['company' => $result['bank_account']['company_id']])->
-            withErrors(['message' => $result['message']]);
-        }
+        return $this->loadManageBankAccountsPage($result);
     }
 
     /**
@@ -66,13 +69,7 @@ class BankAccountController extends Controller
         $result = $this->bankAccountService->update($request->except('_token')['bank_accounts'][0],
             $request->query('bank_account'));
 
-        if ($result['success']) {
-            return redirect()->route('bank_accounts', ['company' => $result['bank_account']['company_id']])->with(
-                ['message' => $result['message']]);
-        } else {
-            return redirect()->route('bank_accounts', ['company' => $result['bank_account']['company_id']])->withErrors(
-                ['message' => $result['message']]);
-        }
+        return $this->loadManageBankAccountsPage($result);
     }
 
     /**
@@ -80,15 +77,66 @@ class BankAccountController extends Controller
      */
     public function create(Request $request): RedirectResponse
     {
-        $result = $this->bankAccountService->store($request->except('_token')['bank_accounts'][0],
-            $request->query('company'), false);
+        $isRecipient = false;
+
+        if (request()->has('recipient')) {
+            $isRecipient = true;
+            $result = $this->bankAccountService->store($request->except('_token')['bank_accounts'][0],
+                $request->query('recipient'), true);
+        } else {
+            $result = $this->bankAccountService->store($request->except('_token')['bank_accounts'][0],
+                $request->query('company'), false);
+        }
 
         if ($result['success']) {
-            return redirect()->route('bank_accounts', ['company' => $result['bank_account']['company_id']])->with(
-                ['message' => $result['message']]);
+            if ($isRecipient) {
+                return redirect()->route('bank_accounts',
+                    ['company' => $request->query('company'),
+                        'recipient' => $result['bank_account']['recipient_id']])->with(
+                    ['message' => $result['message']]);
+            } else {
+                return redirect()->route('bank_accounts',
+                    ['company' => $result['bank_account']['company_id']])->with(['message' => $result['message']]);
+            }
+
         } else {
-            return redirect()->route('bank_accounts', ['company' => $result['bank_account']['company_id']])->withErrors(
-                ['message' => $result['message']]);
+            if ($isRecipient) {
+                return redirect()->route('bank_accounts',
+                    ['company' => $request->query('company'),
+                        'recipient' => $result['bank_account']['recipient_id']])->withErrors(
+                    ['message' => $result['message']]);
+            } else {
+                return redirect()->route('bank_accounts',
+                    ['company' => $result['bank_account']['company_id']])->withErrors(
+                    ['message' => $result['message']]);
+            }
+        }
+    }
+
+    /**
+     * @param array $result
+     * @return RedirectResponse
+     */
+    public function loadManageBankAccountsPage(array $result): RedirectResponse
+    {
+        if ($result['success']) {
+            if (isset($result['bank_account']['recipient_id'])) {
+                return redirect()->route('bank_accounts', ['company' => request()->query('company'),
+                    'recipient' => $result['bank_account']['recipient_id']])->with(['message' => $result['message']]);
+            } else {
+                return redirect()->route('bank_accounts', ['company' => $result['bank_account']['company_id']])->
+                with(['message' => $result['message']]);
+            }
+        } else {
+            if (isset($result['bank_account']['recipient_id'])) {
+                return redirect()->route('bank_accounts', ['company' => request()->query('company'),
+                    'recipient' => $result['bank_account']['recipient_id']])->withErrors([
+                    'message' => $result['message']]);
+            } else {
+                return redirect()->route('bank_accounts', ['company' => $result['bank_account']['company_id']])->
+                withErrors(['message' => $result['message']]);
+            }
+
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Constants;
+use App\Models\BankAccount;
 use App\Models\Company;
 use App\Models\Recipient;
 use Exception;
@@ -120,6 +121,7 @@ class RecipientService
         }
 
         try {
+            BankAccount::where('recipient_id', $id)->delete();
             $recipient->delete();
             return ['success' => true, 'message' => Constants::RECIPIENT_DELETE_SUCCESS, 'recipient' => $recipient];
         } catch (Exception $e) {

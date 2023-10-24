@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Constants;
 use App\Models\BankAccount;
 use App\Models\Company;
+use App\Models\Recipient;
 use Exception;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -52,6 +53,23 @@ class BankAccountService
         return ['success' => true, 'bank_accounts' => $bank_accounts];
     }
 
+    public function findByRecipientId($id): array
+    {
+        $recipient = (new Recipient)->find($id);
+
+        if (!$recipient) {
+            return ['success' => false, 'message' => Constants::RECIPIENT_NOT_FOUND . ' with ID: ' . $id];
+        } else {
+            $bank_accounts = $recipient->bankAccounts;
+        }
+
+        if (!$bank_accounts) {
+            return ['success' => false, 'message' => Constants::BANK_ACCOUNT_NOT_FOUND . ' ' . $id];
+        }
+
+        return ['success' => true, 'bank_accounts' => $bank_accounts];
+    }
+
     /**
      * @throws ValidationException
      */
@@ -63,7 +81,12 @@ class BankAccountService
             return ['success' => false, 'message' => Constants::BANK_ACCOUNT_NOT_FOUND . ' ' . $id];
         }
 
-        $data['company_id'] = $bank_account['company_id'];
+        if (isset($bank_account->toArray()['recipient_id'])) {
+            $data['recipient_id'] = $bank_account['recipient_id'];
+        } else {
+            $data['company_id'] = $bank_account['company_id'];
+        }
+
         $validated_data = Validator::make($data, BankAccount::$rules)->validate();
 
         try {
@@ -84,10 +107,14 @@ class BankAccountService
                 'bank_account' => $bank_account];
         }
 
-        $count = BankAccount::where('company_id', $bank_account['company_id'])->count();
+        if (isset($bank_account->toArray()['recipient_id'])) {
+            $count = BankAccount::where('recipient_id', $bank_account['recipient_id'])->count();
+        } else {
+            $count = BankAccount::where('company_id', $bank_account['company_id'])->count();
+        }
 
         if ($count <= 1) {
-            return ['success' => false, 'message' => "You cannot delete the last bank account linked to the company",
+            return ['success' => false, 'message' => "You cannot delete this bank account",
                 'bank_account' => $bank_account];
         } else {
             $bank_account->delete();
