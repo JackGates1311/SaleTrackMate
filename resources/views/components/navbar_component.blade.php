@@ -23,8 +23,9 @@
                         <a class="nav-link {{ request()->is('analytics') ? 'active' : '' }}" href="#">Analytics</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('analytics') ? 'active' : '' }}" href="#">Goods and
-                            Services</a>
+                        <a class="nav-link {{ request()->is('goods_and_services') ? 'active' : '' }}"
+                           href="{{ route('goods_and_services', ['company' => request()->query('company')]) }}">
+                            Goods and Services</a>
                     </li>
                 @else
                     <li class="nav-item">

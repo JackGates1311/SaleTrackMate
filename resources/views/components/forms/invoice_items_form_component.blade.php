@@ -50,7 +50,8 @@
                 Image URL:
             </label>
             <input type="text" class="form-control" name="invoice_items[0][image_url]" pattern="https?://.+"
-                   id="invoice_item_image_url" placeholder="Image URL" value="{{$invoice_item['image_url'] ?? ''}}">
+                   id="invoice_item_image_url" placeholder="Image URL (optional)"
+                   value="{{$invoice_item['image_url'] ?? ''}}">
         </div>
         <div class="col-xl-1 mb-3 d-flex justify-content-end align-items-end">
             <button class="form-control btn-form-control mt-1 me-xl-3" type="button"

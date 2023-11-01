@@ -2,13 +2,14 @@
 
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\GoodOrServiceController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\RecipientController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
-|--------------------------------------------------------------------------
+|----------------------------------------------p----------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
@@ -70,7 +71,7 @@ Route::middleware('auth:web')->group(function () {
         Route::post('/edit', [CompanyController::class, 'update'])->name('company_edit_save');
         Route::get('/create', [CompanyController::class, 'createView'])->name('create_company_view');
         Route::post('/create', [CompanyController::class, 'create'])->name('create_company');
-        Route::get('/selectCompany', [CompanyController::class, 'selectCompany'])->name('selectCompany');
+        Route::get('/selectCompany', [CompanyController::class, 'selectCompany'])->name('select_company');
     });
     Route::group(['prefix' => 'bank_accounts'], function () {
         Route::get('/', [BankAccountController::class, 'index'])->name('bank_accounts');
@@ -78,6 +79,12 @@ Route::middleware('auth:web')->group(function () {
         Route::post('/edit', [BankAccountController::class, 'update'])->name('bank_account_edit_save');
         Route::post('/delete', [BankAccountController::class, 'delete'])->name('bank_account_delete');
         Route::post('/create', [BankAccountController::class, 'create'])->name('create_bank_account');
+    });
+    Route::group(['prefix' => 'goods_and_services'], function () {
+        Route::get('/', [GoodOrServiceController::class, 'index'])->name('goods_and_services');
+        Route::get('/create', [GoodOrServiceController::class, 'createView'])->
+        name('create_goods_and_services_view');
+        Route::post('/create', [GoodOrServiceController::class, 'create'])->name('create_good_or_service');
     });
     Route::match(['get', 'post'], '/logout', [UserController::class, 'logout'])->name('logout');
 });

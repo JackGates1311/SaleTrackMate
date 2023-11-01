@@ -14,7 +14,6 @@ class CreateGoodsOrServicesTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->string('image_url')->nullable();
-            $table->decimal('available_quantity', 10, 2)->nullable();
             $table->integer('warranty_len')->nullable();
             $table->string('type'); // Assuming GoodsOrServicesType is a string-based enumeration
             $table->timestamps();

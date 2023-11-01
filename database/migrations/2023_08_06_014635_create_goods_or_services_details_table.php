@@ -13,8 +13,7 @@ class CreateGoodsOrServicesDetailsTable extends Migration
             $table->string('url')->nullable();
             $table->string('category')->nullable();
             $table->string('supplier')->nullable();
-            $table->string('country_origin')->nullable();
-            $table->string('country_origin_code')->nullable();
+            $table->string('country')->nullable();
             $table->decimal('weight', 10, 2)->nullable();
             $table->string('dimensions')->nullable();
             $table->string('color')->nullable();

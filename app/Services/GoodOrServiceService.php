@@ -25,7 +25,7 @@ class GoodOrServiceService
     {
         $goods_or_services = GoodOrService::all();
 
-        return ['good_or_services' => $goods_or_services];
+        return ['goods_or_services' => $goods_or_services];
     }
 
     public function indexWithDetails(): array

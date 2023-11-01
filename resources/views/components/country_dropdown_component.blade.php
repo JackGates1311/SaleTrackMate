@@ -12,7 +12,7 @@
             @if((old('country')))
                 Country selected
             @else
-                Your country
+                Select country
             @endif</option>
     @endif
     <option value="AF">Afghanistan</option>

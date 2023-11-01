@@ -1,4 +1,4 @@
-<form method="GET" action="{{route('selectCompany')}}">
+<form method="GET" action="{{route('select_company')}}">
     <input type="hidden" name="entity" value="{{ $entity }}">
     <label class="mb-2" for="companySelect">Company:</label>
     <div class="d-flex flex-column flex-lg-row">
@@ -39,12 +39,34 @@
                     Add New Company
                 </a>
             </div>
-        @else
+        @elseif ($entity == 'recipients')
             <div
                 class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">
                 <a href=" {{route('create_recipient_view', ['company' => request()->query('company')])}} "
                    class="btn btn-primary mb-3 mb-lg-0 me-lg-2">
                     Add New Recipient
+                </a>
+            </div>
+        @else
+            <div
+                class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">
+                <a href="#"
+                   class="btn btn-primary mb-3 mb-lg-0 me-lg-2 w-100">
+                    Button1
+                </a>
+            </div>
+            <div
+                class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">
+                <a href="#"
+                   class="btn btn-primary mb-3 mb-lg-0 me-lg-2 w-100">
+                    Button2
+                </a>
+            </div>
+            <div
+                class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">
+                <a href="{{route('create_goods_and_services_view', ['company' => request()->query('company')])}}"
+                   class="btn btn-primary mb-3 mb-lg-0 me-lg-2 w-100">
+                    Add New Good Or Service
                 </a>
             </div>
         @endif

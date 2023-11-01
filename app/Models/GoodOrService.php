@@ -21,12 +21,10 @@ class GoodOrService extends Model
     public $incrementing = false;
     protected $table = "goods_or_services";
     protected $fillable = [
-        'id',
         'serial_num',
         'name',
         'description',
         'image_url',
-        'available_quantity',
         'warranty_len',
         'type',
         'company_id',
@@ -42,7 +40,6 @@ class GoodOrService extends Model
         'name' => 'required|string|max:255',
         'description' => 'string',
         'image_url' => 'nullable|url',
-        'available_quantity' => 'nullable|numeric|min:0',
         'warranty_len' => 'nullable|integer|min:0',
         'type' => 'required|in:GOOD,SERVICE',
         'company_id' => 'required|string|max:255',
