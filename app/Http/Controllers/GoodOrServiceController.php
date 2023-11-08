@@ -8,6 +8,7 @@ use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class GoodOrServiceController extends Controller
@@ -39,8 +40,8 @@ class GoodOrServiceController extends Controller
         return view('create_edit_good_or_service');
     }
 
-    public function create()
+    public function create(Request $request)
     {
-
+        dd($request->all());
     }
 }

@@ -28,10 +28,14 @@
                                 <hr/>
                                 @if(isset($good_or_service))
                                     <form accept-charset="UTF-8" action="{{ route('recipient_edit_save',
-                                        ['company' => request()->query('company')]) }}" method="POST">
+                                        ['company' => request()->query('company')]) }}" method="POST"
+                                          onsubmit="return validateForm('create-edit-good-or-service-form');"
+                                          id="create-edit-good-or-service-form">
                                         @else
                                             <form accept-charset="UTF-8" action="{{ route('create_good_or_service',
-                                        ['company' => request()->query('company')]) }}" method="POST">@endif
+                                                  ['company' => request()->query('company')]) }}" method="POST"
+                                                  onsubmit="return validateForm('create-edit-good-or-service-form');"
+                                                  id="create-edit-good-or-service-form">@endif
                                                 @csrf <!-- {{ csrf_field() }} -->
                                                 @if(isset($good_or_service))
                                                     <input type="hidden" name="good_or_service"
@@ -62,11 +66,11 @@
                                                                    required>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-2 mb-4">
+                                                    <div class="col-lg-3 mb-4">
                                                         <!-- Warranty Length (Optional) -->
                                                         <div class="form-outline">
                                                             <label for="warranty_len" class="form-label">Warranty
-                                                                Length:</label>
+                                                                Length (months):</label>
                                                             <input type="number" class="form-control" id="warranty_len"
                                                                    name="warranty_len" placeholder="Warranty length"
                                                                    min="0" max="100" step="1"
@@ -75,7 +79,7 @@
                                                                     old('warranty_len') ?? '0' }}">
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-3 mb-4">
+                                                    <div class="col-lg-2 mb-4">
                                                         <!-- Warranty Length (Optional) -->
                                                         <div class="form-outline">
                                                             <label for="unit_of_measure_id" class="form-label">
@@ -112,11 +116,11 @@
                                                         <div class="form-outline">
                                                             <label for="price_amount" class="form-label">Price:</label>
                                                             <input type="number" class="form-control" id="price_amount"
-                                                                   name="price[amount]" step="0.01" min="0.01"
+                                                                   name="price[amount]" step="0.01"
                                                                    placeholder="Price"
                                                                    value="{{ isset($good_or_service) ?
-                                                                $good_or_service['price']['amount'] ?? '0.01' :
-                                                                old('price.amount') ?? '0.01' }}"
+                                                                $good_or_service['price']['amount'] ?? '' :
+                                                                old('price.amount') ?? '' }}"
                                                                    required>
                                                         </div>
                                                     </div>
@@ -134,52 +138,6 @@
                                                                     old('price.expiration_date') }}" required>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-3 mb-4">
-                                                        <!-- Discount From Date (Optional) -->
-                                                        <div class="form-outline">
-                                                            <label for="discount_from_date" class="form-label">Discount
-                                                                From Date:</label>
-                                                            <input type="datetime-local" class="form-control"
-                                                                   id="discount_from_date"
-                                                                   name="price_discount[from_date]"
-                                                                   value="{{ isset($good_or_service) ? $good_or_service['price_discount']['from_date'] : old('price_discount.from_date') }}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3 mb-4">
-                                                        <!-- Discount Due Date (Optional) -->
-                                                        <div class="form-outline">
-                                                            <label for="discount_due_date" class="form-label">Discount
-                                                                Due Date:</label>
-                                                            <input type="datetime-local" class="form-control"
-                                                                   id="discount_due_date"
-                                                                   name="price_discount[due_date]"
-                                                                   value="{{ isset($good_or_service) ? $good_or_service['price_discount']['due_date'] : old('price_discount.due_date') }}">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-3 mb-4">
-                                                        <!-- Price Discount Percentage (Optional) -->
-                                                        <div class="form-outline">
-                                                            <label for="discount_percentage" class="form-label">Discount
-                                                                Percentage:</label>
-                                                            <input type="number" class="form-control"
-                                                                   id="discount_percentage" step="1" min="0"
-                                                                   name="price_discount[percentage]"
-                                                                   placeholder="Discount percentage (optional)"
-                                                                   value="{{ isset($good_or_service) ? $good_or_service['price_discount']['percentage'] : old('price_discount.percentage') }}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3 mb-4">
-                                                        <!-- Image URL (Required) -->
-                                                        <div class="form-outline">
-                                                            <label for="image_url" class="form-label">Image URL:</label>
-                                                            <input type="text" class="form-control" id="image_url"
-                                                                   name="image_url" placeholder="Image URL (optional)"
-                                                                   value="{{ isset($good_or_service) ? $good_or_service['image_url'] : old('image_url') }}"
-                                                                   required>
-                                                        </div>
-                                                    </div>
                                                     <div class="col-lg-6 mb-4">
                                                         <!-- Description (Required) -->
                                                         <div class="form-outline">
@@ -190,13 +148,10 @@
                                                                    placeholder="Description" required/>
                                                         </div>
                                                     </div>
-
                                                 </div>
 
-                                                <hr/>
-
                                                 <div class="row">
-                                                    <div class="col-lg-5 mb-4">
+                                                    <div class="col-lg-3 mb-4">
                                                         <!-- URL (Required for Goods) -->
                                                         <div class="form-outline">
                                                             <label for="url" class="form-label">Website URL:</label>
@@ -205,19 +160,28 @@
                                                                    value="{{ isset($good_or_service) ?
                                                                         $good_or_service['good_or_service_details']
                                                                         ['url'] : old('good_or_service_details.url') }}"
-                                                                   placeholder="Website URL (optional)"
-                                                                   required>
+                                                                   placeholder="Website URL (optional)">
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4 mb-4">
+                                                    <div class="col-lg-3 mb-4">
+                                                        <!-- Image URL (Required) -->
+                                                        <div class="form-outline">
+                                                            <label for="image_url" class="form-label">Image URL:</label>
+                                                            <input type="text" class="form-control" id="image_url"
+                                                                   name="image_url" placeholder="Image URL (optional)"
+                                                                   value="{{ isset($good_or_service) ? $good_or_service['image_url'] : old('image_url') }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 mb-4">
                                                         <!-- Supplier (Required for Goods) -->
                                                         <div class="form-outline">
                                                             <label for="supplier" class="form-label">Supplier:</label>
                                                             <input type="text" class="form-control" id="supplier"
                                                                    name="good_or_service_details[supplier]"
                                                                    placeholder="Supplier (optional)"
-                                                                   value="{{ isset($good_or_service) ? $good_or_service['good_or_service_details']['supplier'] : old('good_or_service_details.supplier') }}"
-                                                                   required>
+                                                                   value="{{ isset($good_or_service) ?
+                                                                   $good_or_service['good_or_service_details']['supplier'] :
+                                                                   old('good_or_service_details.supplier') }}">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3 mb-4">
@@ -226,7 +190,8 @@
                                                             @component('components.country_dropdown_component',
                                                                 ['selected_country' =>
                                                                 isset($good_or_service) ?
-                                                                $good_or_service['country'] : old('country')])
+                                                                $good_or_service['country'] : old('country'),
+                                                                'required' => false])
                                                             @endcomponent
                                                         </div>
                                                     </div>
@@ -239,8 +204,8 @@
                                                             <input type="text" class="form-control" id="category"
                                                                    name="good_or_service_details[category]"
                                                                    placeholder="Category (optional)"
-                                                                   value="{{ isset($good_or_service) ? $good_or_service['good_or_service_details']['category'] : old('good_or_service_details.category') }}"
-                                                                   required>
+                                                                   value="{{ isset($good_or_service) ? $good_or_service['good_or_service_details']['category'] :
+                                                                old('good_or_service_details.category') }}">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3 mb-4">
@@ -252,8 +217,7 @@
                                                                    min="0.01" placeholder="Weight (optional)"
                                                                    value="{{ isset($good_or_service) ?
                                                                 $good_or_service['good_or_service_details']['weight']
-                                                                : old('good_or_service_details.weight')}}"
-                                                                   required>
+                                                                : old('good_or_service_details.weight')}}">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3 mb-4">
@@ -263,8 +227,7 @@
                                                             <input type="text" class="form-control" id="color"
                                                                    name="good_or_service_details[color]"
                                                                    placeholder="Color (optional)"
-                                                                   value="{{ isset($good_or_service) ? $good_or_service['good_or_service_details']['color'] : old('good_or_service_details.color') }}"
-                                                                   required>
+                                                                   value="{{ isset($good_or_service) ? $good_or_service['good_or_service_details']['color'] : old('good_or_service_details.color') }}">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3 mb-4">
@@ -277,23 +240,40 @@
                                                                    placeholder="Dimensions (optional)"
                                                                    value="{{ isset($good_or_service) ?
                                                                 $good_or_service['good_or_service_details']['dimensions']
-                                                                : old('good_or_service_details.dimensions') }}"
-                                                                   required>
+                                                                : old('good_or_service_details.dimensions') }}">
                                                         </div>
                                                     </div>
+                                                    @component('components.forms.price_discount_form_component',
+                                                                ['hidden' => true])
+                                                    @endcomponent
                                                 </div>
 
                                                 <hr/>
                                                 <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <a href="{{route('goods_and_services', ['company' => request()->query('company')])}}"
+                                                    <div class="col-lg-4 mb-3">
+                                                        <a href="{{route('goods_and_services',
+                                                                ['company' => request()->query('company')])}}"
                                                            type="button" class="btn btn-outline-secondary w-100"
                                                            data-bs-dismiss="modal">Cancel</a>
                                                     </div>
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-4 mb-3">
+                                                        <a class="btn btn-primary btn-block fa-lg gradient-custom-2
+                                                            w-100" onclick="showPriceDiscountFields()"
+                                                           id="add-price-discount-button">
+                                                            Add Price Discount
+                                                        </a>
+                                                        <a class="btn btn-primary btn-block fa-lg gradient-custom-2
+                                                            w-100" onclick="removePriceDiscountFields()"
+                                                           id="remove-price-discount-button" hidden>
+                                                            Remove Price Discount
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-lg-4 mb-3">
                                                         <button
                                                             class="btn btn-primary btn-block fa-lg gradient-custom-2 w-100"
-                                                            type="submit"> {{isset($recipient) ? 'Save' : 'Create'}}
+                                                            type="button"
+                                                            onclick="validateForm('create-edit-good-or-service-form')">
+                                                            {{isset($recipient) ? 'Save' : 'Create'}}
                                                         </button>
                                                     </div>
                                                 </div>
@@ -309,4 +289,6 @@
     </div>
 </div>
 </body>
+<script src="{{ asset('js/validateForm.js') }}"></script>
+<script src="{{ asset('js/goodAndService.js') }}"></script>
 </html>

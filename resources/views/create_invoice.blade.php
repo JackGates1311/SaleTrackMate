@@ -34,7 +34,7 @@
         </div>
         <form class="vh-100" accept-charset="UTF-8" action="{{route('create_invoice',
             ['company_id' => request()->query('company')])}}" method="POST" id="create-invoice-form"
-              onsubmit="return validateForm();">
+              onsubmit="return validateForm('create-invoice-form');">
             <div class="tab-content h-50" id="tabscontent">
                 @csrf <!-- {{ csrf_field() }} -->
                 <div class="tab-pane show active" id="tabpage_1" role="tabpanel">
@@ -99,8 +99,8 @@
                     <button type="button" class="btn btn-primary w-25" id="next-button" onclick="goToTabByDelta(1)">
                         Next
                     </button>
-                    <button type="button" class="btn btn-primary w-25" id="save-button" onclick="validateForm()" hidden>
-                        Create Invoice
+                    <button type="button" class="btn btn-primary w-25" id="save-button"
+                            onclick="validateForm('create-invoice-form')" hidden>Create Invoice
                     </button>
                 </div>
             @endif
@@ -110,4 +110,5 @@
 </body>
 
 <script src="{{ asset('js/invoice.js') }}"></script>
+<script src="{{ asset('js/validateForm.js') }}"></script>
 </html>

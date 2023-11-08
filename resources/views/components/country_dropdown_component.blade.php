@@ -2,7 +2,7 @@
     {{isset($entity) ? ucfirst(substr($entity, 0, -2)) . ' Country:' : 'Country:'}}</label>
 <select class="form-select" id="country"
         name="{{isset($entity) ? substr($entity, 0, -1) . 'country' . substr($entity, -1) : 'country'}}"
-        required>
+    {{isset($required) && !$required ? '' : 'required'}}>
     @if(isset($selected_country))
         <option value="{{$selected_country}}">
             {{$selected_country}}
@@ -12,7 +12,7 @@
             @if((old('country')))
                 Country selected
             @else
-                Select country
+                Select country {{isset($required) && !$required ? ' (optional)' : ''}}
             @endif</option>
     @endif
     <option value="AF">Afghanistan</option>

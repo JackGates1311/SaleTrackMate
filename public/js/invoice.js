@@ -184,19 +184,3 @@ function removeInvoiceItem(button) {
         invoiceItemRow.remove();
     }
 }
-
-function validateForm() {
-    const form = document.getElementById('create-invoice-form');
-    if (form.checkValidity()) {
-        form.submit();
-    } else {
-        const formControls = form.elements;
-        for (let i = 0; i < formControls.length; i++) {
-            if (formControls[i].nodeName === 'INPUT' && !formControls[i].checkValidity()) {
-                alert(`Field: ${formControls[i].name} is invalid`);
-                break;
-            }
-        }
-    }
-}
-
