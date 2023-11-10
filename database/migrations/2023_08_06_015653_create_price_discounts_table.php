@@ -19,6 +19,9 @@ class CreatePriceDiscountsTable extends Migration
 
     public function down()
     {
+        Schema::table('goods_or_services', function (Blueprint $table) {
+            $table->dropForeign('goods_or_services_price_discount_id_foreign');
+        });
         Schema::dropIfExists('price_discounts');
     }
 }

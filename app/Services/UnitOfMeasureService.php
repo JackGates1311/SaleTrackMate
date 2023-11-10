@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Constants;
+use App\Enums\AccountType;
 use App\Models\UnitOfMeasure;
 use Exception;
 use Illuminate\Support\Facades\Validator;
@@ -10,41 +11,54 @@ use Illuminate\Validation\ValidationException;
 
 class UnitOfMeasureService
 {
-    /**
-     * @throws ValidationException
-     */
-    public function store(array $data): array
-    {
-        $validated_data = Validator::make($data, UnitOfMeasure::$rules)->validate();
+    private UserService $userService;
 
-        try {
-            $unit_of_measure = UnitOfMeasure::create($validated_data);
-            return ['success' => true, 'message' => Constants::UNIT_OF_MEASURE_SAVE_SUCCESS,
-                'unit_of_measure' => $unit_of_measure];
-        } catch (Exception $e) {
-            return ['success' => false, 'message' => Constants::UNIT_OF_MEASURE_SAVE_FAIL . ': ' . $e->getMessage()];
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
+    public function store(array $data, string $user_id): array
+    {
+        $result = $this->userService->getUserData($user_id);
+
+        if ($result['success'] && $result['user']['account_type'] == AccountType::ADMINISTRATOR->value) {
+            try {
+                $validated_data = Validator::make($data, UnitOfMeasure::$rules)->validate();
+                $unit_of_measure = UnitOfMeasure::create($validated_data);
+                return ['success' => true, 'message' => Constants::UNIT_OF_MEASURE_SAVE_SUCCESS,
+                    'unit_of_measure' => $unit_of_measure];
+            } catch (ValidationException $e) {
+                return ['success' => false, 'message' => Constants::UNIT_OF_MEASURE_SAVE_FAIL . ': ' . $e->getMessage()];
+            }
+        } else {
+            return ['success' => false, 'message' => Constants::UNIT_OF_MEASURE_SAVE_FAIL . ': ' .
+                Constants::PERMISSION_DENIED];
         }
     }
 
-    /**
-     * @throws ValidationException
-     */
-    public function update(array $data, $id): array
+    public function update(array $data, string $id, string $user_id): array
     {
-        $unit_of_measure = UnitOfMeasure::find($id);
+        $result = $this->userService->getUserData($user_id);
 
-        if (!$unit_of_measure) {
-            return ['success' => false, 'message' => Constants::UNIT_OF_MEASURE_NOT_FOUND . ': ' . $id];
-        }
+        if ($result['success'] && $result['user']['account_type'] == AccountType::ADMINISTRATOR->value) {
+            $unit_of_measure = UnitOfMeasure::find($id);
 
-        $validated_data = Validator::make($data, UnitOfMeasure::$rules)->validate();
+            if (!$unit_of_measure) {
+                return ['success' => false, 'message' => Constants::UNIT_OF_MEASURE_NOT_FOUND . ': ' . $id];
+            }
 
-        try {
-            $unit_of_measure->update($validated_data);
-            return ['success' => true, 'message' => Constants::UNIT_OF_MEASURE_UPDATE_SUCCESS,
-                'unit_of_measure' => $unit_of_measure];
-        } catch (Exception $e) {
-            return ['success' => false, 'message' => Constants::UNIT_OF_MEASURE_UPDATE_FAIL . ': ' . $e->getMessage()];
+            try {
+                $validated_data = Validator::make($data, UnitOfMeasure::$rules)->validate();
+                $unit_of_measure->update($validated_data);
+                return ['success' => true, 'message' => Constants::UNIT_OF_MEASURE_UPDATE_SUCCESS,
+                    'unit_of_measure' => $unit_of_measure];
+            } catch (Exception $e) {
+                return ['success' => false, 'message' => Constants::UNIT_OF_MEASURE_UPDATE_FAIL . ': ' . $e->getMessage()];
+            }
+        } else {
+            return ['success' => false, 'message' => Constants::UNIT_OF_MEASURE_SAVE_FAIL . ': ' .
+                Constants::PERMISSION_DENIED];
         }
     }
 
@@ -64,5 +78,30 @@ class UnitOfMeasureService
         $unit_of_measures = UnitOfMeasure::all();
 
         return ['unit_of_measures' => $unit_of_measures];
+    }
+
+    public function destroy(string $id, string $user_id): array
+    {
+        $result = $this->userService->getUserData($user_id);
+
+        if ($result['success'] && $result['user']['account_type'] == AccountType::ADMINISTRATOR->value) {
+            $unit_of_measure = UnitOfMeasure::find($id);
+
+            if (!$unit_of_measure) {
+                return ['success' => false, 'message' => Constants::UNIT_OF_MEASURE_NOT_FOUND . ': ' . $id];
+            }
+
+            try {
+                $unit_of_measure->delete();
+                return ['success' => true, 'message' => Constants::UNIT_OF_MEASURE_DELETE_SUCCESS,
+                    'unit_of_measure' => $unit_of_measure];
+            } catch (Exception $e) {
+                return ['success' => false, 'message' => Constants::UNIT_OF_MEASURE_DELETE_FAIL . ': ' .
+                    $e->getMessage()];
+            }
+        } else {
+            return ['success' => false, 'message' => Constants::UNIT_OF_MEASURE_SAVE_FAIL . ': ' .
+                Constants::PERMISSION_DENIED];
+        }
     }
 }

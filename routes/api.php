@@ -5,8 +5,8 @@ use App\Http\Controllers\Api\CompanyControllerApi;
 use App\Http\Controllers\Api\GoodOrServiceControllerApi;
 use App\Http\Controllers\Api\InvoiceControllerApi;
 use App\Http\Controllers\Api\RecipientControllerApi;
+use App\Http\Controllers\Api\UnitOfMeasureControllerApi;
 use App\Http\Controllers\Api\UserControllerApi;
-use App\Http\Controllers\ArticleDetailsController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->group(function () {
@@ -38,14 +38,6 @@ Route::middleware('auth:api')->group(function () {
         Route::delete('/{id}', [GoodOrServiceControllerApi::class, 'destroy'])->name('destroy');
     });
 
-    Route::group(['prefix' => 'good_or_services_details'], function () {
-        Route::get('/', [ArticleDetailsController::class, 'index'])->name('index');
-        Route::get('/{id}', [ArticleDetailsController::class, 'show'])->name('show');
-        Route::post('/', [ArticleDetailsController::class, 'store'])->name('store');
-        Route::put('/{id}', [ArticleDetailsController::class, 'update'])->name('update');
-        Route::delete('/{id}', [ArticleDetailsController::class, 'destroy'])->name('destroy');
-    });
-
     Route::group(['prefix' => 'invoices'], function () {
         Route::get('/', [InvoiceControllerApi::class, 'index'])->name('index');
         Route::get('/{id}', [InvoiceControllerApi::class, 'show'])->name('show');
@@ -64,8 +56,14 @@ Route::middleware('auth:api')->group(function () {
         Route::put('/{id}', [RecipientControllerApi::class, 'update'])->name('update');
         Route::delete('/{id}', [RecipientControllerApi::class, 'destroy'])->name('destroy');
     });
+    Route::group(['prefix' => 'unit_of_measures'], function () {
+        Route::post('/', [UnitOfMeasureControllerApi::class, 'store'])->name('store');
+        Route::get('/', [UnitOfMeasureControllerApi::class, 'index'])->name('index');
+        Route::get('/{id}', [UnitOfMeasureControllerApi::class, 'show'])->name('show');
+        Route::put('/{id}', [UnitOfMeasureControllerApi::class, 'update'])->name('update');
+        Route::delete('/{id}', [UnitOfMeasureControllerApi::class, 'destroy'])->name('destroy');
+    });
 });
-
 
 Route::group(['prefix' => 'user'], function () {
     Route::post('/register', [UserControllerApi::class, 'register'])->name('register');

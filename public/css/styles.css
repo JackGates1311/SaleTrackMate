@@ -370,6 +370,13 @@ table:hover {
     overflow-y: scroll;
 }
 
+#unit-of-measures {
+    overflow-x: auto;
+    max-width: 100%;
+    max-height: 46vh;
+    overflow-y: auto;
+}
+
 .card-body {
     max-height: 75vh;
     overflow-y: auto;

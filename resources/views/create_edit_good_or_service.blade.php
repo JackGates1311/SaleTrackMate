@@ -33,7 +33,7 @@
                                           id="create-edit-good-or-service-form">
                                         @else
                                             <form accept-charset="UTF-8" action="{{ route('create_good_or_service',
-                                                  ['company' => request()->query('company')]) }}" method="POST"
+                                                  ['company_id' => request()->query('company')]) }}" method="POST"
                                                   onsubmit="return validateForm('create-edit-good-or-service-form');"
                                                   id="create-edit-good-or-service-form">@endif
                                                 @csrf <!-- {{ csrf_field() }} -->
@@ -138,14 +138,31 @@
                                                                     old('price.expiration_date') }}" required>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-6 mb-4">
+                                                    <div class="col-lg-2 mb-4">
+                                                        <!-- Tax Category (Optional) -->
+                                                        <div class="form-outline">
+                                                            <label for="tax_category_id" class="form-label">
+                                                                Tax Category:
+                                                            </label>
+                                                            <select type="text" class="form-select"
+                                                                    id="tax_category_id"
+                                                                    name="tax_category_id">
+                                                                <option value="">Select tax category</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 mb-4">
                                                         <!-- Description (Required) -->
                                                         <div class="form-outline">
                                                             <label for="description"
                                                                    class="form-label">Description:</label>
                                                             <input type="text" class="form-control" id="description"
                                                                    name="description"
-                                                                   placeholder="Description" required/>
+                                                                   placeholder="Description"
+                                                                   value="{{
+                                                                    isset($good_or_service) ?
+                                                                    $good_or_service['description'] :
+                                                                    old('description') }}" required/>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -22,6 +22,10 @@ class UserController extends Controller
     public function index(): View
     {
         session(['account_edit' => false]);
+        session(['account' => true]);
+
+        //how to add param in url there?
+
         return view('account', ['companies' => $this->userService->getUserCompanies()]);
     }
 

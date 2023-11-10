@@ -42,6 +42,8 @@ class GoodOrServiceController extends Controller
 
     public function create(Request $request)
     {
+        //TODO implement logic for saving article there ... (and test it of course for side effects)
+
         dd($request->all());
     }
 }

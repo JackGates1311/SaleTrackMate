@@ -41,6 +41,10 @@
             </div>
         @elseif ($entity == 'recipients')
             <div
+                class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50"></div>
+            <div
+                class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50"></div>
+            <div
                 class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">
                 <a href=" {{route('create_recipient_view', ['company' => request()->query('company')])}} "
                    class="btn btn-primary mb-3 mb-lg-0 me-lg-2">
@@ -50,17 +54,9 @@
         @else
             <div
                 class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">
-                <a href="#"
-                   class="btn btn-primary mb-3 mb-lg-0 me-lg-2 w-100">
-                    Button1
-                </a>
             </div>
             <div
                 class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">
-                <a href="#"
-                   class="btn btn-primary mb-3 mb-lg-0 me-lg-2 w-100">
-                    Button2
-                </a>
             </div>
             <div
                 class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">

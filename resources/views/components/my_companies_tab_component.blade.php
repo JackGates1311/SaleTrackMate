@@ -78,7 +78,7 @@
     <script src="{{ asset('js/bankAccounts.js') }}"></script>
 @endif
 
-@if(!session('company_create') && !session('company_edit') && request()->has('company'))
+@if(!session('company_create') && !session('company_edit') && request()->has('company') && !request()->has('user'))
     @component('components.bank_accounts_modal_component',
                                 ['bank_accounts' => $selected_company->toArray()['bank_accounts'] ??
                                     session('selected_company')->toArray()['bank_accounts'] ?? [], 'read_only' => true])

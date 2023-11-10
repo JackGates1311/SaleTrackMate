@@ -5,6 +5,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\GoodOrServiceController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\RecipientController;
+use App\Http\Controllers\UnitOfMeasureController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -85,6 +86,13 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/create', [GoodOrServiceController::class, 'createView'])->
         name('create_goods_and_services_view');
         Route::post('/create', [GoodOrServiceController::class, 'create'])->name('create_good_or_service');
+    });
+    Route::group(['prefix' => 'unit_of_measures'], function () {
+        Route::get('/', [UnitOfMeasureController::class, 'index'])->name('unit_of_measures');
+        Route::get('/edit', [UnitOfMeasureController::class, 'edit'])->name('unit_of_measure_edit');
+        Route::post('/edit', [UnitOfMeasureController::class, 'update'])->name('unit_of_measure_edit_save');
+        Route::post('/create', [UnitOfMeasureController::class, 'create'])->name('create_unit_of_measure');
+        Route::post('/delete', [UnitOfMeasureController::class, 'delete'])->name('unit_of_measure_delete');
     });
     Route::match(['get', 'post'], '/logout', [UserController::class, 'logout'])->name('logout');
 });

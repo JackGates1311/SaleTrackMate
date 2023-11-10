@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Constants;
 use App\Enums\AccountType;
 use App\Models\User;
 use Illuminate\Database\QueryException;
@@ -128,5 +129,16 @@ class UserService
             $user_id = $user->id;
         }
         return $user_id;
+    }
+
+    public function getUserData($id): array
+    {
+        $user = (new User)->find($id);
+
+        if (!$user) {
+            return ['success' => false, 'message' => Constants::USER_NOT_FOUND . ' with ID: ' . $id];
+        }
+
+        return ['success' => true, 'user' => $user];
     }
 }

@@ -81,4 +81,7 @@ class Constants
     const RECIPIENT_UPDATE_FAIL = "Failed to update recipient:";
     const RECIPIENT_DELETE_SUCCESS = "Recipient deleted successfully";
     const RECIPIENT_DELETE_FAIL = "Failed to delete recipient:";
+    const UNIT_OF_MEASURE_DELETE_SUCCESS = "Unit of measure deleted successfully";
+    const UNIT_OF_MEASURE_DELETE_FAIL = "Failed to delete unit of measure:";
+    const PERMISSION_DENIED = "Permission denied";
 }
