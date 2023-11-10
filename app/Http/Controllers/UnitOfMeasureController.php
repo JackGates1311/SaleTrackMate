@@ -26,7 +26,7 @@ class UnitOfMeasureController extends Controller
     {
         $unit_of_measures = $this->unitOfMeasureService->index()['unit_of_measures'];
 
-        return view('manage_unit_of_measures', ['unit_of_measures' => $unit_of_measures]);
+        return view('manage_unit_of_measures', ['unit_of_measures' => $unit_of_measures, 'editable' => false]);
     }
 
     public function create(Request $request): RedirectResponse
@@ -37,14 +37,24 @@ class UnitOfMeasureController extends Controller
         return $this->loadUnitOfMeasuresPage($result);
     }
 
-    public function edit()
+    public function edit(): Factory|View|Application
     {
+        $unit_of_measure = $this->unitOfMeasureService->show(request()->query('unit_of_measure'))
+        ['unit_of_measure']->toArray();
 
+        $unit_of_measures[0] = $unit_of_measure;
+
+        return view('manage_unit_of_measures', ['unit_of_measures' => $unit_of_measures,
+            'editable' => true]);
     }
 
-    public function update()
+    public function update(Request $request): RedirectResponse
     {
+        $requestArray = $request->except('_token');
+        $result = $this->unitOfMeasureService->update($requestArray, $requestArray['unit_of_measure'],
+            $this->userService->getUserIdWeb());
 
+        return $this->loadUnitOfMeasuresPage($result);
     }
 
     public function delete(): RedirectResponse

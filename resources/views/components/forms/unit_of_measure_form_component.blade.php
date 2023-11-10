@@ -21,7 +21,8 @@
         @if($mode == "manage")
             <div class="col-xl-1 mb-xl-3 d-flex justify-content-center align-items-end">
                 <a class="form-control btn-form-control mt-1 text-center"
-                   href="#">
+                   href="{{route('unit_of_measure_edit', [
+                    'unit_of_measure' => $unit_of_measure['id'], 'company' => request()->query('company')])}}">
                     <img src="{{ asset('images/res/edit.png') }}" alt="edit"
                          width="21"
                          height="21">

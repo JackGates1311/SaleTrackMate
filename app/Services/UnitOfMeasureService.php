@@ -28,8 +28,9 @@ class UnitOfMeasureService
                 $unit_of_measure = UnitOfMeasure::create($validated_data);
                 return ['success' => true, 'message' => Constants::UNIT_OF_MEASURE_SAVE_SUCCESS,
                     'unit_of_measure' => $unit_of_measure];
-            } catch (ValidationException $e) {
-                return ['success' => false, 'message' => Constants::UNIT_OF_MEASURE_SAVE_FAIL . ': ' . $e->getMessage()];
+            } catch (ValidationException|Exception $e) {
+                return ['success' => false, 'message' => Constants::UNIT_OF_MEASURE_SAVE_FAIL . ': ' .
+                    $e->getMessage()];
             }
         } else {
             return ['success' => false, 'message' => Constants::UNIT_OF_MEASURE_SAVE_FAIL . ': ' .
