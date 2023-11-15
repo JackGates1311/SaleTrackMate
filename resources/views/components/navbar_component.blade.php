@@ -70,7 +70,8 @@
                         <ul class="dropdown-menu text-center" aria-labelledby="navbarDropdownMenuLink">
                             <li><a class="dropdown-item" href="#">Backup & Restore</a></li>
                             <li><a class="dropdown-item" href="#">Manage Requests</a></li>
-                            <li><a class="dropdown-item" href="#">Manage Tax Categories</a></li>
+                            <li><a class="dropdown-item" href="{{route('tax_categories', ['company' =>
+                                    request()->query('company')])}}">Manage Tax Categories</a></li>
                             <li><a class="dropdown-item" href="{{route('unit_of_measures', ['company' =>
                                     request()->query('company')])}}">Manage Unit of Measures</a></li>
                         </ul>

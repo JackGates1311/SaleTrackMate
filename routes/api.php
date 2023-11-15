@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\CompanyControllerApi;
 use App\Http\Controllers\Api\GoodOrServiceControllerApi;
 use App\Http\Controllers\Api\InvoiceControllerApi;
 use App\Http\Controllers\Api\RecipientControllerApi;
+use App\Http\Controllers\Api\TaxCategoryControllerApi;
+use App\Http\Controllers\Api\TaxRateControllerApi;
 use App\Http\Controllers\Api\UnitOfMeasureControllerApi;
 use App\Http\Controllers\Api\UserControllerApi;
 use Illuminate\Support\Facades\Route;
@@ -62,6 +64,16 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{id}', [UnitOfMeasureControllerApi::class, 'show'])->name('show');
         Route::put('/{id}', [UnitOfMeasureControllerApi::class, 'update'])->name('update');
         Route::delete('/{id}', [UnitOfMeasureControllerApi::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'tax_categories'], function () {
+        Route::post('/', [TaxCategoryControllerApi::class, 'store'])->name('store');
+        Route::get('/', [TaxCategoryControllerApi::class, 'index'])->name('index');
+        Route::get('/{id}', [TaxCategoryControllerApi::class, 'show'])->name('show');
+        Route::put('/{id}', [TaxCategoryControllerApi::class, 'update'])->name('update');
+        Route::delete('/{id}', [TaxCategoryControllerApi::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'tax_rates'], function () {
+        Route::post('/', [TaxRateControllerApi::class, 'store'])->name('store');
     });
 });
 

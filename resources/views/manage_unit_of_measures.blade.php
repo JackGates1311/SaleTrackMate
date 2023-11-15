@@ -55,7 +55,7 @@
                                         @csrf <!-- {{ csrf_field() }} -->
                                         @endif
                                         @if(isset($unit_of_measures) && count($unit_of_measures) > 0)
-                                            <div id="unit-of-measures">
+                                            <div id="unit-of-measures" class="p-3">
                                                 @if($editable)
                                                     @component('components.forms.unit_of_measure_form_component',
                                                     ['mode' => 'edit', 'unit_of_measure' => $unit_of_measures[0]])

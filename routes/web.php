@@ -5,6 +5,8 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\GoodOrServiceController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\RecipientController;
+use App\Http\Controllers\TaxCategoryController;
+use App\Http\Controllers\TaxRateController;
 use App\Http\Controllers\UnitOfMeasureController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -93,6 +95,15 @@ Route::middleware('auth:web')->group(function () {
         Route::post('/edit', [UnitOfMeasureController::class, 'update'])->name('unit_of_measure_edit_save');
         Route::post('/create', [UnitOfMeasureController::class, 'create'])->name('create_unit_of_measure');
         Route::post('/delete', [UnitOfMeasureController::class, 'delete'])->name('unit_of_measure_delete');
+    });
+    Route::group(['prefix' => 'tax_categories'], function () {
+        Route::get('/', [TaxCategoryController::class, 'index'])->name('tax_categories');
+        Route::post('/create', [TaxCategoryController::class, 'create'])->name('create_tax_category');
+        Route::post('/delete', [TaxCategoryController::class, 'delete'])->name('tax_category_delete');
+        Route::post('/edit', [TaxCategoryController::class, 'update'])->name('tax_category_save');
+    });
+    Route::group(['prefix' => 'tax_rates'], function () {
+        Route::post('/create', [TaxRateController::class, 'create'])->name('create_tax_rate');
     });
     Route::match(['get', 'post'], '/logout', [UserController::class, 'logout'])->name('logout');
 });

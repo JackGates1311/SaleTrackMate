@@ -10,8 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('tax_categories', function (Blueprint $table) {
-            $table->foreignUuid('tax_rate_id')->references('id')->on('tax_rates');
+        Schema::table('tax_rates', function (Blueprint $table) {
+            $table->foreignUuid('tax_category_id')->references('id')->on('tax_categories');
         });
     }
 

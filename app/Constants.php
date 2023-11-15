@@ -84,4 +84,6 @@ class Constants
     const UNIT_OF_MEASURE_DELETE_SUCCESS = "Unit of measure deleted successfully";
     const UNIT_OF_MEASURE_DELETE_FAIL = "Failed to delete unit of measure:";
     const PERMISSION_DENIED = "Permission denied";
+    const TAX_CATEGORY_DELETE_SUCCESS = "Tax category deleted successfully";
+    const TAX_CATEGORY_DELETE_FAIL = "Failed to delete tax category:";
 }

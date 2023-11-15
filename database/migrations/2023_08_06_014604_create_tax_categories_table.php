@@ -10,7 +10,7 @@ class CreateTaxCategoriesTable extends Migration
     {
         Schema::create('tax_categories', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }

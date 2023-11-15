@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @method static create(array $validated_data)
  * @method static find($id)
+ * @method static where(string $string, string $tax_category_id)
  */
 class TaxRate extends Model
 {
@@ -19,12 +20,14 @@ class TaxRate extends Model
 
     protected $fillable = [
         'percentage_value',
-        'from_date'
+        'from_date',
+        'tax_category_id'
     ];
 
     public static array $rules = [
-        'percentage_value' => 'required|numeric|between:0,1',
+        'percentage_value' => 'required|numeric|between:0,100',
         'from_date' => 'required|date',
+        'tax_category_id' => 'required|uuid'
     ];
 
 }

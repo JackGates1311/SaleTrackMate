@@ -1,5 +1,5 @@
 <div class="unit-of-measure">
-    <div class="row m-2">
+    <div class="row">
         <div class="col-xl-2 col-md-12 col-sm-12 mb-3">
             <label for="abbreviation" class="form-label">Abbreviation:</label>
             <input type="text" maxlength="8" class="form-control" name="abbreviation" id="abbreviation"
