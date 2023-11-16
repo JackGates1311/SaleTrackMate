@@ -30,9 +30,11 @@
                                 </td>
                                 <td class="text-nowrap text-center text-middle">
                                     <div class="d-flex gap-3">
-                                        <a class="form-control btn-form-control text-center
-                                                        cursor-pointer" data-bs-toggle="modal" data-bs-target="
-                                                           #taxCategoryEditModal{{$tax_rate['id']}}">
+                                        <a class="form-control btn-form-control text-center cursor-pointer"
+                                           href="{{route('tax_rate_edit', [
+                                            'tax_rate' => $tax_rate['id'],
+                                            'company' => request()->query('company')
+                                            ])}}">
                                             <img src="{{ asset('images/res/edit.png') }}" alt="edit"
                                                  width="16"
                                                  height="16"
@@ -40,10 +42,9 @@
                                             <span class="visually-hidden">Edit</span>
                                         </a>
                                         <form class="w-100" method="POST"
-                                              action="{{route('tax_category_delete', [
+                                              action="{{route('tax_rate_delete', [
                                                             'company' => request()->query('company'),
-                                                            'tax_category' => $tax_rate['id']
-                                                            ])}}">
+                                                            'tax_rate' => $tax_rate['id']])}}">
                                             @csrf <!-- {{ csrf_field() }} -->
                                             <button type="submit"
                                                     class="form-control btn-form-control text-center

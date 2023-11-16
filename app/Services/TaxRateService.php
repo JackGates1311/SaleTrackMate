@@ -6,7 +6,10 @@ use App\Constants;
 use App\Enums\AccountType;
 use App\Models\TaxRate;
 use Exception;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class TaxRateService
 {
@@ -50,20 +53,40 @@ class TaxRateService
         }
     }
 
-    public function update(array $data, $id): array
+    public function update(array $data, string $id, string $user_id): array
     {
-        $tax_rate = TaxRate::find($id);
+        $result = $this->userService->getUserData($user_id);
 
-        if (!$tax_rate) {
-            return ['success' => false, 'message' => Constants::TAX_RATE_NOT_FOUND . ': ' . $id];
-        }
+        if ($result['success'] && $result['user']['account_type'] == AccountType::ADMINISTRATOR->value) {
+            $tax_rate = TaxRate::find($id);
 
-        try {
-            $validated_data = Validator::make($data, TaxRate::$rules)->validate();
-            $tax_rate->update($validated_data);
-            return ['success' => true, 'message' => Constants::TAX_RATE_UPDATE_SUCCESS, 'tax_rate' => $tax_rate];
-        } catch (Exception $e) {
-            return ['success' => false, 'message' => Constants::TAX_RATE_UPDATE_FAIL . ': ' . $e->getMessage()];
+            if (!$tax_rate) {
+                return ['success' => false, 'message' => Constants::TAX_RATE_NOT_FOUND . ': ' . $id];
+            }
+
+            try {
+                $data['from_date'] = Carbon::parse($data['from_date']);
+
+                $dateChanged = $data['from_date']->ne($tax_rate->from_date);
+
+                $uniqueValidationRule = $dateChanged ? Rule::unique('tax_rates', 'from_date')->
+                where('tax_category_id', $tax_rate->tax_category_id) : '';
+
+                $dateInTheFutureRule = $dateChanged ? 'after:' . now()->toDateString() : '';
+
+                $validated_data = Validator::make($data, [
+                    'from_date' => ['required', $uniqueValidationRule, 'date', $dateInTheFutureRule],
+                    'percentage_value' => 'required|numeric|between:0,100',
+                ])->validate();
+
+                $tax_rate->update($validated_data);
+                return ['success' => true, 'message' => Constants::TAX_RATE_UPDATE_SUCCESS, 'tax_rate' => $tax_rate];
+            } catch (ValidationException|Exception $e) {
+                return ['success' => false, 'message' => Constants::TAX_RATE_UPDATE_FAIL . ': ' . $e->getMessage()];
+            }
+        } else {
+            return ['success' => false, 'message' => Constants::TAX_RATE_UPDATE_FAIL . ': ' .
+                Constants::PERMISSION_DENIED];
         }
     }
 
@@ -76,5 +99,28 @@ class TaxRateService
         }
 
         return ['success' => true, 'tax_rate' => $tax_rate];
+    }
+
+    public function destroy($id, string $user_id): array
+    {
+        $result = $this->userService->getUserData($user_id);
+
+        if ($result['success'] && $result['user']['account_type'] == AccountType::ADMINISTRATOR->value) {
+            $tax_rate = TaxRate::find($id);
+
+            if (!$tax_rate) {
+                return ['success' => false, 'message' => Constants::TAX_RATE_NOT_FOUND . ': ' . $id];
+            }
+
+            try {
+                $tax_rate->delete();
+                return ['success' => true, 'message' => Constants::TAX_RATE_DELETE_SUCCESS, 'tax_rate' => $tax_rate];
+            } catch (Exception $e) {
+                return ['success' => false, 'message' => Constants::TAX_RATE_DELETE_FAIL . ': ' . $e->getMessage()];
+            }
+        } else {
+            return ['success' => false, 'message' => Constants::TAX_RATE_DELETE_FAIL . ': ' .
+                Constants::PERMISSION_DENIED];
+        }
     }
 }

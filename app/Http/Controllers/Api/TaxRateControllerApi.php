@@ -21,15 +21,49 @@ class TaxRateControllerApi extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $requestArray = $request->toArray();
-        $result = $this->taxRateService->store($requestArray, $this->userService->getUserIdApi(),
-            $requestArray['tax_category_id']);
+        $request_array = $request->toArray();
+        $result = $this->taxRateService->store($request_array, $this->userService->getUserIdApi(),
+            $request_array['tax_category_id']);
 
         if ($result['success']) {
             return response()->json([
                 'message' => $result['message'],
                 'tax_rate' => $result['tax_rate']
             ], 201);
+        } else {
+            return response()->json([
+                'message' => $result['message']
+            ], 500);
+        }
+    }
+
+    public function update(Request $request, $id): JsonResponse
+    {
+        $request_array = $request->toArray();
+
+        $result = $this->taxRateService->update($request_array, $id, $this->userService->getUserIdApi());
+
+        if ($result['success']) {
+            return response()->json([
+                'message' => $result['message'],
+                'tax_rate' => $result['tax_rate']
+            ], 202);
+        } else {
+            return response()->json([
+                'message' => $result['message']
+            ], 500);
+        }
+    }
+
+    public function destroy($id): JsonResponse
+    {
+        $result = $this->taxRateService->destroy($id, $this->userService->getUserIdApi());
+
+        if ($result['success']) {
+            return response()->json([
+                'message' => $result['message'],
+                'tax_rate' => $result['tax_rate']
+            ], 202);
         } else {
             return response()->json([
                 'message' => $result['message']

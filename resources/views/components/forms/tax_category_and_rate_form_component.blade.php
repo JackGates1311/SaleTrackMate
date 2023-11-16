@@ -24,18 +24,19 @@
                        required>
             </div>
         @endif
-        @if($mode == 'tax_category_create' || $mode == 'tax_rate_create')
-            <div class="col-xl-4 col-md-12 col-sm-12 mb-3">
+        @if($mode == 'tax_category_create' || $mode == 'tax_rate_create' || $mode == 'tax_rate_edit')
+            <div class="{{$mode == 'tax_rate_edit' ? 'col-xl-6' : 'col-xl-4'}} col-md-12 col-sm-12 mb-3">
                 <label for="tax_rate[percentage_value]" class="form-label">Percentage:</label>
                 <input type="number" class="form-control" name="tax_rate[percentage_value]"
                        id="tax_rate[percentage_value]" placeholder="Percentage" min="0" max="100" step="1"
                        value="{{$tax_rate['percentage_value'] ?? old('tax_rate.percentage_value')}}"
                        required>
             </div>
-            <div class="col-xl-4 col-md-12 col-sm-12 mb-3">
+            <div class="{{$mode == 'tax_rate_edit' ? 'col-xl-6' : 'col-xl-4'}} col-md-12 col-sm-12 mb-3">
                 <label for="tax_rate[from_date]" class="form-label">From Date:</label>
                 <input type="date" class="form-control" id="tax_rate[from_date]" name="tax_rate[from_date]"
-                       value="{{old('tax_rate.from_date', Carbon::now()->addMonth()->firstOfMonth()->format('Y-m-d'))}}"
+                       value="{{$tax_rate['from_date'] ?? '' ? substr($tax_rate['from_date'], 0, 10) :
+                        old('tax_rate.from_date', Carbon::now()->addMonth()->firstOfMonth()->format('Y-m-d'))}}"
                        min="{{ Carbon::now()->addDay()->format('Y-m-d') }}" {{$mode == 'tax_category_create' ? '' :
                         'required'}}>
             </div>

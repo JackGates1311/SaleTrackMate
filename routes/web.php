@@ -104,6 +104,9 @@ Route::middleware('auth:web')->group(function () {
     });
     Route::group(['prefix' => 'tax_rates'], function () {
         Route::post('/create', [TaxRateController::class, 'create'])->name('create_tax_rate');
+        Route::get('/edit', [TaxRateController::class, 'edit'])->name('tax_rate_edit');
+        Route::post('/edit', [TaxRateController::class, 'update'])->name('tax_rate_edit_save');
+        Route::post('/delete', [TaxRateController::class, 'delete'])->name('tax_rate_delete');
     });
     Route::match(['get', 'post'], '/logout', [UserController::class, 'logout'])->name('logout');
 });

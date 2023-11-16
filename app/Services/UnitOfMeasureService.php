@@ -101,7 +101,7 @@ class UnitOfMeasureService
                     $e->getMessage()];
             }
         } else {
-            return ['success' => false, 'message' => Constants::UNIT_OF_MEASURE_SAVE_FAIL . ': ' .
+            return ['success' => false, 'message' => Constants::UNIT_OF_MEASURE_DELETE_FAIL . ': ' .
                 Constants::PERMISSION_DENIED];
         }
     }

@@ -74,6 +74,8 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::group(['prefix' => 'tax_rates'], function () {
         Route::post('/', [TaxRateControllerApi::class, 'store'])->name('store');
+        Route::put('/{id}', [TaxRateControllerApi::class, 'update'])->name('update');
+        Route::delete('/{id}', [TaxRateControllerApi::class, 'destroy'])->name('destroy');
     });
 });
 

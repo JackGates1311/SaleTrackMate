@@ -86,4 +86,6 @@ class Constants
     const PERMISSION_DENIED = "Permission denied";
     const TAX_CATEGORY_DELETE_SUCCESS = "Tax category deleted successfully";
     const TAX_CATEGORY_DELETE_FAIL = "Failed to delete tax category:";
+    const TAX_RATE_DELETE_SUCCESS = "Tax rate deleted successfully";
+    const TAX_RATE_DELETE_FAIL = "Failed to delete tax rate:";
 }
