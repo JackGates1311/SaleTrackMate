@@ -4,6 +4,8 @@ use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\GoodOrServiceController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\PriceController;
+use App\Http\Controllers\PriceDiscountController;
 use App\Http\Controllers\RecipientController;
 use App\Http\Controllers\TaxCategoryController;
 use App\Http\Controllers\TaxRateController;
@@ -88,6 +90,8 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/create', [GoodOrServiceController::class, 'createView'])->
         name('create_goods_and_services_view');
         Route::post('/create', [GoodOrServiceController::class, 'create'])->name('create_good_or_service');
+        Route::get('/edit', [GoodOrServiceController::class, 'edit'])->name('good_or_service_edit');
+        Route::post('/edit', [GoodOrServiceController::class, 'update'])->name('good_or_service_edit_save');
     });
     Route::group(['prefix' => 'unit_of_measures'], function () {
         Route::get('/', [UnitOfMeasureController::class, 'index'])->name('unit_of_measures');
@@ -107,6 +111,13 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/edit', [TaxRateController::class, 'edit'])->name('tax_rate_edit');
         Route::post('/edit', [TaxRateController::class, 'update'])->name('tax_rate_edit_save');
         Route::post('/delete', [TaxRateController::class, 'delete'])->name('tax_rate_delete');
+    });
+    Route::group(['prefix' => 'prices'], function () {
+        Route::get('/', [PriceController::class, 'index'])->name('good_or_service_prices');
+
+    });
+    Route::group(['prefix' => 'price_discounts'], function () {
+        Route::get('/', [PriceDiscountController::class, 'index'])->name('good_or_service_price_discounts');
     });
     Route::match(['get', 'post'], '/logout', [UserController::class, 'logout'])->name('logout');
 });

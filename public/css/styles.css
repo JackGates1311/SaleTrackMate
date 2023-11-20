@@ -412,3 +412,7 @@ table:hover {
         display: none; /* Safari and Chrome */
     }
 }
+
+.img-table {
+    max-height: 64px;
+}

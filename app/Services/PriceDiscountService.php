@@ -10,19 +10,17 @@ use Illuminate\Validation\ValidationException;
 
 class PriceDiscountService
 {
-    /**
-     * @throws ValidationException
-     */
-    public function store(array $data): array
+    public function store(array $data, string $good_or_service_id): array
     {
-        $validated_data = Validator::make($data, PriceDiscount::$rules)->validate();
-
         try {
+            $data['good_or_service_id'] = $good_or_service_id;
+            $validated_data = Validator::make($data, PriceDiscount::$rules)->validate();
             $price_discount = PriceDiscount::create($validated_data);
+
             return ['success' => true, 'message' => Constants::PRICE_DISCOUNT_SAVE_SUCCESS,
                 'price_discount' => $price_discount];
         } catch (Exception $e) {
-            return ['success' => false, 'messsage' => Constants::PRICE_DISCOUNT_SAVE_FAIL . ': ' . $e->getMessage()];
+            return ['success' => false, 'message' => Constants::PRICE_DISCOUNT_SAVE_FAIL . ': ' . $e->getMessage()];
         }
     }
 

@@ -20,11 +20,13 @@ class PriceDiscount extends Model
         'percentage',
         'from_date',
         'due_date',
+        'good_or_service_id',
     ];
 
     public static array $rules = [
-        'percentage' => 'required|numeric|between:0,1',
-        'from_date' => 'required|date_format:Y-m-d H:i:s',
-        'due_date' => 'required|date_format:Y-m-d H:i:s',
+        'percentage' => 'required|numeric|between:0,100',
+        'from_date' => 'required|date',
+        'due_date' => 'required|date',
+        'good_or_service_id' => 'required|uuid',
     ];
 }

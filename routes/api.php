@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\BankAccountControllerApi;
 use App\Http\Controllers\Api\CompanyControllerApi;
 use App\Http\Controllers\Api\GoodOrServiceControllerApi;
 use App\Http\Controllers\Api\InvoiceControllerApi;
+use App\Http\Controllers\Api\PriceControllerApi;
 use App\Http\Controllers\Api\RecipientControllerApi;
 use App\Http\Controllers\Api\TaxCategoryControllerApi;
 use App\Http\Controllers\Api\TaxRateControllerApi;
@@ -76,6 +77,9 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/', [TaxRateControllerApi::class, 'store'])->name('store');
         Route::put('/{id}', [TaxRateControllerApi::class, 'update'])->name('update');
         Route::delete('/{id}', [TaxRateControllerApi::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'prices'], function () {
+        Route::post('/', [PriceControllerApi::class, 'store'])->name('store');
     });
 });
 

@@ -156,7 +156,7 @@ class TaxCategoryService
         }
     }
 
-    private function getActualTaxRate($tax_category, $date)
+    public function getActualTaxRate($tax_category, $date)
     {
         $tax_rates = $tax_category->load('taxRates')['taxRates'];
 

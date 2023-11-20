@@ -28,8 +28,8 @@ class GoodOrService extends Model
         'warranty_len',
         'type',
         'company_id',
-        'price_id',
         'tax_category_id',
+        'unit_of_measure_id',
         'good_or_service_details_id'
     ];
 
@@ -38,13 +38,13 @@ class GoodOrService extends Model
     public static array $rules = [
         'serial_num' => 'required|string|max:255',
         'name' => 'required|string|max:255',
-        'description' => 'string',
+        'description' => 'required|string',
         'image_url' => 'nullable|url',
         'warranty_len' => 'nullable|integer|min:0',
         'type' => 'required|in:GOOD,SERVICE',
         'company_id' => 'required|string|max:255',
-        'price_id' => 'required|uuid',
-        'tax_category_id' => 'required|uuid',
+        'tax_category_id' => 'nullable|uuid',
+        'unit_of_measure_id' => 'nullable|uuid',
         'good_or_service_details_id' => 'nullable|uuid',
     ];
 
@@ -55,7 +55,7 @@ class GoodOrService extends Model
 
     public function goodOrServiceDetails(): HasOne
     {
-        return $this->hasOne(GoodOrServiceDetails::class, 'good_or_service_details_id', 'id');
+        return $this->hasOne(GoodOrServiceDetails::class, 'id', 'good_or_service_details_id');
     }
 
     public function priceDiscounts(): HasMany
@@ -65,16 +65,16 @@ class GoodOrService extends Model
 
     public function unitOfMeasure(): HasOne
     {
-        return $this->hasOne(UnitOfMeasure::class, 'unit_of_measure_id', 'id');
+        return $this->hasOne(UnitOfMeasure::class, 'id', 'unit_of_measure_id');
     }
 
-    public function price(): HasOne
+    public function prices(): HasMany
     {
-        return $this->hasOne(Price::class, 'price_id', 'id');
+        return $this->hasMany(Price::class, 'good_or_service_id', 'id');
     }
 
     public function taxCategory(): HasOne
     {
-        return $this->hasOne(TaxCategory::class, 'tax_category_id', 'id');
+        return $this->hasOne(TaxCategory::class, 'id', 'tax_category_id');
     }
 }

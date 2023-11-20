@@ -38,9 +38,9 @@ class Company extends Model
         'user_id'
     ];
 
-    public function articles(): HasMany
+    public function goodsOrServices(): HasMany
     {
-        return $this->hasMany(GoodOrService::class);
+        return $this->hasMany(GoodOrService::class, 'company_id', 'id');
     }
 
     /**

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @method static create(array $validated_data)
  * @method static find($id)
+ * @method static where(string $string, string $good_or_service_id)
  */
 class Price extends Model
 {
@@ -20,11 +21,13 @@ class Price extends Model
     protected $fillable = [
         'amount',
         'expiration_date',
+        'good_or_service_id'
     ];
 
     public static array $rules = [
         'amount' => 'required|numeric',
         'expiration_date' => 'required|date',
+        'good_or_service_id' => 'required|uuid',
     ];
 
 }

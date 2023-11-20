@@ -30,7 +30,7 @@ class GoodOrServiceDetails extends Model
         'url' => 'nullable|url',
         'category' => 'nullable|string|max:255',
         'supplier' => 'nullable|string|max:255',
-        'country' => 'required|string|min:2|max:2',
+        'country' => 'nullable|string|min:2|max:2',
         'weight' => 'nullable|numeric',
         'dimensions' => 'nullable|string|max:255',
         'color' => 'nullable|string|max:255',

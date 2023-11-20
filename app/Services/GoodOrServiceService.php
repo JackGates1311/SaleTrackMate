@@ -5,20 +5,26 @@ namespace App\Services;
 use App\Constants;
 use App\Models\Company;
 use App\Models\GoodOrService;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class GoodOrServiceService
 {
     private GoodOrServiceDetailsService $goodOrServiceDetailsService;
     private PriceService $priceService;
+    private PriceDiscountService $priceDiscountService;
 
-    public function __construct(GoodOrServiceDetailsService $goodOrServiceDetailsService, PriceService $priceService)
+    private TaxCategoryService $taxCategoryService;
+
+    public function __construct(GoodOrServiceDetailsService $goodOrServiceDetailsService, PriceService $priceService,
+                                PriceDiscountService        $priceDiscountService, TaxCategoryService $taxCategoryService)
     {
         $this->goodOrServiceDetailsService = $goodOrServiceDetailsService;
         $this->priceService = $priceService;
+        $this->priceDiscountService = $priceDiscountService;
+        $this->taxCategoryService = $taxCategoryService;
     }
 
     public function index(): array
@@ -30,7 +36,7 @@ class GoodOrServiceService
 
     public function indexWithDetails(): array
     {
-        $goods_or_services = GoodOrService::with('company', 'goodOrServiceDetails', 'price', 'priceDiscounts',
+        $goods_or_services = GoodOrService::with('company', 'goodOrServiceDetails', 'prices', 'priceDiscounts',
             'UnitOfMeasure', 'TaxCategory')->get()->toArray();
 
         return ['goods_or_services' => $goods_or_services];
@@ -41,13 +47,30 @@ class GoodOrServiceService
         $company = (new Company)->find($id);
 
         if (!$company) {
-            return ['success' => false, 'message' => Constants::GOOD_OR_SERVICE_NOT_FOUND . ': ' . $id];
+            return ['success' => false, 'message' => Constants::COMPANY_NOT_FOUND . ': ' . $id];
         } else {
-            $goods_or_services = $company->goods_or_services;
+            $goods_or_services = $company->goodsOrServices;
         }
 
         if (!$goods_or_services) {
             return ['success' => false, 'message' => Constants::GOOD_OR_SERVICE_NOT_FOUND . ': ' . $id];
+        } else {
+            $goods_or_services->load('prices');
+            $goods_or_services->load('goodOrServiceDetails');
+            $goods_or_services->load('unitOfMeasure');
+            $goods_or_services->load('taxCategory');
+            $goods_or_services->load('priceDiscounts');
+        }
+
+        foreach ($goods_or_services as $good_or_service) {
+            if (isset($good_or_service->taxCategory)) {
+                $good_or_service->taxCategory['actual_tax_rate'] = $this->taxCategoryService->
+                getActualTaxRate($good_or_service->taxCategory, Carbon::now());
+            }
+            if (isset($good_or_service->prices)) {
+                $good_or_service['actual_price'] = $this->priceService->getActualPrice(
+                    $good_or_service->prices, Carbon::now());
+            }
         }
 
         return ['success' => true, 'goods_or_services' => $goods_or_services];
@@ -55,7 +78,7 @@ class GoodOrServiceService
 
     public function show($id): array
     {
-        $good_or_service = GoodOrService::with('company', 'goodOrServiceDetails', 'price', 'priceDiscounts',
+        $good_or_service = GoodOrService::with('company', 'goodOrServiceDetails', 'prices', 'priceDiscounts',
             'UnitOfMeasure', 'TaxCategory')->find($id);
 
         if (!$good_or_service) {
@@ -65,13 +88,8 @@ class GoodOrServiceService
         return ['success' => true, 'message' => 'OK', 'good_or_service' => $good_or_service];
     }
 
-    /**
-     * @throws ValidationException
-     */
     public function update(array $data, $id): array
     {
-        $validated_data = Validator::make($data, GoodOrService::$rules)->validate();
-
         $good_or_service = GoodOrService::with('price')->find($id);
 
         if (!$good_or_service) {
@@ -79,6 +97,8 @@ class GoodOrServiceService
         }
 
         try {
+            $validated_data = Validator::make($data, GoodOrService::$rules)->validate();
+
             DB::beginTransaction();
 
             try {
@@ -87,7 +107,8 @@ class GoodOrServiceService
                 }
                 $good_or_service->update($validated_data);
                 DB::commit();
-                return ['success' => true, 'message' => Constants::GOOD_OR_SERVICE_UPDATE_SUCCESS, 'good_or_service' => $good_or_service];
+                return ['success' => true, 'message' => Constants::GOOD_OR_SERVICE_UPDATE_SUCCESS,
+                    'good_or_service' => $good_or_service];
             } catch (Exception $e) {
                 DB::rollBack();
                 return ['success' => false,
@@ -100,27 +121,53 @@ class GoodOrServiceService
         }
     }
 
-    /**
-     * @throws ValidationException
-     */
     public function store(array $data, string $company_id): array
     {
         $data['company_id'] = $company_id;
-        $validated_data = Validator::make($data, GoodOrService::$rules)->validate();
 
         try {
-            $good_or_service = GoodOrService::create($validated_data);
+            DB::beginTransaction();
+            try {
+                $good_or_service_details = [];
 
-            if (array_key_exists('good_or_service_details', $data)) {
-                $this->goodOrServiceDetailsService->store($data['good_or_service_details']);
+                if ($data['tax_category_id'] == 'other' || $data['tax_category_id'] == '') {
+                    $data['tax_category_id'] = null;
+                }
+
+                if ($data['unit_of_measure_id'] == 'other' || $data['unit_of_measure_id'] == '') {
+                    $data['unit_of_measure_id'] = null;
+                }
+
+                if (array_key_exists('good_or_service_details', $data)) {
+                    $good_or_service_details = $this->goodOrServiceDetailsService->store(
+                        $data['good_or_service_details']);
+                }
+
+                $data['good_or_service_details_id'] = $good_or_service_details['good_or_service_details']['id'];
+
+                $good_or_service_validate_data = Validator::make($data, GoodOrService::$rules)->validate();
+
+                $good_or_service = GoodOrService::create($good_or_service_validate_data);
+
+                if (array_key_exists('price_discount', $data)) {
+                    $this->priceDiscountService->store($data['price_discount'],
+                        $good_or_service->id);
+                }
+
+                if (array_key_exists('price', $data)) {
+                    $this->priceService->store($data['price'], $good_or_service->id);
+                }
+
+                DB::commit();
+                return ['success' => true, 'message' => Constants::GOOD_OR_SERVICE_SAVE_SUCCESS,
+                    'good_or_service' => $good_or_service];
+            } catch (Exception $e) {
+                DB::rollBack();
+                return ['success' => false, 'message' => Constants::GOOD_OR_SERVICE_SAVE_FAIL . ": " . $e->getMessage()];
             }
-
-            $this->priceService->store($data['price']);
-
-            return ['success' => true, 'message' => Constants::GOOD_OR_SERVICE_SAVE_SUCCESS,
-                'good_or_service' => $good_or_service];
         } catch (Exception $e) {
-            return ['success' => false, 'message' => Constants::GOOD_OR_SERVICE_SAVE_FAIL . ": " . $e->getMessage()];
+            DB::rollBack();
+            return ['success' => false, 'message' => Constants::INVOICE_SAVE_FAIL . ': ' . $e->getMessage()];
         }
     }
 
