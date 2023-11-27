@@ -139,6 +139,7 @@ class GoodOrServiceService
                 }
 
                 if (array_key_exists('good_or_service_details', $data)) {
+                    $data['good_or_service_details']['country'] = $data['country'];
                     $good_or_service_details = $this->goodOrServiceDetailsService->store(
                         $data['good_or_service_details']);
                 }

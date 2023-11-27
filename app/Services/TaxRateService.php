@@ -112,6 +112,13 @@ class TaxRateService
                 return ['success' => false, 'message' => Constants::TAX_RATE_NOT_FOUND . ': ' . $id];
             }
 
+            $taxCategory = $tax_rate->taxCategory;
+
+            if (!$taxCategory || $taxCategory->taxRates()->count() <= 1) {
+                return ['success' => false, 'message' => Constants::TAX_RATE_DELETE_FAIL . ' ' .
+                    'Tax category must have at least one tax rate'];
+            }
+
             try {
                 $tax_rate->delete();
                 return ['success' => true, 'message' => Constants::TAX_RATE_DELETE_SUCCESS, 'tax_rate' => $tax_rate];

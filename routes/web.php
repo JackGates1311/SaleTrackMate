@@ -113,11 +113,21 @@ Route::middleware('auth:web')->group(function () {
         Route::post('/delete', [TaxRateController::class, 'delete'])->name('tax_rate_delete');
     });
     Route::group(['prefix' => 'prices'], function () {
-        Route::get('/', [PriceController::class, 'index'])->name('good_or_service_prices');
-
+        Route::get('/', [PriceController::class, 'index'])->name('prices');
+        Route::get('/edit', [PriceController::class, 'edit'])->name('price_edit');
+        Route::post('/edit', [PriceController::class, 'update'])->name('price_edit_save');
+        Route::get('/create', [PriceController::class, 'createView'])->name('create_price_view');
+        Route::post('/create', [PriceController::class, 'create'])->name('create_price');
+        Route::post('/delete', [PriceController::class, 'delete'])->name('price_delete');
     });
     Route::group(['prefix' => 'price_discounts'], function () {
-        Route::get('/', [PriceDiscountController::class, 'index'])->name('good_or_service_price_discounts');
+        Route::get('/', [PriceDiscountController::class, 'index'])->name('price_discounts');
+        Route::get('/edit', [PriceDiscountController::class, 'edit'])->name('price_discount_edit');
+        Route::post('/edit', [PriceDiscountController::class, 'update'])->name('price_discount_edit_save');
+        Route::get('/create', [PriceDiscountController::class, 'createView'])->
+        name('create_price_discount_view');
+        Route::post('/create', [PriceDiscountController::class, 'create'])->name('create_price_discount');
+        Route::post('/delete', [PriceDiscountController::class, 'delete'])->name('price_discount_delete');
     });
     Route::match(['get', 'post'], '/logout', [UserController::class, 'logout'])->name('logout');
 });

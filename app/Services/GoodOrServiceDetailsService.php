@@ -16,7 +16,7 @@ class GoodOrServiceDetailsService
     public function store(array $data): array
     {
         $validated_data = Validator::make($data, GoodOrServiceDetails::$rules)->validate();
-
+        
         try {
             $good_or_service_details = GoodOrServiceDetails::create($validated_data);
             return ['success' => true, 'message' => Constants::GOOD_OR_SERVICE_DETAILS_SAVE_SUCCESS,

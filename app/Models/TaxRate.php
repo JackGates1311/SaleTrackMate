@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @method static create(array $validated_data)
@@ -29,5 +30,10 @@ class TaxRate extends Model
         'from_date' => 'required|date',
         'tax_category_id' => 'required|uuid'
     ];
+
+    public function taxCategory(): HasOne
+    {
+        return $this->HasOne(TaxCategory::class, 'id', 'tax_category_id');
+    }
 
 }

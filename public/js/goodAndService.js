@@ -1,78 +1,11 @@
-window.addEventListener('DOMContentLoaded', () => {
-    let priceExpirationDate = new Date();
-    priceExpirationDate.setMonth(priceExpirationDate.getMonth() + 6);
-    priceExpirationDate.setMinutes(priceExpirationDate.getMinutes() - priceExpirationDate.getTimezoneOffset());
-
-    let todayDate = new Date();
-    todayDate.setDate(todayDate.getDate());
-    todayDate.setMinutes(todayDate.getMinutes() - todayDate.getTimezoneOffset());
-
-    if (document.getElementById('price_expiration_date').value === null ||
-        document.getElementById('price_expiration_date').value === "") {
-        document.getElementById('price_expiration_date').value = priceExpirationDate.toISOString().slice(0, -8);
-    }
-
-    document.getElementById('price_expiration_date').min = todayDate.toISOString().slice(0, -8);
-
-    if (document.getElementById('discount_from_date').value === null ||
-        document.getElementById('discount_from_date').value === "") {
-        document.getElementById('discount_from_date').value = todayDate.toISOString().slice(0, -8);
-    }
-
-    document.getElementById('discount_from_date').min = todayDate.toISOString().slice(0, -8);
-
-    let priceDiscountDueDate = new Date();
-    priceDiscountDueDate.setDate(priceDiscountDueDate.getDate() + 21);
-    priceDiscountDueDate.setMinutes(priceDiscountDueDate.getMinutes() - priceDiscountDueDate.getTimezoneOffset());
-
-    if (document.getElementById('discount_due_date').value === null ||
-        document.getElementById('discount_due_date').value === "") {
-        document.getElementById('discount_due_date').value = priceDiscountDueDate.toISOString().slice(0, -8);
-    }
-
-    document.getElementById('discount_due_date').min = todayDate.toISOString().slice(0, -8);
-});
-
 function validateDates() {
-    const priceExpirationDateInput = document.getElementById('price_expiration_date');
-    const discountFromDateInput = document.getElementById('discount_from_date');
-    const discountDueDateInput = document.getElementById('discount_due_date');
-
-    const priceExpirationDateValue = new Date(priceExpirationDateInput.value);
-    const discountFromDateValue = new Date(discountFromDateInput.value);
-    const discountDueDateValue = new Date(discountDueDateInput.value);
-
-    const currentDate = new Date();
-    currentDate.setMinutes(currentDate.getMinutes() - currentDate.getTimezoneOffset());
-
-    if (priceExpirationDateValue < currentDate) {
-        priceExpirationDateInput.value = currentDate.toISOString().slice(0, -8);
-        priceExpirationDateInput.min = currentDate.toISOString().slice(0, -8);
-    }
-
-    if (discountFromDateInput) {
-        if (discountFromDateValue < currentDate) {
-            discountFromDateInput.value = currentDate.toISOString().slice(0, 16);
-        }
-    }
-
-    if (discountDueDateInput) {
-        if (discountDueDateValue < currentDate) {
-            discountDueDateInput.value = currentDate.toISOString().slice(0, 16);
-        }
-        if (discountFromDateInput && discountFromDateValue > discountDueDateValue) {
-            discountDueDateInput.value = discountFromDateInput.value;
-        }
-    }
+    PriceModule.validateDates();
+    PriceDiscountModule.validateDates();
 }
 
-const priceExpirationDate = document.getElementById('price_expiration_date');
-const discountFromDate = document.getElementById('discount_from_date');
-const discountDueDate = document.getElementById('discount_due_date');
-
-priceExpirationDate.addEventListener('input', validateDates);
-discountFromDate.addEventListener('input', validateDates);
-discountDueDate.addEventListener('input', validateDates);
+document.getElementById('price_expiration_date').addEventListener('input', validateDates);
+document.getElementById('discount_from_date').addEventListener('input', validateDates);
+document.getElementById('discount_due_date').addEventListener('input', validateDates);
 
 function showPriceDiscountFields() {
     const priceDiscountForm = document.getElementById('price-discount');

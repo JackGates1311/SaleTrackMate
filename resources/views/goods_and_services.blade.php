@@ -106,7 +106,7 @@
                                                             <span class="visually-hidden">Good or Service details</span>
                                                         </a>
                                                         <a class="form-control btn-form-control text-center
-                                                        cursor-pointer" href="{{route('good_or_service_prices', [
+                                                        cursor-pointer" href="{{route('prices', [
                                                             'company' => request()->query('company'),
                                                             'good_or_service' => $good_or_service['id']])}}">
                                                             <img src="{{ asset('images/res/monetization.png') }}"
@@ -117,7 +117,7 @@
                                                             <span class="visually-hidden">Good or Service Prices</span>
                                                         </a>
                                                         <a class="form-control btn-form-control text-center
-                                                        cursor-pointer" href="{{route('good_or_service_price_discounts',
+                                                        cursor-pointer" href="{{route('price_discounts',
                                                             ['company' => request()->query('company'),
                                                             'good_or_service' => $good_or_service['id']])}}">
                                                             <img src="{{ asset('images/res/payments.png') }}"

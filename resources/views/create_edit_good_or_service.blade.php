@@ -138,32 +138,9 @@
                                                 </div>
                                                 <div class="row">
                                                     @if(!isset($good_or_service))
-                                                        <div class="col-lg-3 mb-4">
-                                                            <!-- Price Amount (Required) -->
-                                                            <div class="form-outline">
-                                                                <label for="price_amount"
-                                                                       class="form-label">Price:</label>
-                                                                <input type="number" class="form-control"
-                                                                       id="price_amount"
-                                                                       name="price[amount]" step="0.01"
-                                                                       placeholder="Price"
-                                                                       value="{{
-                                                                old('price.amount') ?? '' }}"
-                                                                       required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 mb-4">
-                                                            <!-- Price Expiration Date (Required) -->
-                                                            <div class="form-outline">
-                                                                <label for="price_expiration_date" class="form-label">Price
-                                                                    Expiration Date:</label>
-                                                                <input type="datetime-local" class="form-control"
-                                                                       id="price_expiration_date"
-                                                                       name="price[expiration_date]"
-                                                                       value="{{
-                                                                    old('price.expiration_date') ?? '' }}" required>
-                                                            </div>
-                                                        </div>
+                                                        @component('components.forms.price_form_component',
+                                                                    ['editable' => true, 'small' => true])
+                                                        @endcomponent
                                                     @endif
                                                     <div class="col-lg-{{isset($good_or_service) ? '4' : '2'}} mb-4">
                                                         <!-- Tax Category (Optional) -->
@@ -268,4 +245,6 @@
 </body>
 <script src="{{ asset('js/validateForm.js') }}"></script>
 <script src="{{ asset('js/goodAndService.js') }}"></script>
+<script src="{{ asset('js/price.js') }}"></script>
+<script src="{{ asset('js/priceDiscount.js') }}"></script>
 </html>

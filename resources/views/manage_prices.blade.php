@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <title>{{$editable ? 'Edit Price' : 'Prices'}} - SaleTrackMate</title>
+    @if($editable && (!isset($prices)))
+        <title>Add new Price - SaleTrackMate</title>
+    @elseif($editable && (isset($prices) && count($prices) > 0))
+        <title>Edit Price - SaleTrackMate</title>
+    @else
+        <title>Prices - SaleTrackMate</title>
+    @endif
     @component('components.header_component')
     @endcomponent
 </head>
@@ -18,22 +24,16 @@
                             <div class="card-body p-3">
                                 <div class="text-center">
                                     <h4 class="mt-1 mb-3 pb-1">
-                                        {{$editable ? 'Edit Price' : 'Prices'}}</h4>
+                                        @if($editable && (!isset($prices)))
+                                            Add new Price
+                                        @elseif($editable && (isset($prices) && count($prices) > 0))
+                                            Edit Price
+                                        @else
+                                            Prices
+                                        @endif
+                                    </h4>
                                 </div>
                                 <hr/>
-                                @if(!$editable)
-                                    <div class="d-flex flex-column flex-lg-row">
-                                        <div
-                                            class="d-flex flex-column flex-lg-row justify-content-end
-                                        justify-content-lg-end w-100 w-lg-50">
-                                            <a class="btn btn-primary mb-lg-0 me-lg-2" data-bs-toggle="modal"
-                                               data-bs-target="#unitOfMeasureModal">
-                                                Add New Price
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                @endif
                                 @if (Session::has('message'))
                                     <div
                                         class="alert alert-success text-center {{session('company_create') ? 'mt-1' :
@@ -48,6 +48,60 @@
                                     </div>
                                     <hr/>
                                 @endif
+                                <form method="POST" action="{{route(isset($prices) ? 'price_edit' : 'create_price', [
+                                            'company' => request()->query('company'),
+                                            'good_or_service' => request()->query('good_or_service'),
+                                            'price_id' => isset($prices) ? $prices[0]['id'] : null])}}">
+                                    @csrf <!-- {{ csrf_field() }} -->
+                                    <div id="prices">
+                                        @if(isset($prices) && count($prices) > 0)
+                                            @foreach($prices as $price)
+                                                <div id="price">
+                                                    <div class="row">
+                                                        @component('components.forms.price_form_component', ['price' =>
+                                                            $price, 'editable' => $editable, 'small' => false])
+                                                        @endcomponent
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <div class="row">
+                                                @component('components.forms.price_form_component', [
+                                                                    'editable' => $editable, 'small' => false])
+                                                @endcomponent
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="row">
+                                        @if($editable)
+                                            <div class="col-lg-6">
+                                                <a href="{{ route('prices', [
+                                                        'company' => request()->query('company'),
+                                                        'good_or_service' => request()->query('good_or_service')
+                                                        ]) }}" class="btn btn-outline-secondary mt-2 w-100"> Back to
+                                                    Prices</a>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <button
+                                                    class="btn btn-primary btn-block fa-lg gradient-custom-2 w-100 mt-2"
+                                                    type="submit"> {{isset($price) ? 'Save' : 'Create'}}
+                                                </button>
+                                            </div>
+                                        @else
+                                            <div class="col-lg-6">
+                                                <a href="{{ route('goods_and_services', ['company' => request()->query('company')]) }}"
+                                                   class="btn btn-outline-secondary mt-2 w-100"> Back to Goods and
+                                                    Services</a>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <a href="{{ route('create_price', [
+                                                            'company' => request()->query('company'),
+                                                            'good_or_service' => request()->query('good_or_service')])
+                                                            }}" class="btn btn-primary mt-2 w-100">Add New Price</a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -57,4 +111,7 @@
     </div>
 </div>
 </body>
+@if($editable)
+    <script src="{{ asset('js/price.js') }}"></script>
+@endif
 </html>
