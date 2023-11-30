@@ -37,7 +37,8 @@
     </div>
     <div class="col-lg-1 mb-lg-2 d-flex justify-content-end align-items-end">
         <form class="w-100" method="POST" action="{{route('price_delete', [
-                        'price' => $price['id'], 'company' => request()->query('company')])}}">
+                        'price' => $price['id'], 'company' => request()->query('company'),
+                        'good_or_service' => request()->query('good_or_service')])}}">
             @csrf <!-- {{ csrf_field() }} -->
             <button type="submit" class="form-control btn-form-control mt-lg-1 mb-3 text-center w-100">
                 <img src="{{ asset('images/res/delete.png') }}" alt="delete" width="21"

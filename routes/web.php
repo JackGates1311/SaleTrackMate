@@ -92,6 +92,7 @@ Route::middleware('auth:web')->group(function () {
         Route::post('/create', [GoodOrServiceController::class, 'create'])->name('create_good_or_service');
         Route::get('/edit', [GoodOrServiceController::class, 'edit'])->name('good_or_service_edit');
         Route::post('/edit', [GoodOrServiceController::class, 'update'])->name('good_or_service_edit_save');
+        Route::post('/delete', [GoodOrServiceController::class, 'delete'])->name('good_or_service_delete');
     });
     Route::group(['prefix' => 'unit_of_measures'], function () {
         Route::get('/', [UnitOfMeasureController::class, 'index'])->name('unit_of_measures');

@@ -18,7 +18,7 @@
                 <label for="image_url" class="form-label">Image URL:</label>
                 <input type="text" class="form-control" id="image_url"
                        name="image_url" placeholder="Image URL (optional)"
-                       value="{{ $good_or_service_image_url ?? old('good_or_service_details.image_url') }}">
+                       value="{{ $good_or_service_image_url ?? old('image_url') }}">
             </div>
         </div>
     @endif

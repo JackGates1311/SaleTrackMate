@@ -6,7 +6,6 @@ use App\Services\GoodOrServiceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Validation\ValidationException;
 
 class GoodOrServiceControllerApi extends Controller
 {
@@ -53,9 +52,6 @@ class GoodOrServiceControllerApi extends Controller
         }
     }
 
-    /**
-     * @throws ValidationException
-     */
     public function update(Request $request, $id): JsonResponse
     {
         $result = $this->goodOrServiceService->update($request->toArray(), $id);
@@ -68,9 +64,6 @@ class GoodOrServiceControllerApi extends Controller
         }
     }
 
-    /**
-     * @throws ValidationException
-     */
     public function store(Request $request): JsonResponse
     {
         $result = $this->goodOrServiceService->store($request->toArray(), $request->toArray()['company_id']);

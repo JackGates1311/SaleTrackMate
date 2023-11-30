@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\CompanyControllerApi;
 use App\Http\Controllers\Api\GoodOrServiceControllerApi;
 use App\Http\Controllers\Api\InvoiceControllerApi;
 use App\Http\Controllers\Api\PriceControllerApi;
+use App\Http\Controllers\Api\PriceDiscountControllerApi;
 use App\Http\Controllers\Api\RecipientControllerApi;
 use App\Http\Controllers\Api\TaxCategoryControllerApi;
 use App\Http\Controllers\Api\TaxRateControllerApi;
@@ -80,6 +81,13 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::group(['prefix' => 'prices'], function () {
         Route::post('/', [PriceControllerApi::class, 'store'])->name('store');
+        Route::put('/{id}', [PriceControllerApi::class, 'update'])->name('update');
+        Route::delete('/{id}', [PriceControllerApi::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'price_discounts'], function () {
+        Route::post('/', [PriceDiscountControllerApi::class, 'store'])->name('store');
+        Route::put('/{id}', [PriceDiscountControllerApi::class, 'update'])->name('update');
+        Route::delete('/{id}', [PriceDiscountControllerApi::class, 'destroy'])->name('destroy');
     });
 });
 

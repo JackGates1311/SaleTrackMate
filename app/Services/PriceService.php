@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Constants;
 use App\Models\Price;
 use Exception;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class PriceService
@@ -39,8 +40,34 @@ class PriceService
     {
         $price = Price::find($id);
 
+        $data['good_or_service_id'] = $price->good_or_service_id;
+
         if (!$price) {
             return ['success' => false, 'message' => Constants::PRICE_NOT_FOUND . ': ' . $id];
+        }
+
+        $expiration_date = Carbon::parse($price->expiration_date);
+        $current_date = Carbon::now();
+
+        if ($expiration_date < $current_date) {
+            return ['success' => false, 'message' => Constants::PRICE_EXPIRED];
+        }
+
+        if (isset($data['expiration_date']) && $data['expiration_date'] !== $price->expiration_date) {
+            $new_expiration_date = Carbon::parse($data['expiration_date']);
+
+            if ($new_expiration_date < $current_date) {
+                return ['success' => false, 'message' => Constants::NEW_EXPIRATION_DATE_PAST];
+            }
+
+            $existing_prices = Price::where('good_or_service_id', $data['good_or_service_id'])
+                ->where('expiration_date', $new_expiration_date)
+                ->where('id', '!=', $id)
+                ->get();
+
+            if ($existing_prices->isNotEmpty()) {
+                return ['success' => false, 'message' => Constants::DUPLICATE_EXPIRATION_DATE];
+            }
         }
 
         try {
@@ -78,5 +105,42 @@ class PriceService
         $actual_price = $valid_prices->first();
         $actual_price['all_prices_expired'] = false;
         return $actual_price;
+    }
+
+    public function destroy($id): array
+    {
+        $price = Price::find($id);
+
+        if (!$price) {
+            return ['success' => false, 'message' => Constants::PRICE_NOT_FOUND . ': ' . $id];
+        }
+
+        $expiration_date = Carbon::parse($price->expiration_date);
+        $current_date = Carbon::now();
+
+        if ($expiration_date < $current_date) {
+            return ['success' => false, 'message' => Constants::PRICE_EXPIRED];
+        }
+
+        $good_or_service = $price->goodOrService;
+
+        if (!$good_or_service || $good_or_service->prices->count() <= 1) {
+            return ['success' => false, 'message' => 'Good or service must have at least one active price'];
+        }
+
+        $active_prices = $good_or_service->prices->where('expiration_date', '>', $current_date);
+
+        if ($active_prices->isEmpty()) {
+            return ['success' => false, 'message' => Constants::GOOD_OR_SERVICE_DELETE_FAIL . ': ' . $id];
+        }
+
+        try {
+            $price->delete();
+            return ['success' => true, 'message' => Constants::PRICE_DELETE_SUCCESS,
+                'price' => $price];
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => Constants::PRICE_DELETE_FAIL . ': ' .
+                $e->getMessage()];
+        }
     }
 }

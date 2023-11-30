@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @method static create(array $validated_data)
@@ -30,4 +31,8 @@ class Price extends Model
         'good_or_service_id' => 'required|uuid',
     ];
 
+    public function goodOrService(): HasOne
+    {
+        return $this->hasOne(GoodOrService::class, 'id', 'good_or_service_id');
+    }
 }

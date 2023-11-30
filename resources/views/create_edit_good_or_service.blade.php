@@ -26,6 +26,13 @@
                                     </h4>
                                 </div>
                                 <hr/>
+                                @if (Session::has('message'))
+                                    <div
+                                        class="alert alert-success text-center mt-3">
+                                        {{session('message')}}
+                                    </div>
+                                    <hr/>
+                                @endif
                                 @if($errors->has('message'))
                                     <div class="alert alert-danger text-center">
                                         {{$errors->first('message')}}
@@ -198,7 +205,7 @@
                                                                     $good_or_service['image_url'] ?? null])
                                                 @endcomponent
                                                 @component('components.forms.price_discount_form_component',
-                                                            ['hidden' => true])
+                                                            ['hidden' => true, 'editable' => true])
                                                 @endcomponent
                                                 <hr/>
                                                 <div class="row">

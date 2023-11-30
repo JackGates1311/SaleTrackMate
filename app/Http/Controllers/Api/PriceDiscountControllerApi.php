@@ -2,30 +2,30 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Services\PriceService;
+use App\Services\PriceDiscountService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-class PriceControllerApi extends Controller
-{
-    private PriceService $priceService;
 
-    public function __construct(PriceService $priceService)
+class PriceDiscountControllerApi extends Controller
+{
+    private PriceDiscountService $priceDiscountService;
+
+    public function __construct(PriceDiscountService $priceDiscountService)
     {
-        $this->priceService = $priceService;
+        $this->priceDiscountService = $priceDiscountService;
     }
 
     public function store(Request $request): JsonResponse
     {
-        $requestArray = $request->toArray();
-
-        $result = $this->priceService->store($requestArray, $requestArray['good_or_service_id']);
+        $request_array = $request->toArray();
+        $result = $this->priceDiscountService->store($request_array, $request_array['good_or_service_id']);
 
         if ($result['success']) {
             return response()->json([
                 'message' => $result['message'],
-                'price' => $result['price']
+                'price_discount' => $result['price_discount']
             ], 201);
         } else {
             return response()->json([
@@ -36,12 +36,12 @@ class PriceControllerApi extends Controller
 
     public function update(Request $request, $id): JsonResponse
     {
-        $result = $this->priceService->update($request->toArray(), $id);
+        $result = $this->priceDiscountService->update($request->toArray(), $id);
 
         if ($result['success']) {
             return response()->json([
                 'message' => $result['message'],
-                'price' => $result['price']
+                'price_discount' => $result['price_discount']
             ], 202);
         } else {
             return response()->json([
@@ -52,12 +52,12 @@ class PriceControllerApi extends Controller
 
     public function destroy($id): JsonResponse
     {
-        $result = $this->priceService->destroy($id);
+        $result = $this->priceDiscountService->destroy($id);
 
         if ($result['success']) {
             return response()->json([
                 'message' => $result['message'],
-                'price' => $result['price']
+                'price_discount' => $result['price_discount']
             ], 202);
         } else {
             return response()->json([

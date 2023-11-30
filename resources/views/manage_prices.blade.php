@@ -36,8 +36,7 @@
                                 <hr/>
                                 @if (Session::has('message'))
                                     <div
-                                        class="alert alert-success text-center {{session('company_create') ? 'mt-1' :
-                                        'mt-3'}}">
+                                        class="alert alert-success text-center mt-3">
                                         {{session('message')}}
                                     </div>
                                     <hr/>
@@ -48,60 +47,64 @@
                                     </div>
                                     <hr/>
                                 @endif
-                                <form method="POST" action="{{route(isset($prices) ? 'price_edit' : 'create_price', [
+                                @if($editable)
+                                    <form method="POST" action="{{route(isset($prices) ? 'price_edit' : 'create_price', [
                                             'company' => request()->query('company'),
                                             'good_or_service' => request()->query('good_or_service'),
                                             'price_id' => isset($prices) ? $prices[0]['id'] : null])}}">
-                                    @csrf <!-- {{ csrf_field() }} -->
-                                    <div id="prices">
-                                        @if(isset($prices) && count($prices) > 0)
-                                            @foreach($prices as $price)
-                                                <div id="price">
-                                                    <div class="row">
-                                                        @component('components.forms.price_form_component', ['price' =>
-                                                            $price, 'editable' => $editable, 'small' => false])
-                                                        @endcomponent
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        @else
-                                            <div class="row">
-                                                @component('components.forms.price_form_component', [
-                                                                    'editable' => $editable, 'small' => false])
-                                                @endcomponent
-                                            </div>
                                         @endif
-                                    </div>
-                                    <div class="row">
-                                        @if($editable)
-                                            <div class="col-lg-6">
-                                                <a href="{{ route('prices', [
+                                        @csrf <!-- {{ csrf_field() }} -->
+                                        <div id="prices">
+                                            @if(isset($prices) && count($prices) > 0)
+                                                @foreach($prices as $price)
+                                                    <div id="price">
+                                                        <div class="row">
+                                                            @component('components.forms.price_form_component', ['price' =>
+                                                                $price, 'editable' => $editable, 'small' => false])
+                                                            @endcomponent
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            @else
+                                                <div class="row">
+                                                    @component('components.forms.price_form_component', [
+                                                                        'editable' => $editable, 'small' => false])
+                                                    @endcomponent
+                                                </div>
+                                            @endif
+                                        </div>
+                                        <div class="row">
+                                            @if($editable)
+                                                <div class="col-lg-6">
+                                                    <a href="{{ route('prices', [
                                                         'company' => request()->query('company'),
                                                         'good_or_service' => request()->query('good_or_service')
                                                         ]) }}" class="btn btn-outline-secondary mt-2 w-100"> Back to
-                                                    Prices</a>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <button
-                                                    class="btn btn-primary btn-block fa-lg gradient-custom-2 w-100 mt-2"
-                                                    type="submit"> {{isset($price) ? 'Save' : 'Create'}}
-                                                </button>
-                                            </div>
-                                        @else
-                                            <div class="col-lg-6">
-                                                <a href="{{ route('goods_and_services', ['company' => request()->query('company')]) }}"
-                                                   class="btn btn-outline-secondary mt-2 w-100"> Back to Goods and
-                                                    Services</a>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <a href="{{ route('create_price', [
+                                                        Prices</a>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <button
+                                                        class="btn btn-primary btn-block fa-lg gradient-custom-2 w-100 mt-2"
+                                                        type="submit"> {{isset($price) ? 'Save' : 'Create'}}
+                                                    </button>
+                                                </div>
+                                            @else
+                                                <div class="col-lg-6">
+                                                    <a href="{{ route('goods_and_services', ['company' => request()->query('company')]) }}"
+                                                       class="btn btn-outline-secondary mt-2 w-100"> Back to Goods and
+                                                        Services</a>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <a href="{{ route('create_price', [
                                                             'company' => request()->query('company'),
                                                             'good_or_service' => request()->query('good_or_service')])
                                                             }}" class="btn btn-primary mt-2 w-100">Add New Price</a>
-                                            </div>
-                                        @endif
-                                    </div>
-                                </form>
+                                                </div>
+                                            @endif
+                                        </div>
+                                        @if(true)
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     </div>

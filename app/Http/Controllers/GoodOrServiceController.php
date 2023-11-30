@@ -85,11 +85,29 @@ class GoodOrServiceController extends Controller
             'unit_of_measures' => $unit_of_measures, 'good_or_service' => $good_or_service]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
-        dd($request->except('_token'));
+        $request_array = $request->except('_token');
 
-        //TODO Implement update method! (also fix and improve update method!!) -
-        // connect good_and_service_details
+        $result = $this->goodOrServiceService->update($request_array, $request->toArray()['good_or_service']);
+
+        return $this->loadGoodsAndServicesPage($result);
+    }
+
+    public function delete(): RedirectResponse
+    {
+        $result = $this->goodOrServiceService->destroy(request()->query('good_or_service'));
+
+        return $this->loadGoodsAndServicesPage($result);
+    }
+
+    public function loadGoodsAndServicesPage(array $result): RedirectResponse
+    {
+        if ($result['success']) {
+            return redirect()->route('goods_and_services', ['company' => request()->query('company')])->with(
+                ['message' => $result['message']]);
+        } else {
+            return back()->withErrors(['message' => $result['message']])->withInput();
+        }
     }
 }

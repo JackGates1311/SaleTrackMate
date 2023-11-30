@@ -70,7 +70,8 @@ class GoodOrService extends Model
 
     public function prices(): HasMany
     {
-        return $this->hasMany(Price::class, 'good_or_service_id', 'id');
+        return $this->hasMany(Price::class, 'good_or_service_id', 'id')->
+        orderBy('expiration_date');
     }
 
     public function taxCategory(): HasOne

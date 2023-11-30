@@ -147,7 +147,7 @@ class TaxCategoryService
                 return ['success' => true, 'message' => Constants::TAX_CATEGORY_DELETE_SUCCESS,
                     'tax_category' => $tax_category];
             } catch (Exception $e) {
-                return ['success' => false, 'message' => Constants::TAX_CATEGORY_DELETE_FAIL . ': ' .
+                return ['success' => false, 'message' => Constants::TAX_CATEGORY_DELETE_FAIL . ' ' .
                     $e->getMessage()];
             }
         } else {

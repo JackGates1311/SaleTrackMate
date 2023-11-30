@@ -6,15 +6,6 @@ class Constants
     const COMPANY_NOT_FOUND = "Company not found with ID";
     const COMPANY_SAVE_SUCCESS = "Company saved successfully";
     const COMPANY_UPDATE_SUCCESS = "Company updated successfully";
-    const COMPANY_DELETE_SUCCESS = "Company deleted successfully";
-    const ARTICLE_NOT_FOUND = "GoodOrService not found with ID";
-    const ARTICLE_SAVE_SUCCESS = "GoodOrService saved successfully";
-    const ARTICLE_UPDATE_SUCCESS = "GoodOrService updated successfully";
-    const ARTICLE_DELETE_SUCCESS = "GoodOrService deleted successfully";
-    const ARTICLE_DETAILS_NOT_FOUND = "GoodOrService details not found with ID";
-    const ARTICLE_DETAILS_SAVE_SUCCESS = "GoodOrService details saved successfully";
-    const ARTICLE_DETAILS_UPDATE_SUCCESS = "GoodOrService details updated successfully";
-    const ARTICLE_DETAILS_DELETE_SUCCESS = "GoodOrService details deleted successfully";
     const INVOICE_NOT_FOUND = "Invoice not found with ID";
     const INVOICE_SAVE_SUCCESS = "Invoice saved successfully";
     const INVOICE_DELETE_SUCCESS = "Invoice deleted successfully";
@@ -30,7 +21,6 @@ class Constants
     const RECIPIENT_SAVE_SUCCESS = "Recipient saved successfully";
     const RECIPIENT_SAVE_FAIL = "Failed to save recipient";
     const INVOICE_ITEM_SAVE_FAIL = "Failed to save invoice item";
-    const INVOICE_ITEM_SAVE_SUCCESS = "Invoice item saved successfully";
     const INVOICE_CLOSURE_SAVE_SUCCESS = "Invoice closure data saved successfully";
     const INVOICE_CLOSURE_SAVE_FAIL = "Failed to save invoice closure data";
     const INVOICE_UPDATE_SUCCESS = "Invoice updated successfully";
@@ -88,4 +78,15 @@ class Constants
     const TAX_CATEGORY_DELETE_FAIL = "Failed to delete tax category:";
     const TAX_RATE_DELETE_SUCCESS = "Tax rate deleted successfully";
     const TAX_RATE_DELETE_FAIL = "Failed to delete tax rate:";
+    const PRICE_EXPIRED = "You can not delete or modify expired price";
+    const NEW_EXPIRATION_DATE_PAST = "Expiration date is in past";
+    const PRICE_DELETE_SUCCESS = "Price deleted successfully";
+    const PRICE_DELETE_FAIL = "Failed to delete price:";
+    const DUPLICATE_EXPIRATION_DATE = "Expiration date is the same with another one";
+    const PRICE_DISCOUNT_DELETE_SUCCESS = "Price discount deleted successfully";
+    const PRICE_DISCOUNT_DELETE_FAIL = "Failed to delete price discount:";
+    const FROM_DATE_IN_PAST = "Field from_date is in past";
+    const DUE_DATE_INVALID = "Field due_date is invalid";
+    const DATE_RANGE_OVERLAP = "Date range overlap detected";
+    const PRICE_DISCOUNT_EXPIRED = "Price discount is expired";
 }

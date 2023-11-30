@@ -6,18 +6,13 @@ use App\Constants;
 use App\Models\GoodOrServiceDetails;
 use Exception;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class GoodOrServiceDetailsService
 {
-    /**
-     * @throws ValidationException
-     */
     public function store(array $data): array
     {
-        $validated_data = Validator::make($data, GoodOrServiceDetails::$rules)->validate();
-        
         try {
+            $validated_data = Validator::make($data, GoodOrServiceDetails::$rules)->validate();
             $good_or_service_details = GoodOrServiceDetails::create($validated_data);
             return ['success' => true, 'message' => Constants::GOOD_OR_SERVICE_DETAILS_SAVE_SUCCESS,
                 'good_or_service_details' => $good_or_service_details];
@@ -27,9 +22,6 @@ class GoodOrServiceDetailsService
         }
     }
 
-    /**
-     * @throws ValidationException
-     */
     public function update(array $data, $id): array
     {
         $good_or_service_details = GoodOrServiceDetails::find($id);
@@ -38,9 +30,8 @@ class GoodOrServiceDetailsService
             return ['success' => false, 'message' => Constants::GOOD_OR_SERVICE_DETAILS_NOT_FOUND . ": " . $id];
         }
 
-        $validated_data = Validator::make($data, GoodOrServiceDetails::$rules)->validate();
-
         try {
+            $validated_data = Validator::make($data, GoodOrServiceDetails::$rules)->validate();
             $good_or_service_details->update($validated_data);
             return ['success' => true, 'message' => Constants::GOOD_OR_SERVICE_DETAILS_UPDATE_SUCCESS,
                 'good_or_service_details' => $good_or_service_details];
@@ -48,6 +39,4 @@ class GoodOrServiceDetailsService
             return ['success' => false, 'message' => Constants::GOOD_OR_SERVICE_DETAILS_UPDATE_FAIL . ': ' . $e->getMessage()];
         }
     }
-
-    // public function destroy($id)
 }

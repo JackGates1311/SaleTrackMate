@@ -81,8 +81,24 @@
                                                 <td class="text-nowrap text-center text-middle">{{
                                                     $good_or_service['warranty_len'] }} (months)
                                                 </td>
-                                                <td class="text-nowrap text-center text-middle">{{
-                                                    $good_or_service['actual_price']['amount'] }} <br>
+                                                <td class="text-nowrap text-center text-middle">
+                                                    @if($good_or_service['actual_price_with_discount'])
+                                                        <div class="text-info fs-5">
+                                                            {{round($good_or_service['actual_price_with_discount'],2) .
+                                                            ' (-' . $good_or_service['actual_price_discount']
+                                                            ['percentage'] . ' %)'}}
+                                                        </div>
+                                                        <div class="text-info fs-6">Expires on {{Carbon\Carbon::parse(
+                                                        $good_or_service['actual_price_discount']['due_date'])->
+                                                        format('M d, Y')}}
+                                                        </div>
+                                                        <div class="text-decoration-line-through">
+                                                            @endif
+                                                            {{round($good_or_service['actual_price']['amount'], 2)}}
+                                                            <br>
+                                                            @if($good_or_service['actual_price_with_discount'])
+                                                        </div>
+                                                    @endif
                                                     @if($good_or_service['actual_price']['all_prices_expired'])
                                                         <div class="text-danger">
                                                             Price is expired
@@ -140,8 +156,8 @@
                                                             <span class="visually-hidden">Edit</span>
                                                         </a>
                                                         <form class="w-100" method="POST"
-                                                              action="{{route('recipient_delete',
-                                                                ['recipient' => null,
+                                                              action="{{route('good_or_service_delete',
+                                                                ['good_or_service' => $good_or_service['id'],
                                                                 'company' => request()->query('company')])}}">
                                                             @csrf <!-- {{ csrf_field() }} -->
                                                             <button type="submit"

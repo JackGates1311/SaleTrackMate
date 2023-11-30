@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @method static create(array $validated_data)
  * @method static find($id)
+ * @method static where(string $string, string $good_or_service_id)
  */
 class PriceDiscount extends Model
 {

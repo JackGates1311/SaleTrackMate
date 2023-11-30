@@ -14,9 +14,12 @@ window.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('price_expiration_date').value === null ||
         document.getElementById('price_expiration_date').value === "") {
         document.getElementById('price_expiration_date').value = priceExpirationDate.toISOString().slice(0, -8);
+        document.getElementById('price_expiration_date').min = tomorrow.toISOString().slice(0, -8);
+    } else {
+        document.getElementById('price_expiration_date').min =
+            document.getElementById('price_expiration_date').value;
     }
 
-    document.getElementById('price_expiration_date').min = tomorrow.toISOString().slice(0, -8);
 });
 
 let PriceModule = {

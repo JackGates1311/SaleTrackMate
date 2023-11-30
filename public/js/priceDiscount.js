@@ -6,9 +6,12 @@ window.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('discount_from_date').value === null ||
         document.getElementById('discount_from_date').value === "") {
         document.getElementById('discount_from_date').value = todayDate.toISOString().slice(0, -8);
+        document.getElementById('discount_from_date').min = todayDate.toISOString().slice(0, -8);
+    } else {
+        document.getElementById('discount_from_date').min =
+            document.getElementById('discount_from_date').value;
     }
 
-    document.getElementById('discount_from_date').min = todayDate.toISOString().slice(0, -8);
 
     let priceDiscountDueDate = new Date();
     priceDiscountDueDate.setDate(priceDiscountDueDate.getDate() + 21);
@@ -17,9 +20,12 @@ window.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('discount_due_date').value === null ||
         document.getElementById('discount_due_date').value === "") {
         document.getElementById('discount_due_date').value = priceDiscountDueDate.toISOString().slice(0, -8);
+        document.getElementById('discount_due_date').min = todayDate.toISOString().slice(0, -8);
+    } else {
+        document.getElementById('discount_due_date').min =
+            document.getElementById('discount_due_date').value;
     }
 
-    document.getElementById('discount_due_date').min = todayDate.toISOString().slice(0, -8);
 });
 
 let PriceDiscountModule = {
