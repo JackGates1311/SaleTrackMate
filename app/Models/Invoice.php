@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @method static find($id)
+ * @method static where(string $string, string $string1, string $string2)
  */
 class Invoice extends Model
 {
@@ -36,6 +37,7 @@ class Invoice extends Model
         'total_rebate',
         'status',
         'type',
+        'currency',
         'company_id',
         'issuer_company_id',
         'recipient_company_id',
@@ -91,6 +93,7 @@ class Invoice extends Model
         'total_rebate' => 'required|numeric',
         'status' => 'required|in:STAGING,SENT,CANCELLED',
         'type' => 'required|in:INVOICE,PROFORMA',
+        'currency' => 'required|string|max:4',
         'company_id' => 'required|uuid',
         'issuer_company_id' => 'required|uuid',
         'recipient_company_id' => 'required|uuid',

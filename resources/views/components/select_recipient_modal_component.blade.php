@@ -6,14 +6,14 @@
                 <h5 class="modal-title w-100" id="changePasswordModalLabel">Select Recipient</h5>
             </div>
             <div class="modal-body">
-                @if(isset($recipients) && count($recipients) > 0)
+                @if(isset($recipient_list) && count($recipient_list) > 0)
                     <label for="recipientSelect" class="form-label">Recipient:</label>
                     <select
-                        class="form-select mb-3 mb-lg-0 me-lg-2 w-sm-100 w-100" id="recipientSelect"
-                        name="recipient">
-                        @foreach ($recipients as $recipient)
-                            <option value="{{ $recipient['id'] }}" data-recipient="{{ json_encode($recipient) }}">
-                                {{ $recipient['name'] }}
+                        class="form-select mb-3 mb-lg-0 me-lg-2 w-sm-100 w-100" id="recipientSelect">
+                        @foreach ($recipient_list as $recipient_data)
+                            <option value="{{ $recipient_data['id'] }}"
+                                    data-recipient="{{ json_encode($recipient_data) }}">
+                                {{ $recipient_data['name'] }}
                             </option>
                         @endforeach
                     </select>
@@ -24,7 +24,7 @@
                 @endif
             </div>
             <div class="modal-footer">
-                @if(isset($recipients) && count($recipients) > 0)
+                @if(isset($recipient_list) && count($recipient_list) > 0)
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" onclick="selectRecipient(null)">Select Recipient
                     </button>

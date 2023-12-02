@@ -55,6 +55,8 @@ Route::get('/about', function () {
 Route::middleware('auth:web')->group(function () {
     Route::group(['prefix' => 'invoices'], function () {
         Route::get('/', [InvoiceController::class, 'index'])->name('invoices');
+        Route::post('/', [InvoiceController::class, 'setYear'])->name('invoices_year');
+        Route::post('/search', [InvoiceController::class, 'search'])->name('invoices_search');
         Route::get('/create', [InvoiceController::class, 'createView'])->name('create_invoice_view');
         Route::post('/create', [InvoiceController::class, 'create'])->name('create_invoice');
     });

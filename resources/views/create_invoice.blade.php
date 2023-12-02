@@ -53,8 +53,8 @@
                     @endif
                 </div>
                 <div class="tab-pane" id="tabpage_2" role="tabpanel">
-                    @component('components.forms.invoice_recipient_form_component', ['recipients' =>
-                                $issuer['recipients']])
+                    @component('components.forms.invoice_recipient_form_component', ['recipient_list' =>
+                                $issuer['recipient_list']])
                     @endcomponent
                 </div>
                 <div class="tab-pane" id="tabpage_3" role="tabpanel">
@@ -68,7 +68,7 @@
                     </div>
                     <hr/>
                     <div class="d-flex w-100 justify-content-end align-content-end gap-2" role="group">
-                        <a type="button" class="btn btn-primary" id="select-recipient" data-bs-toggle="modal"
+                        <a type="button" class="btn btn-primary" id="select-good-or-service" data-bs-toggle="modal"
                            data-bs-target="#selectInvoiceItemModal">
                             Select Good or Service
                         </a>

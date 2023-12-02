@@ -66,6 +66,7 @@ class InvoiceService
                 $recipient = $this->invoiceRecipientService->store($data['recipient']);
                 $fiscal_year = $this->fiscalYearService->store($data['fiscal_year'], $company_id);
 
+                $data['currency'] = strtoupper($data['currency']);
                 $data['fiscal_year_id'] = $fiscal_year['fiscal_year']['id'];
                 $data['recipient_company_id'] = $recipient['invoice_recipient']['id'];
                 $data['issuer_company_id'] = $issuer['invoice_issuer']['id'];
@@ -92,7 +93,6 @@ class InvoiceService
                     $invoice_closure = $this->invoiceClosureService->store();
 
                     $data['invoice_closure'] = $invoice_closure['invoice_closure'];
-                    //$data['issuer']
 
                     DB::commit();
                     return ['success' => true, 'message' => Constants::INVOICE_SAVE_SUCCESS, 'invoice' => $data];

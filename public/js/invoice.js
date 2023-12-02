@@ -239,7 +239,7 @@ function addInvoiceItem(invoiceItem) {
         }
 
         if (vatPercentageField) {
-            if (invoiceItem.tax_category.actual_tax_rate.percentage_value !== null) {
+            if (invoiceItem.tax_category !== null && invoiceItem.tax_category.actual_tax_rate.percentage_value !== null) {
                 vatPercentageField.value = invoiceItem.tax_category.actual_tax_rate.percentage_value !== undefined ?
                     parseFloat(invoiceItem.tax_category.actual_tax_rate.percentage_value).toString() : '';
             }
@@ -339,9 +339,9 @@ function clearRecipientFields() {
  * @param {string} invoiceItem.actual_price_discount.percentage - The actual price discount percentage.
  * @param {string} invoiceItem.image_url - The image url.
  * @param {string} invoiceItem.actual_tax_rate - The actual tax rate.
- * @param {string} invoiceItem.unit_of_measure.abbreviation - The unit of measure.
+ * @param {string|null} invoiceItem.unit_of_measure.abbreviation - The unit of measure.
  * @param {string} invoiceItem.actual_price - The actual price.
- * @param {string} invoiceItem.tax_category - The tax category.
+ * @param {string|null} invoiceItem.tax_category - The tax category.
  * @param {string} invoiceItem.actual_tax_rate.percentage_value - The actual tax rate percentage value.
  */
 function selectInvoiceItem(invoiceItem) {

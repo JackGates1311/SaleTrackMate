@@ -5,12 +5,20 @@
 <hr/>
 
 <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-2">
         <div class="form-outline mb-4">
             <label for="invoice_num" class="form-label">Invoice Number:</label>
             <input type="text" class="form-control" id="invoice_num" name="invoice_num"
                    placeholder="Invoice number"
                    value="{{old('invoice_num') == null ? $invoice_num : old('invoice_num')}}" required>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="form-outline mb-4">
+            <label for="currency" class="form-label">Invoice Currency:</label>
+            <input type="text" class="form-control" id="currency" name="currency"
+                   placeholder="Invoice currency" maxlength="4"
+                   value="{{old('currency')}}" required>
         </div>
     </div>
     <div class="col-lg-4">

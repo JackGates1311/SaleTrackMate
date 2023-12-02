@@ -104,5 +104,5 @@
         </div>
     </div>
 </div>
-@component('components.select_recipient_modal_component', ['recipients' => $recipients])
+@component('components.select_recipient_modal_component', ['recipient_list' => $recipient_list])
 @endcomponent

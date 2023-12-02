@@ -51,8 +51,8 @@
                         <p><strong>Invoice Type:</strong> {{ucwords(strtolower($invoice['type']))}}</p>
                         <p><strong>Due Date:</strong> {{ date('y-m-d - h:i A', strtotime($invoice['due_date'])) }}</p>
                         <p><strong>Payment Method:</strong>
-                            {{ ucwords(strtolower(str_replace('_', ' ', $invoice['payment_method']))) }} (Local
-                            Currency)</p>
+                            {{ ucwords(strtolower(str_replace('_', ' ', $invoice['payment_method']))) }}
+                            ({{$invoice['currency']}})</p>
                         <p><strong>Total Price:</strong> {{ $invoice['total_price'] + $invoice['total_vat'] }} </p>
                     </div>
                 </div>

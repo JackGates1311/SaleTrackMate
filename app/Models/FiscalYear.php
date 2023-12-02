@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @method static create(array $validated_data)
+ * @method static distinct()
+ * @method static find($id)
  */
 class FiscalYear extends Model
 {

@@ -25,6 +25,7 @@ return new class extends Migration {
             $table->decimal('total_rebate', 10);
             $table->string('status');
             $table->string('type');
+            $table->string('currency');
             $table->timestamps();
         });
     }

@@ -14,11 +14,15 @@
         <div class="row bg-white">
             <div class="col-lg-4">
                 <div class="search-form">
-                    <form class="invoice-search-form mb-4" action="#" method="GET">
+                    <form class="invoice-search-form mb-4" action="{{route('invoices_search', [
+                        'company' => request()->query('company'),
+                        'invoice' => request()->query('invoice'),
+                        'year' => request()->query('year')])}}" method="POST">
+                        @csrf <!-- {{ csrf_field() }} -->
                         <label for="search"></label>
                         <div class="input-group">
                             <input type="text" id="search" name="search" class="form-control"
-                                   placeholder="Search for invoices">
+                                   placeholder="Search for invoices" value="{{$search}}">
                             <button type="submit" class="btn btn-primary">
                                 <img src="{{ asset('images/res/search.png') }}" alt="arrow_forward" width="24"
                                      height="24">
@@ -37,13 +41,25 @@
                 <div class="d-inline-flex justify-content-between w-100">
                     <h5 class="mx-2">Invoices:</h5>
                     <div>
-                        <button class="btn btn-secondary btn-dropdown btn-sm dropdown-toggle" type="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                            2023
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>2022</li>
-                        </ul>
+                        <form action="{{route('invoices_year', [
+                        'company' => request()->query('company'),
+                        'invoice' => request()->query('invoice'),
+                        'search' => request()->query('search')])}}" method="POST">
+                            @csrf <!-- {{ csrf_field() }} -->
+                            <label>
+                                <select name="year" class="btn btn-secondary btn-dropdown btn-sm"
+                                        onchange="this.form.submit()">
+                                    @if(isset($fiscal_years) && count($fiscal_years) > 0)
+                                        @foreach($fiscal_years as $fiscal_year)
+                                            <option
+                                                value="{{ $fiscal_year }}" {{$selected_fiscal_year == $fiscal_year ? 'selected' : ''}}>{{ $fiscal_year }}</option>
+                                        @endforeach
+                                    @else
+                                        <option value="{{ date('Y') }}">{{ date('Y') }}</option>
+                                    @endif
+                                </select>
+                            </label>
+                        </form>
                     </div>
                 </div>
                 <div class="invoices-list my-3">
@@ -54,10 +70,20 @@
                         <div id="invoices-not-found"
                              class="d-flex-row p-4 justify-content-center align-items-center border border-1
                              rounded-5">
-                            <h5 class="text-center">It looks like you haven't created any invoices yet for the selected
-                                company</h5>
-                            <p class="small text-center p-3">To create your first invoice for selected company,
-                                click on button <b><i>Create New Invoice</i></b></p>
+                            @if(request()->has('search'))
+                                <h5 class="text-center">No Invoices Found</h5>
+                                <p class="small text-center p-3">
+                                    It seems there are no invoices matching your search criteria for the selected
+                                    company. If you haven't created any invoices yet, you can start by clicking on the
+                                    <b><i>Create New Invoice</i></b> button.
+                                </p>
+                            @else
+                                <h5 class="text-center">It looks like you haven't created any invoices yet for the
+                                    selected
+                                    company</h5>
+                                <p class="small text-center p-3">To create your first invoice for selected company,
+                                    click on button <b><i>Create New Invoice</i></b></p>
+                            @endif
                         </div>
                     @endif
                 </div>

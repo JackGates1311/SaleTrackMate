@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FiscalYear;
+use App\Models\Invoice;
 use App\Services\CompanyService;
 use App\Services\GoodOrServiceService;
 use App\Services\InvoiceService;
@@ -40,22 +42,68 @@ class InvoiceController extends Controller
         $companies = $result['companies']->toArray();
         $invoice = [];
         $invoices = [];
+        $search = '';
+        $selected_fiscal_year = null;
 
         if (request()->has('invoice')) {
             $invoice = $this->invoiceService->show(request()->query('invoice'))['invoice'];
         }
+        if (request()->has('year')) {
+            $selected_fiscal_year = request()->query('year');
+        }
+        if (request()->has('search')) {
+            $search = request()->query('search');
+            $company = $companies[0]['id'];
+
+            if (request()->has('company')) {
+                $company = request()->query('company');
+            }
+
+            $invoices = Invoice::where('invoice_num', 'like', '%' . $search . '%')
+                ->where('company_id', $company)->get();
+
+            if (isset($selected_fiscal_year)) {
+                $invoices = $invoices->filter(function ($invoice) use ($selected_fiscal_year) {
+                    $fiscal_year = FiscalYear::find($invoice->fiscal_year_id)['year'];
+                    return $fiscal_year == $selected_fiscal_year;
+                });
+            }
+        }
 
         if (!request()->has('company')) {
-            if (isset($this)) {
+            if (isset($this) && !request()->has('search')) {
                 $invoices = $this->invoiceService->findByCompanyId($companies[0]['id'])['invoices'];
+                if (isset($selected_fiscal_year)) {
+                    $invoices = $invoices->filter(function ($invoice) use ($selected_fiscal_year) {
+                        $fiscal_year = FiscalYear::find($invoice->fiscal_year_id)['year'];
+                        return $fiscal_year == $selected_fiscal_year;
+                    });
+                }
             }
+            $fiscal_years = FiscalYear::distinct()
+                ->where('company_id', $companies[0]['id'])
+                ->orderBy('year', 'asc')
+                ->pluck('year')->toArray();
             return redirect()->route('invoices', ['company' => $companies[0]['id']])->
-            with(['companies' => $companies, 'invoices' => $invoices, 'invoice' => $invoice]);
+            with(['companies' => $companies, 'invoices' => $invoices, 'invoice' => $invoice, 'search' => $search,
+                'fiscal_years' => $fiscal_years, 'selected_fiscal_year' => $selected_fiscal_year]);
         } else {
-            if (!empty($this->invoiceService->findByCompanyId(request()->query('company'))['invoices'])) {
+            if (!empty($this->invoiceService->findByCompanyId(request()->query('company'))['invoices']) &&
+                !request()->has('search')) {
                 $invoices = $this->invoiceService->findByCompanyId(request()->query('company'))['invoices'];
+                if (isset($selected_fiscal_year)) {
+                    $invoices = $invoices->filter(function ($invoice) use ($selected_fiscal_year) {
+                        $fiscal_year = FiscalYear::find($invoice->fiscal_year_id)['year'];
+                        return $fiscal_year == $selected_fiscal_year;
+                    });
+                }
             }
-            return view('invoices', ['companies' => $companies, 'invoices' => $invoices, 'invoice' => $invoice]);
+            $fiscal_years = FiscalYear::distinct()
+                ->where('company_id', request()->query('company'))
+                ->orderBy('year', 'asc')
+                ->pluck('year')->toArray();
+            return view('invoices', ['companies' => $companies, 'invoices' => $invoices, 'invoice' => $invoice,
+                'search' => $search, 'fiscal_years' => $fiscal_years, 'selected_fiscal_year' => $selected_fiscal_year]);
         }
     }
 
@@ -68,7 +116,7 @@ class InvoiceController extends Controller
         if (request()->has('company')) {
             if (!empty($this->companyService->show(request()->query('company'))['company'])) {
                 $issuer = $this->companyService->show(request()->query('company'))['company'];
-                $issuer['recipients'] = $this->recipientService->getByCompanyId(request()->query('company'))
+                $issuer['recipient_list'] = $this->recipientService->getByCompanyId(request()->query('company'))
                 ['recipients']->toArray();
             }
             $goods_and_services = $this->goodOrServiceService->findByCompanyId(request()->query('company'))
@@ -114,5 +162,17 @@ class InvoiceController extends Controller
         }
 
         return $requestArray;
+    }
+
+    public function search(Request $request): RedirectResponse
+    {
+        return redirect()->route('invoices', ['company' => $request['company'],
+            'invoice' => $request['invoice'], 'search' => $request['search'], 'year' => $request['year']]);
+    }
+
+    public function setYear(Request $request): RedirectResponse
+    {
+        return redirect()->route('invoices', ['company' => $request['company'],
+            'invoice' => $request['invoice'], 'search' => $request['search'], 'year' => $request['year']]);
     }
 }
