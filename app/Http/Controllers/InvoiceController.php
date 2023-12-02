@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Services\CompanyService;
+use App\Services\GoodOrServiceService;
 use App\Services\InvoiceService;
 use App\Services\RecipientService;
 use App\Services\UserService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -19,14 +21,17 @@ class InvoiceController extends Controller
     private UserService $userService;
     private InvoiceService $invoiceService;
     private RecipientService $recipientService;
+    private GoodOrServiceService $goodOrServiceService;
 
-    public function __construct(CompanyService $companyService, UserService $userService,
-                                InvoiceService $invoiceService, RecipientService $recipientService)
+    public function __construct(CompanyService       $companyService, UserService $userService,
+                                InvoiceService       $invoiceService, RecipientService $recipientService,
+                                GoodOrServiceService $goodOrServiceService)
     {
         $this->companyService = $companyService;
         $this->userService = $userService;
         $this->invoiceService = $invoiceService;
         $this->recipientService = $recipientService;
+        $this->goodOrServiceService = $goodOrServiceService;
     }
 
     public function index(): Factory|View|Application|RedirectResponse
@@ -57,17 +62,23 @@ class InvoiceController extends Controller
     public function createView(): Factory|View|Application
     {
         $issuer = [];
-        $recipients = [];
+        $goods_and_services = [];
+        $invoice_num = '';
+
         if (request()->has('company')) {
             if (!empty($this->companyService->show(request()->query('company'))['company'])) {
                 $issuer = $this->companyService->show(request()->query('company'))['company'];
+                $issuer['recipients'] = $this->recipientService->getByCompanyId(request()->query('company'))
+                ['recipients']->toArray();
             }
-            /*if (!empty($this->recipientService)) {
-                $recipients = $this->recipientService->getByCompanyId(request()->query('company'))['recipients'];
-            }*/
+            $goods_and_services = $this->goodOrServiceService->findByCompanyId(request()->query('company'))
+            ['goods_or_services']->toArray();
+            $invoices = $this->invoiceService->findByCompanyId(request()->query('company'))['invoices']->toArray();
+            $invoice_num = count($invoices) + 1 . '/' . Carbon::now()->year;
         }
 
-        return view('create_invoice', ['issuer' => $issuer, 'recipients' => $recipients]);
+        return view('create_invoice', ['issuer' => $issuer, 'goods_and_services' => $goods_and_services,
+            'invoice_num' => $invoice_num]);
     }
 
     public function create(Request $request): RedirectResponse

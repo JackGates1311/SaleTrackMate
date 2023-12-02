@@ -66,7 +66,7 @@ class PriceDiscountService
             $from_date = Carbon::parse($validated_data['from_date']);
             $due_date = Carbon::parse($validated_data['due_date']);
 
-            if ($from_date <= $current_date) {
+            if ($data['from_date'] == $price_discount->from_date && $from_date <= $current_date) {
                 return ['success' => false, 'message' => Constants::FROM_DATE_IN_PAST];
             }
 

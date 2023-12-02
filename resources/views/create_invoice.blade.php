@@ -53,11 +53,13 @@
                     @endif
                 </div>
                 <div class="tab-pane" id="tabpage_2" role="tabpanel">
-                    @component('components.forms.invoice_recipient_form_component', ['recipients' => $recipients])
+                    @component('components.forms.invoice_recipient_form_component', ['recipients' =>
+                                $issuer['recipients']])
                     @endcomponent
                 </div>
                 <div class="tab-pane" id="tabpage_3" role="tabpanel">
-                    @component('components.forms.invoice_form_component', ['issuer' => $issuer])
+                    @component('components.forms.invoice_form_component', ['issuer' => $issuer, 'invoice_num' =>
+                                $invoice_num ?? ''])
                     @endcomponent
                 </div>
                 <div class="tab-pane" id="tabpage_4" role="tabpanel">
@@ -66,8 +68,12 @@
                     </div>
                     <hr/>
                     <div class="d-flex w-100 justify-content-end align-content-end gap-2" role="group">
+                        <a type="button" class="btn btn-primary" id="select-recipient" data-bs-toggle="modal"
+                           data-bs-target="#selectInvoiceItemModal">
+                            Select Good or Service
+                        </a>
                         <a type="button" class="btn btn-primary" id="add-bank-account"
-                           onclick="addInvoiceItem()">
+                           onclick="addInvoiceItem(null)">
                             Add New Invoice Item
                         </a>
                     </div>
@@ -84,6 +90,9 @@
                             @endcomponent
                         @endif
                     </div>
+                    @component('components.select_invoice_item_modal_component', ['goods_and_services' =>
+                                    $goods_and_services])
+                    @endcomponent
                 </div>
             </div>
             @if(isset($issuer) && count($issuer) > 0)
