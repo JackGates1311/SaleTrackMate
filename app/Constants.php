@@ -89,4 +89,6 @@ class Constants
     const DUE_DATE_INVALID = "Field due_date is invalid";
     const DATE_RANGE_OVERLAP = "Date range overlap detected";
     const PRICE_DISCOUNT_EXPIRED = "Price discount is expired";
+    const USER_REGISTRATION_REQUEST_UPDATE_SUCCESS = "User registration request updated successfully";
+    const USER_REGISTRATION_REQUEST_UPDATE_FAIL = "Failed to update user registration request:";
 }

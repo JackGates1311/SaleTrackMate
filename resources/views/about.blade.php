@@ -28,20 +28,24 @@
                              id="description-section">
                             <div class="text-white px-3 py-4 p-md-5 mx-md-4">
                                 <div class="contact-us mb-3">
-                                    <img src="{{ asset('images/res/call.png') }}" alt="arrow_forward" width="32" height="32">
+                                    <img src="{{ asset('images/res/call.png') }}" alt="arrow_forward" width="32"
+                                         height="32">
                                     +381 70 12 34 567
                                 </div>
                                 <div class="contact-us mb-3">
-                                    <img src="{{ asset('images/res/alternate_email.png') }}" alt="arrow_forward" width="32" height="32">
+                                    <img src="{{ asset('images/res/alternate_email.png') }}" alt="arrow_forward"
+                                         width="32" height="32">
                                     mail@example.com
                                 </div>
                                 <div class="contact-us mb-3">
-                                    <img src="{{ asset('images/res/store.png') }}" alt="arrow_forward" width="32" height="32">
+                                    <img src="{{ asset('images/res/store.png') }}" alt="arrow_forward" width="32"
+                                         height="32">
                                     Tax Code: 123456789
                                 </div>
                                 <div class="contact-us mb-3">
-                                    <img src="{{ asset('images/res/house.png') }}" alt="arrow_forward" width="32" height="32">
-                                    Maksima Gorkog, Novi Sad, Serbia
+                                    <img src="{{ asset('images/res/house.png') }}" alt="arrow_forward" width="32"
+                                         height="32">
+                                    Bulevar Kralja Petra I, Novi Sad, Serbia
                                 </div>
                             </div>
                         </div>

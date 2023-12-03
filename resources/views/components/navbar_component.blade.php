@@ -62,20 +62,23 @@
                             </ul>
                         </li>
                     @endif
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            Admin Actions
-                        </a>
-                        <ul class="dropdown-menu text-center" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Backup & Restore</a></li>
-                            <li><a class="dropdown-item" href="#">Manage Requests</a></li>
-                            <li><a class="dropdown-item" href="{{route('tax_categories', ['company' =>
+                    @if(session()->get('user_data')['account_type'] == 'ADMINISTRATOR')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                Admin Actions
+                            </a>
+                            <ul class="dropdown-menu text-center" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" href="#">Backup & Restore</a></li>
+                                <li><a class="dropdown-item" href="{{route('user_registration_requests', ['company' =>
+                                    request()->query('company')])}}">Manage User Registration Requests</a></li>
+                                <li><a class="dropdown-item" href="{{route('tax_categories', ['company' =>
                                     request()->query('company')])}}">Manage Tax Categories</a></li>
-                            <li><a class="dropdown-item" href="{{route('unit_of_measures', ['company' =>
+                                <li><a class="dropdown-item" href="{{route('unit_of_measures', ['company' =>
                                     request()->query('company')])}}">Manage Unit of Measures</a></li>
-                        </ul>
-                    </li>
+                            </ul>
+                        </li>
+                    @endif
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">

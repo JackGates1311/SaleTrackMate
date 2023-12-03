@@ -94,5 +94,9 @@ Route::middleware('auth:api')->group(function () {
 Route::group(['prefix' => 'user'], function () {
     Route::post('/register', [UserControllerApi::class, 'register'])->name('register');
     Route::post('/login', [UserControllerApi::class, 'login'])->name('login');
+    Route::get('/requests', [UserControllerApi::class, 'getRegistrationRequests'])->
+    name('getRegistrationRequests');
+    Route::put('/request/{id}', [UserControllerApi::class, 'updateApprovalStatus'])->
+    name('updateApprovalStatus');
     Route::match(['get', 'post'], '/logout', [UserControllerApi::class, 'logout'])->name('logout');
 });

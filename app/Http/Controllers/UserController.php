@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\AccountType;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -70,5 +72,34 @@ class UserController extends Controller
         session()->forget('user_data');
 
         return redirect('/');
+    }
+
+    public function manageRequests(): Factory|View|Application
+    {
+        $result = $this->userService->getUserData($this->userService->getUserIdWeb());
+
+        if ($result['success'] && $result['user']['account_type'] == AccountType::ADMINISTRATOR->value) {
+            $user_registration_requests = $this->userService->getRegistrationRequests(
+                $this->userService->getUserIdWeb())['user_registration_requests'];
+            return view('manage_user_registration_requests', ['user_registration_requests' =>
+                $user_registration_requests]);
+        } else {
+            return view('permission_denied');
+        }
+    }
+
+    public function updateRequestStatus(Request $request): RedirectResponse
+    {
+        $request_array = $request->except('_token');
+
+        $result = $this->userService->updateApprovalStatus($request_array, $request_array['user_registration_request'],
+            $this->userService->getUserIdWeb());
+
+        if ($result['success']) {
+            return redirect()->route('user_registration_requests',
+                ['company' => request()->query('company')])->with(['message' => $result['message']]);
+        } else {
+            return back()->withErrors(['message' => $result['message']]);
+        }
     }
 }

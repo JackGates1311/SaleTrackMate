@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Constants;
 use App\Enums\AccountType;
 use App\Models\User;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -67,6 +68,11 @@ class UserService
         }
 
         $user = $this->user_model->where('email', $credentials['email'])->firstOrFail();
+
+        if ($user->is_active == -1) {
+            return ['success' => false, 'message' => 'Account is blocked by administrator',
+                'error' => 'Account is blocked by administrator'];
+        }
 
         if ($user->is_active) {
             return $this->generateSuccessResponse($user, 'User Logged In successfully');
@@ -140,5 +146,44 @@ class UserService
         }
 
         return ['success' => true, 'user' => $user];
+    }
+
+    public function getRegistrationRequests($user_id): array
+    {
+        $result = $this->getUserData($user_id);
+
+        if ($result['success'] && $result['user']['account_type'] == AccountType::ADMINISTRATOR->value) {
+            $user_registration_requests = (new User)->where('is_active', 0)->get();
+            return ['success' => true, 'user_registration_requests' => $user_registration_requests];
+        } else {
+            return ['success' => false, 'message' => Constants::PERMISSION_DENIED];
+        }
+    }
+
+    public function updateApprovalStatus(array $data, string $registration_request_id, string $user_id): array
+    {
+        $result = $this->getUserData($user_id);
+
+        if ($result['success'] && $result['user']['account_type'] == AccountType::ADMINISTRATOR->value) {
+            $user_registration_request = (new User)->find($registration_request_id);
+
+            if ($data['approved']) {
+                $user_registration_request->is_active = true;
+            } else {
+                $user_registration_request->is_active = -1;
+            }
+
+            try {
+                $user_registration_request->update($user_registration_request->toArray());
+                return ['success' => true, 'message' => Constants::USER_REGISTRATION_REQUEST_UPDATE_SUCCESS .
+                    ' with status ' . $user_registration_request->is_active,
+                    'user_registration_request' => $user_registration_request];
+            } catch (Exception $e) {
+                return ['success' => false, 'message' => Constants::USER_REGISTRATION_REQUEST_UPDATE_FAIL . ' ' .
+                    $e->getMessage()];
+            }
+        } else {
+            return ['success' => false, 'message' => Constants::PERMISSION_DENIED];
+        }
     }
 }

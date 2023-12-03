@@ -49,14 +49,45 @@ class UserControllerApi extends Controller
     {
         $token = PersonalAccessToken::findToken($request->bearerToken());
 
-        if($token != null)
-        {
+        if ($token != null) {
             $token->delete();
             $this->userService->logout();
 
             return response()->json(['message' => 'Logged out successfully']);
         } else {
             return response()->json(['message' => 'User is already logged out']);
+        }
+    }
+
+    public function getRegistrationRequests(): JsonResponse
+    {
+        $result = $this->userService->getRegistrationRequests($this->userService->getUserIdApi());
+
+        if ($result['success']) {
+            return response()->json([
+                'user_registration_requests' => $result['user_registration_requests']
+            ]);
+        } else {
+            return response()->json([
+                'message' => $result['message']
+            ], 500);
+        }
+    }
+
+    public function updateApprovalStatus(Request $request, string $id): JsonResponse
+    {
+        $result = $this->userService->updateApprovalStatus($request->toArray(), $id,
+            $this->userService->getUserIdApi());
+
+        if ($result['success']) {
+            return response()->json([
+                'message' => $result['message'],
+                'user_registration_request' => $result['user_registration_request']
+            ], 202);
+        } else {
+            return response()->json([
+                'message' => $result['message']
+            ], 500);
         }
     }
 }

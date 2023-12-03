@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TaxCategory;
+use App\Enums\AccountType;
 use App\Services\TaxCategoryService;
 use App\Services\UserService;
-use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -28,8 +27,15 @@ class TaxCategoryController extends Controller
     {
         $tax_categories = $this->taxCategoryService->index();
 
-        return view('manage_tax_categories', ['tax_categories' => $tax_categories,
-            'editable' => false]);
+        $result = $this->userService->getUserData($this->userService->getUserIdWeb());
+
+        if ($result['success'] && $result['user']['account_type'] == AccountType::ADMINISTRATOR->value) {
+            return view('manage_tax_categories', ['tax_categories' => $tax_categories,
+                'editable' => false]);
+        } else {
+            return view('permission_denied');
+        }
+
     }
 
     public function create(Request $request): RedirectResponse

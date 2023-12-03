@@ -71,7 +71,11 @@ class InvoiceController extends Controller
         }
 
         if (!request()->has('company')) {
+            if (!isset($companies[0]['id'])) {
+                return view('invoices', ['companies' => [], 'search' => '']);
+            }
             if (isset($this) && !request()->has('search')) {
+
                 $invoices = $this->invoiceService->findByCompanyId($companies[0]['id'])['invoices'];
                 if (isset($selected_fiscal_year)) {
                     $invoices = $invoices->filter(function ($invoice) use ($selected_fiscal_year) {

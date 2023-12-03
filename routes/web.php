@@ -132,6 +132,11 @@ Route::middleware('auth:web')->group(function () {
         Route::post('/create', [PriceDiscountController::class, 'create'])->name('create_price_discount');
         Route::post('/delete', [PriceDiscountController::class, 'delete'])->name('price_discount_delete');
     });
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('/requests', [UserController::class, 'manageRequests'])->name('user_registration_requests');
+        Route::post('/request', [UserController::class, 'updateRequestStatus'])->name(
+            'user_registration_update');
+    });
     Route::match(['get', 'post'], '/logout', [UserController::class, 'logout'])->name('logout');
 });
 

@@ -3,8 +3,9 @@
     <div class="d-inline-flex justify-content-between w-100">
         <strong class="p-1">Invoice #{{ $invoice['invoice_num'] }}</strong>
         <div class="d-inline-flex gap-2">
-            <button class="btn btn-sm btn-primary">Export Invoice</button>
-            <button class="btn btn-sm btn-primary">Close Invoice</button>
+            <a class="btn btn-sm btn-primary" data-bs-toggle="modal"
+               data-bs-target="#exportInvoiceModal">Export Invoice</a>
+            <a class="btn btn-sm btn-primary">Close Invoice</a>
         </div>
     </div>
 </div>
@@ -51,9 +52,9 @@
                         <p><strong>Invoice Type:</strong> {{ucwords(strtolower($invoice['type']))}}</p>
                         <p><strong>Due Date:</strong> {{ date('y-m-d - h:i A', strtotime($invoice['due_date'])) }}</p>
                         <p><strong>Payment Method:</strong>
-                            {{ ucwords(strtolower(str_replace('_', ' ', $invoice['payment_method']))) }}
-                            ({{$invoice['currency']}})</p>
-                        <p><strong>Total Price:</strong> {{ $invoice['total_price'] + $invoice['total_vat'] }} </p>
+                            {{ ucwords(strtolower(str_replace('_', ' ', $invoice['payment_method']))) }}</p>
+                        <p><strong>Total Price:</strong> {{ $invoice['total_price'] + $invoice['total_vat'] .
+                            ' ' . $invoice['currency'] }} </p>
                     </div>
                 </div>
             </div>
@@ -147,14 +148,15 @@
                                 Date:</strong> {{ date('y-m-d - h:i A', strtotime($invoice['delivery_date'])) }}</p>
                         <p><strong>Delivery Location:</strong> {{ $invoice['delivery_location'] }}</p>
                         <p><strong>Payment Method:</strong>
-                            {{ ucwords(strtolower(str_replace('_', ' ', $invoice['payment_method']))) }} (Local
-                            Currency)</p>
+                            {{ ucwords(strtolower(str_replace('_', ' ', $invoice['payment_method']))) }}</p>
                         <p><strong>Payment
                                 Deadline:</strong> {{ date('y-m-d - h:i A', strtotime($invoice['payment_deadline'])) }}
                         </p>
                         <p><strong>Fiscal Receipt Number:</strong> {{ $invoice['fiscal_receipt_num'] }}</p>
-                        <p><strong>Total Base Amount:</strong> {{ $invoice['total_base_amount'] }}</p>
-                        <p><strong>Total Price:</strong> {{ $invoice['total_price'] }}</p>
+                        <p><strong>Total Base
+                                Amount:</strong> {{ $invoice['total_base_amount'] . ' ' . $invoice['currency'] }}</p>
+                        <p><strong>Total Price:</strong> {{ $invoice['total_price'] . ' ' . $invoice['currency'] }}
+                        </p>
                         <p><strong>Total VAT:</strong> {{ $invoice['total_vat'] }}</p>
                         <p><strong>Total Rebate:</strong> {{ $invoice['total_rebate'] }}</p>
                         <p><strong>Invoice Status:</strong> {{ ucwords(strtolower($invoice['status'])) }}</p>
@@ -188,6 +190,7 @@
                                     <th class="text-nowrap text-center table-header-cell">VAT Price</th>
                                     <th class="text-nowrap text-center table-header-cell">VAT Percentage</th>
                                     <th class="text-nowrap text-center table-header-cell">Total Price</th>
+                                    <th class="text-nowrap text-center table-header-cell">Currency</th>
                                     <th class="text-nowrap text-center table-header-cell">Image URL</th>
                                 </tr>
                                 </thead>
@@ -203,16 +206,18 @@
                                         <td class="text-nowrap text-center">{{ $item['vat_price'] }}</td>
                                         <td class="text-nowrap text-center">{{ $item['vat_percentage'] }}</td>
                                         <td class="text-nowrap text-center">{{ $item['total_price'] }}</td>
+                                        <td class="text-nowrap text-center">{{ $invoice['currency'] }}</td>
                                         <td class="text-nowrap text-center">{{ $item['image_url'] }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+@component('components.export_invoice_modal_component')
+@endcomponent

@@ -50,7 +50,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-3">
                                             <div class="form-outline mb-4">
                                                 <label class="form-label" for="username">Username:</label>
                                                 <input type="text" id="username" name="username" class="form-control"
@@ -58,7 +58,7 @@
                                                        minlength="5" required/>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-3">
                                             <div class="form-outline mb-4">
                                                 <label class="form-label" for="email">Email:</label>
                                                 <input type="email" id="email" name="email" class="form-control"
@@ -66,9 +66,7 @@
                                                        required/>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-3">
                                             <div class="form-outline mb-4">
                                                 <label class="form-label" for="password">Password:</label>
                                                 <input type="password" id="password" name="password"
@@ -76,7 +74,7 @@
                                                        value="{{old('password')}}" minlength="8" required/>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-3">
                                             <div class="form-outline mb-4">
                                                 <label class="form-label" for="password_repeat">Repeat Password:</label>
                                                 <input type="password" id="password_repeat" name="passwordRepeat"
@@ -86,22 +84,20 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-4">
                                             <div class="form-outline mb-4">
                                                 @component('components.country_dropdown_component')
                                                 @endcomponent
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-4">
                                             <div class="form-outline mb-4">
                                                 <label class="form-label" for="city">City:</label>
                                                 <input type="text" id="city" name="city" class="form-control"
                                                        placeholder="Your city" value="{{old('city')}}" required/>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-4">
                                             <div class="form-outline mb-4">
                                                 <label class="form-label" for="postal_code">Postal Code:</label>
                                                 <input type="text" id="postal_code" name="postal_code"
@@ -109,16 +105,16 @@
                                                        value="{{old('postal_code')}}" required/>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4">
                                             <div class="form-outline mb-4">
                                                 <label class="form-label" for="address">Address:</label>
                                                 <input type="text" id="address" name="address" class="form-control"
                                                        placeholder="Your address" value="{{old('address')}}" required/>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-4">
                                             <div class="form-outline mb-4">
                                                 <label class="form-label" for="phone">Phone:</label>
                                                 <input type="tel" id="phone" name="phone" class="form-control"
@@ -126,7 +122,7 @@
                                                        required/>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-4">
                                             <div class="form-outline mb-4">
                                                 <label class="form-label" for="fax">Fax:</label>
                                                 <input type="tel" id="fax" name="fax" class="form-control"

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\AccountType;
 use App\Services\UnitOfMeasureService;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
@@ -26,7 +27,13 @@ class UnitOfMeasureController extends Controller
     {
         $unit_of_measures = $this->unitOfMeasureService->index()['unit_of_measures'];
 
-        return view('manage_unit_of_measures', ['unit_of_measures' => $unit_of_measures, 'editable' => false]);
+        $result = $this->userService->getUserData($this->userService->getUserIdWeb());
+
+        if ($result['success'] && $result['user']['account_type'] == AccountType::ADMINISTRATOR->value) {
+            return view('manage_unit_of_measures', ['unit_of_measures' => $unit_of_measures, 'editable' => false]);
+        } else {
+            return view('permission_denied');
+        }
     }
 
     public function create(Request $request): RedirectResponse
