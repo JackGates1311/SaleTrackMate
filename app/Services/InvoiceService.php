@@ -3,9 +3,14 @@
 namespace App\Services;
 
 use App\Constants;
+use App\Helper\GenerateData;
 use App\Models\Company;
 use App\Models\Invoice;
+use DOMException;
 use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -90,7 +95,7 @@ class InvoiceService
                         $this->invoiceItemService->store($invoice_item);
                     }
 
-                    $invoice_closure = $this->invoiceClosureService->store();
+                    $invoice_closure = $this->invoiceClosureService->store($invoice->getAttributes()['id']);
 
                     $data['invoice_closure'] = $invoice_closure['invoice_closure'];
 
@@ -117,7 +122,7 @@ class InvoiceService
 
     public function show($id): array
     {
-        $invoice = Invoice::with('fiscalYear', 'recipient', 'issuer', 'invoiceItems')->find($id);
+        $invoice = Invoice::with('fiscalYear', 'recipient', 'issuer', 'invoiceItems', 'closure')->find($id);
 
         if (!$invoice) {
             return ['success' => false, 'message' => Constants::INVOICE_NOT_FOUND . ' ' . $id];
@@ -191,5 +196,63 @@ class InvoiceService
         }
 
         return ['success' => true, 'invoices' => $invoices];
+    }
+
+    public function exportAsPdf($id): void
+    {
+        $result = $this->show($id);
+        if ($result['success']) {
+            (new GenerateData)->generatePdf($result['invoice']);
+        }
+    }
+
+    /**
+     * @throws DOMException
+     */
+    public function exportAsXml($id): Response|Application|ResponseFactory
+    {
+        $headers = [
+            'Content-type' => 'application/xml'
+        ];
+
+        $result = $this->show($id);
+
+        if ($result['success']) {
+            $invoice = $this->generateInvoiceXmlData($result['invoice']);
+
+            if ($invoice) {
+                return response((new GenerateData)->generateXml($invoice), 200, $headers);
+            }
+        }
+
+        return response(json_encode('Cannot generate XML file - ' . Constants::INVOICE_NOT_FOUND . ': ' . $id),
+            404);
+    }
+
+    public function generateInvoiceXmlData(array $invoice): array
+    {
+        $invoice['invoice_type_code'] = 300;
+        $invoice['description_code'] = 35;
+        $invoice['scheme_id'] = "9948";
+        $invoice['recipient']['budget_user_number'] = "JBKJS:12345";
+        $invoice['recipient']['company_id'] = '';
+        $invoice['recipient']['email'] = '';
+        $invoice['payment_code'] = 30;
+        $invoice['payment_mod'] = 97;
+        $invoice['payment_id'] = $invoice['invoice_num'];
+        $invoice['tax_scheme'] = "VAT";
+        $invoice['tax_exemption_reason_code'] = "PDV-RS-11-1-4";
+        $invoice['allowance_total_amount'] = 0;
+        $invoice['prepaid_amount'] = 0;
+
+        foreach ($invoice['invoice_items'] as $i => $invoice_item) {
+            if ($invoice['total_vat'] != 0.0) {
+                $invoice['invoice_items'][$i]['tax_id'] = "S";
+            } else {
+                $invoice['invoice_items'][$i]['tax_id'] = "O";
+            }
+        }
+
+        return $invoice;
     }
 }

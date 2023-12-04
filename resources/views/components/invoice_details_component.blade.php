@@ -5,7 +5,15 @@
         <div class="d-inline-flex gap-2">
             <a class="btn btn-sm btn-primary" data-bs-toggle="modal"
                data-bs-target="#exportInvoiceModal">Export Invoice</a>
-            <a class="btn btn-sm btn-primary">Close Invoice</a>
+            @if(($invoice['closure']['closure_amount'] ?? 0) == 0)
+                <form action="{{route('invoice_close', [
+                'company' => request()->query('company'),
+                'invoice' => request()->query('invoice')
+                ])}}" method="POST">
+                    @csrf <!-- {{ csrf_field() }} -->
+                    <button type="submit" class="btn btn-sm btn-primary">Close Invoice</button>
+                </form>
+            @endif
         </div>
     </div>
 </div>
@@ -38,7 +46,8 @@
                                         <span class="badge badge-small rounded-pill bg-danger">
                                 {{ ucwords(strtolower($invoice['status'])) }}</span>
                                     @endif
-                                    @if("0" == 1)
+                                    @if(isset($invoice['closure']['closure_amount']) &&
+                                        $invoice['closure']['closure_amount'] != 0)
                                         <span class="badge badge-small rounded-pill bg-primary">Closed</span>
                                     @endif
                                 </div>
@@ -197,17 +206,19 @@
                                 <tbody>
                                 @foreach($invoice['invoice_items'] as $item)
                                     <tr>
-                                        <td class="text-nowrap text-center">{{ $item['name'] }}</td>
-                                        <td class="text-nowrap text-center">{{ $item['unit'] }}</td>
-                                        <td class="text-nowrap text-center">{{ $item['unit_price'] }}</td>
-                                        <td class="text-nowrap text-center">{{ $item['quantity'] }}</td>
-                                        <td class="text-nowrap text-center">{{ $item['base_amount'] }}</td>
-                                        <td class="text-nowrap text-center">{{ $item['rebate'] }}</td>
-                                        <td class="text-nowrap text-center">{{ $item['vat_price'] }}</td>
-                                        <td class="text-nowrap text-center">{{ $item['vat_percentage'] }}</td>
-                                        <td class="text-nowrap text-center">{{ $item['total_price'] }}</td>
-                                        <td class="text-nowrap text-center">{{ $invoice['currency'] }}</td>
-                                        <td class="text-nowrap text-center">{{ $item['image_url'] }}</td>
+                                        <td class="text-nowrap text-center text-middle">{{ $item['name'] }}</td>
+                                        <td class="text-nowrap text-center text-middle">{{ $item['unit'] }}</td>
+                                        <td class="text-nowrap text-center text-middle">{{ $item['unit_price'] }}</td>
+                                        <td class="text-nowrap text-center text-middle">{{ $item['quantity'] }}</td>
+                                        <td class="text-nowrap text-center text-middle">{{ $item['base_amount'] }}</td>
+                                        <td class="text-nowrap text-center text-middle">{{ $item['rebate'] }}</td>
+                                        <td class="text-nowrap text-center text-middle">{{ $item['vat_price'] }}</td>
+                                        <td class="text-nowrap text-center text-middle">{{ $item['vat_percentage'] }}</td>
+                                        <td class="text-nowrap text-center text-middle">{{ $item['total_price'] }}</td>
+                                        <td class="text-nowrap text-center text-middle">{{ $invoice['currency'] }}</td>
+                                        <td class="text-nowrap text-center text-middle">
+                                            <img src="{{ $item['image_url'] }}" alt="-" class="img-table">
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>

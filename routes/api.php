@@ -50,6 +50,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{id}/xml', [InvoiceControllerApi::class, 'exportAsXml'])->name('exportAsXml');
         Route::get('/company/{id}', [InvoiceControllerApi::class, 'findByCompanyId'])
             ->name('findByCompanyId');
+        Route::patch('/close/{id}', [InvoiceControllerApi::class, 'closeInvoice'])->name('closeInvoice');
     });
 
     Route::group(['prefix' => 'recipients'], function () {

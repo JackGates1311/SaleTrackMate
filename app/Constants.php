@@ -91,4 +91,8 @@ class Constants
     const PRICE_DISCOUNT_EXPIRED = "Price discount is expired";
     const USER_REGISTRATION_REQUEST_UPDATE_SUCCESS = "User registration request updated successfully";
     const USER_REGISTRATION_REQUEST_UPDATE_FAIL = "Failed to update user registration request:";
+    const INVOICE_EXPORT_FAIL = "Failed to export invoice:";
+    const INVOICE_CLOSURE_NOT_FOUND = "Invoice closure not found with ID";
+    const INVOICE_CLOSURE_UPDATE_SUCCESS = "Invoice closure is successful";
+    const INVOICE_CLOSURE_UPDATE_FAIL = "Failed to update invoice closure:";
 }

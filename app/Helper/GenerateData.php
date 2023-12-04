@@ -16,7 +16,7 @@ class GenerateData
         $pdf->loadHtml($html);
         $pdf->setPaper('A4');
         $pdf->render();
-        $pdf->stream('invoice.pdf');
+        $pdf->stream($data['invoice_num'] . '_' . time() . '.pdf');
     }
 
     /**
@@ -56,45 +56,45 @@ class GenerateData
         $invoicePeriod->appendChild($descriptionCode);
 
         $contractDocumentReference = $invoice->createElement('cac:ContractDocumentReference');
-        $contract_ID = $invoice->createElement('cbc:ID', $data['contract_id']);
+        $contract_ID = $invoice->createElement('cbc:ID', $data['invoice_num']);
         $contractDocumentReference->appendChild($contract_ID);
 
         $accountingSupplierParty = $invoice->createElement('cac:AccountingSupplierParty');
         $party = $invoice->createElement('cac:Party');
 
-        $endpointID = $invoice->createElement('cbc:EndpointID', $data['issuer_company']['tax_code']);
+        $endpointID = $invoice->createElement('cbc:EndpointID', $data['issuer']['tax_code']);
         $endpointID->setAttribute('schemeID', $data['scheme_id']);
 
         $partyName = $invoice->createElement('cac:PartyName');
-        $name = $invoice->createElement('cbc:Name', $data['issuer_company']['name']);
+        $name = $invoice->createElement('cbc:Name', $data['issuer']['name']);
         $partyName->appendChild($name);
 
         $postalAddress = $invoice->createElement('cac:PostalAddress');
-        $cityName = $invoice->createElement('cbc:CityName', $data['issuer_company']['place']);
+        $cityName = $invoice->createElement('cbc:CityName', $data['issuer']['place']);
         $country = $invoice->createElement('cac:Country');
         $identificationCode = $invoice->createElement('cbc:IdentificationCode',
-            $data['issuer_company']['country']);
+            $data['issuer']['country']);
         $country->appendChild($identificationCode);
         $postalAddress->appendChild($cityName);
         $postalAddress->appendChild($country);
 
         $partyTaxScheme = $invoice->createElement('cac:PartyTaxScheme');
-        $companyId = $invoice->createElement('cbc:CompanyID', $data['issuer_company']['country'] .
-            $data['issuer_company']['tax_code']);
+        $companyId = $invoice->createElement('cbc:CompanyID', $data['issuer']['country'] .
+            $data['issuer']['tax_code']);
         $taxScheme = $invoice->createElement('cac:TaxScheme');
-        $taxSchemeId = $invoice->createElement('cbc:ID', $data['issuer_company']['vat']);
+        $taxSchemeId = $invoice->createElement('cbc:ID', $data['issuer']['vat_id']);
         $taxScheme->appendChild($taxSchemeId);
         $partyTaxScheme->appendChild($companyId);
         $partyTaxScheme->appendChild($taxScheme);
 
         $partyLegalEntity = $invoice->createElement('cac:PartyLegalEntity');
-        $registrationName = $invoice->createElement('cbc:RegistrationName', $data['issuer_company']['name']);
-        $companyId = $invoice->createElement('cbc:CompanyID', $data['issuer_company']['company_id']);
+        $registrationName = $invoice->createElement('cbc:RegistrationName', $data['issuer']['name']);
+        $companyId = $invoice->createElement('cbc:CompanyID', $data['issuer']['company_id']);
         $partyLegalEntity->appendChild($registrationName);
         $partyLegalEntity->appendChild($companyId);
 
         $contact = $invoice->createElement('cac:Contact');
-        $electronicMail = $invoice->createElement('cbc:ElectronicMail', $data['issuer_company']['email']);
+        $electronicMail = $invoice->createElement('cbc:ElectronicMail', $data['issuer']['email']);
         $contact->appendChild($electronicMail);
 
         $party->appendChild($endpointID);
@@ -108,23 +108,23 @@ class GenerateData
 
         $partyCustomer = $invoice->createElement('cac:Party');
 
-        $endpointIDCustomer = $invoice->createElement('cbc:EndpointID', $data['recipient_company']
-            ['tax_code']);
+        $endpointIDCustomer = $invoice->createElement('cbc:EndpointID', $data['recipient']
+        ['tax_code']);
         $endpointIDCustomer->setAttribute('schemeID', $data['scheme_id']);
         $partyIdentification = $invoice->createElement('cac:PartyIdentification');
-        $IDCustomer = $invoice->createElement('cbc:ID', $data['recipient_company']['budget_user_number']);
+        $IDCustomer = $invoice->createElement('cbc:ID', $data['recipient']['budget_user_number']);
         $partyIdentification->appendChild($IDCustomer);
 
         $partyNameCustomer = $invoice->createElement('cac:PartyName');
-        $nameCustomer = $invoice->createElement('cbc:Name', $data['recipient_company']['name']);
+        $nameCustomer = $invoice->createElement('cbc:Name', $data['recipient']['name']);
         $partyNameCustomer->appendChild($nameCustomer);
 
         $postalAddressCustomer = $invoice->createElement('cac:PostalAddress');
-        $streetName = $invoice->createElement('cbc:StreetName', $data['recipient_company']['address']);
-        $cityNameCustomer = $invoice->createElement('cbc:CityName', $data['recipient_company']['place']);
+        $streetName = $invoice->createElement('cbc:StreetName', $data['recipient']['address']);
+        $cityNameCustomer = $invoice->createElement('cbc:CityName', $data['recipient']['place']);
         $countryCustomer = $invoice->createElement('cac:Country');
         $identificationCodeCustomer = $invoice->createElement('cbc:IdentificationCode',
-            $data['recipient_company']['country']);
+            $data['recipient']['country']);
         $countryCustomer->appendChild($identificationCodeCustomer);
         $postalAddressCustomer->appendChild($streetName);
         $postalAddressCustomer->appendChild($cityNameCustomer);
@@ -132,24 +132,24 @@ class GenerateData
 
         $partyTaxSchemeCustomer = $invoice->createElement('cac:PartyTaxScheme');
         $companyIdCustomer = $invoice->createElement('cbc:CompanyID',
-            $data['recipient_company']['country'].$data['recipient_company']['company_id']);
+            $data['recipient']['country'] . $data['recipient']['company_id']);
         $taxSchemeCustomer = $invoice->createElement('cac:TaxScheme');
-        $taxSchemeIdCustomer = $invoice->createElement('cbc:ID', $data['recipient_company']['vat']);
+        $taxSchemeIdCustomer = $invoice->createElement('cbc:ID', $data['recipient']['vat_id']);
         $taxSchemeCustomer->appendChild($taxSchemeIdCustomer);
         $partyTaxSchemeCustomer->appendChild($companyIdCustomer);
         $partyTaxSchemeCustomer->appendChild($taxSchemeCustomer);
 
         $partyLegalEntityCustomer = $invoice->createElement('cac:PartyLegalEntity');
         $registrationNameCustomer = $invoice->createElement('cbc:RegistrationName',
-            $data['recipient_company']['name']);
+            $data['recipient']['name']);
         $companyIdCustomerLegal = $invoice->createElement('cbc:CompanyID',
-            $data['recipient_company']['reg_id']);
+            $data['recipient']['reg_id']);
         $partyLegalEntityCustomer->appendChild($registrationNameCustomer);
         $partyLegalEntityCustomer->appendChild($companyIdCustomerLegal);
 
         $contactCustomer = $invoice->createElement('cac:Contact');
         $electronicMailCustomer = $invoice->createElement('cbc:ElectronicMail',
-            $data['recipient_company']['email']);
+            $data['recipient']['email']);
         $contactCustomer->appendChild($electronicMailCustomer);
 
         $partyCustomer->appendChild($endpointIDCustomer);
@@ -172,7 +172,7 @@ class GenerateData
         $paymentID = $invoice->createElement('cbc:PaymentID', "(mod" . $data['payment_mod'] . ") " .
             $data['payment_id']);
         $paymentFinancialAccount = $invoice->createElement('cac:PayeeFinancialAccount');
-        $paymentFinancialAccountID = $invoice->createElement('cbc:ID', $data['issuer_company']['iban']);
+        $paymentFinancialAccountID = $invoice->createElement('cbc:ID', $data['issuer']['iban']);
         $paymentFinancialAccount->appendChild($paymentFinancialAccountID);
 
         $paymentMeans->appendChild($paymentMeansCode);
@@ -180,19 +180,19 @@ class GenerateData
         $paymentMeans->appendChild($paymentFinancialAccount);
 
         $taxTotal = $invoice->createElement('cac:TaxTotal');
-        $taxAmount = $invoice->createElement('cbc:TaxAmount', $data['tax_amount']);
+        $taxAmount = $invoice->createElement('cbc:TaxAmount', $data['total_vat']);
         $taxAmount->setAttribute('currencyID', $data['currency']);
         $taxTotal->appendChild($taxAmount);
 
-        foreach ($data['articles'] as $article) {
+        foreach ($data['invoice_items'] as $invoice_item) {
             $taxSubtotal = $invoice->createElement('cac:TaxSubtotal');
-            $taxableAmount = $invoice->createElement('cbc:TaxableAmount', $article['price_with_vat']);
+            $taxableAmount = $invoice->createElement('cbc:TaxableAmount', $invoice_item['total_price']);
             $taxableAmount->setAttribute('currencyID', $data['currency']);
-            $taxAmountArticle = $invoice->createElement('cbc:TaxAmount', $article['tax_amount']);
+            $taxAmountArticle = $invoice->createElement('cbc:TaxAmount', $invoice_item['vat_price']);
             $taxAmountArticle->setAttribute('currencyID', $data['currency']);
             $taxCategory = $invoice->createElement('cac:TaxCategory');
-            $taxID = $invoice->createElement('cbc:ID', $article['tax_id']);
-            $percent = $invoice->createElement('cbc:Percent', $article['vat']);
+            $taxID = $invoice->createElement('cbc:ID', $invoice_item['tax_id']);
+            $percent = $invoice->createElement('cbc:Percent', $invoice_item['vat_percentage']);
             $taxExemptionReasonCode = $invoice->createElement('cbc:TaxExemptionReasonCode',
                 $data['tax_exemption_reason_code']);
             $taxSchemeArticle = $invoice->createElement('cac:TaxScheme');
@@ -200,7 +200,7 @@ class GenerateData
             $taxSchemeArticle->appendChild($taxSchemeArticleID);
             $taxCategory->appendChild($taxID);
             $taxCategory->appendChild($percent);
-            if($article['tax_id'] == "O") {
+            if ($invoice_item['tax_id'] == "O") {
                 $taxCategory->appendChild($taxExemptionReasonCode);
             }
             $taxCategory->appendChild($taxSchemeArticle);
@@ -211,18 +211,20 @@ class GenerateData
         }
 
         $legalMonetaryTotal = $invoice->createElement('cac:LegalMonetaryTotal');
-        $lineExtensionAmount = $invoice->createElement('cbc:LineExtensionAmount', $data['price']);
+        $lineExtensionAmount = $invoice->createElement('cbc:LineExtensionAmount', $data['total_base_amount']);
         $lineExtensionAmount->setAttribute('currencyID', $data['currency']);
-        $taxExclusiveAmount = $invoice->createElement('cbc:TaxExclusiveAmount', $data['price']);
+        $taxExclusiveAmount = $invoice->createElement('cbc:TaxExclusiveAmount', $data['total_base_amount']);
         $taxExclusiveAmount->setAttribute('currencyID', $data['currency']);
-        $taxInclusiveAmount = $invoice->createElement('cbc:TaxInclusiveAmount', $data['price_with_vat']);
+        $taxInclusiveAmount = $invoice->createElement('cbc:TaxInclusiveAmount', $data['total_base_amount'] +
+            $data['total_vat']);
         $taxInclusiveAmount->setAttribute('currencyID', $data['currency']);
         $allowanceTotalAmount = $invoice->createElement('cbc:AllowanceTotalAmount',
             $data['allowance_total_amount']);
         $allowanceTotalAmount->setAttribute('currencyID', $data['currency']);
         $prepaidAmount = $invoice->createElement('cbc:PrepaidAmount', $data['prepaid_amount']);
         $prepaidAmount->setAttribute('currencyID', $data['currency']);
-        $payableAmount = $invoice->createElement('cbc:PayableAmount', $data['price_with_vat']);
+        $payableAmount = $invoice->createElement('cbc:PayableAmount', $data['total_base_amount'] +
+            $data['total_vat']);
         $payableAmount->setAttribute('currencyID', $data['currency']);
         $legalMonetaryTotal->appendChild($lineExtensionAmount);
         $legalMonetaryTotal->appendChild($taxExclusiveAmount);
@@ -246,36 +248,37 @@ class GenerateData
         $invoiceElement->appendChild($taxTotal);
         $invoiceElement->appendChild($legalMonetaryTotal);
 
-        foreach ($data['articles'] as $article) {
+        foreach ($data['invoice_items'] as $invoice_item) {
             $invoiceLine = $invoice->createElement('cac:InvoiceLine');
-            $invoiceID = $invoice->createElement('cbc:ID', $article['article_id']);
-            $invoicedQuantity = $invoice->createElement('cbc:InvoicedQuantity', $article['quantity']);
-            $invoicedQuantity->setAttribute('unitCode', $article['unit']);
+            $invoiceID = $invoice->createElement('cbc:ID', $invoice_item['id']);
+            $invoicedQuantity = $invoice->createElement('cbc:InvoicedQuantity', $invoice_item['quantity']);
+            $invoicedQuantity->setAttribute('unitCode', $invoice_item['unit']);
             $lineExtensionAmountArticle = $invoice->createElement('cbc:LineExtensionAmount',
-                $article['price_with_vat']);
+                $invoice_item['total_price']);
             $lineExtensionAmountArticle->setAttribute('currencyID', $data['currency']);
             $classifiedTaxCategoryTaxScheme = $invoice->createElement('cac:TaxScheme');
             $classifiedTaxCategoryTaxSchemeID = $invoice->createElement('cbc:ID', $data['tax_scheme']);
             $classifiedTaxCategoryTaxScheme->appendChild($classifiedTaxCategoryTaxSchemeID);
 
             $classifiedTaxCategory = $invoice->createElement('cac:ClassifiedTaxCategory');
-            $classifiedTaxCategoryID = $invoice->createElement('cbc:ID', $article['tax_id']);
-            $classifiedTaxCategoryPercent = $invoice->createElement('cbc:Percent', $article['vat']);
+            $classifiedTaxCategoryID = $invoice->createElement('cbc:ID', $invoice_item['tax_id']);
+            $classifiedTaxCategoryPercent = $invoice->createElement('cbc:Percent',
+                $invoice_item['vat_percentage']);
             $classifiedTaxCategory->appendChild($classifiedTaxCategoryID);
             $classifiedTaxCategory->appendChild($classifiedTaxCategoryPercent);
             $classifiedTaxCategory->appendChild($classifiedTaxCategoryTaxScheme);
 
             $item = $invoice->createElement('cac:Item');
-            $itemName = $invoice->createElement('cbc:Name', $article['name']);
+            $itemName = $invoice->createElement('cbc:Name', $invoice_item['name']);
             $sellersItemIdentification = $invoice->createElement('cac:SellersItemIdentification');
-            $sellersItemIdentificationID = $invoice->createElement('cbc:ID', $article['article_id']);
+            $sellersItemIdentificationID = $invoice->createElement('cbc:ID', $invoice_item['id']);
             $sellersItemIdentification->appendChild($sellersItemIdentificationID);
             $item->appendChild($itemName);
             $item->appendChild($sellersItemIdentification);
             $item->appendChild($classifiedTaxCategory);
 
             $price = $invoice->createElement('cac:Price');
-            $priceAmount = $invoice->createElement('cbc:PriceAmount', $article['price']);
+            $priceAmount = $invoice->createElement('cbc:PriceAmount', $invoice_item['total_price']);
             $priceAmount->setAttribute('currencyID', $data['currency']);
             $price->appendChild($priceAmount);
 

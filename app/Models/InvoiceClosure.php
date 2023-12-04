@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static create(array $validated_data)
+ * @method static find($id)
  */
 class InvoiceClosure extends Model
 {
@@ -18,11 +19,13 @@ class InvoiceClosure extends Model
     protected $fillable = [
         'closure_date',
         'closure_amount',
+        'invoice_id'
     ];
 
     public static array $rules = [
         'closure_date' => 'nullable|date',
         'closure_amount' => 'required|numeric|min:0',
+        'invoice_id' => 'required|uuid',
     ];
 
 }

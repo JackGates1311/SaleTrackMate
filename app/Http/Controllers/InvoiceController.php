@@ -6,15 +6,19 @@ use App\Models\FiscalYear;
 use App\Models\Invoice;
 use App\Services\CompanyService;
 use App\Services\GoodOrServiceService;
+use App\Services\InvoiceClosureService;
 use App\Services\InvoiceService;
 use App\Services\RecipientService;
 use App\Services\UserService;
 use Carbon\Carbon;
+use DOMException;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
 class InvoiceController extends Controller
@@ -24,16 +28,19 @@ class InvoiceController extends Controller
     private InvoiceService $invoiceService;
     private RecipientService $recipientService;
     private GoodOrServiceService $goodOrServiceService;
+    private InvoiceClosureService $invoiceClosureService;
 
-    public function __construct(CompanyService       $companyService, UserService $userService,
-                                InvoiceService       $invoiceService, RecipientService $recipientService,
-                                GoodOrServiceService $goodOrServiceService)
+    public function __construct(CompanyService        $companyService, UserService $userService,
+                                InvoiceService        $invoiceService, RecipientService $recipientService,
+                                GoodOrServiceService  $goodOrServiceService,
+                                InvoiceClosureService $invoiceClosureService)
     {
         $this->companyService = $companyService;
         $this->userService = $userService;
         $this->invoiceService = $invoiceService;
         $this->recipientService = $recipientService;
         $this->goodOrServiceService = $goodOrServiceService;
+        $this->invoiceClosureService = $invoiceClosureService;
     }
 
     public function index(): Factory|View|Application|RedirectResponse
@@ -178,5 +185,45 @@ class InvoiceController extends Controller
     {
         return redirect()->route('invoices', ['company' => $request['company'],
             'invoice' => $request['invoice'], 'search' => $request['search'], 'year' => $request['year']]);
+    }
+
+    public function exportAsPdf()
+    {
+        $this->invoiceService->exportAsPdf(request()->query('invoice'));
+    }
+
+    /**
+     * @throws DOMException
+     */
+    public function exportAsXml(): Response|Application|ResponseFactory
+    {
+        $invoice_xml = $this->invoiceService->exportAsXMl(request()->query('invoice'));
+
+        $response = response($invoice_xml->content(), 200);
+
+        $values = 'attachment; filename="invoice_' . time() . '.xml"';
+
+        $response->header('Content-Type', 'application/xml');
+        $response->header('Content-Disposition', $values);
+
+        return $response;
+    }
+
+    public function closeInvoice(): RedirectResponse
+    {
+        $invoice = $this->invoiceService->show(request()->query('invoice'))['invoice'];
+        $result = ['success' => false, 'message' => 'Internal Server Error 500 while closing invoice'];
+
+        if (isset($invoice['closure'])) {
+            $result = $this->invoiceClosureService->update($invoice['closure']['id'],
+                $invoice['total_price'] + $invoice['total_vat']);
+        }
+
+        if ($result['success']) {
+            return redirect()->route('invoices', ['company' => request()->query('company'),
+                'invoice' => request()->query('invoice')])->with(['message' => $result['message']]);
+        } else {
+            return back()->withErrors(['message' => $result['message']]);
+        }
     }
 }

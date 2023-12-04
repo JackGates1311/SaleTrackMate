@@ -1,4 +1,5 @@
-<!-- Invoice Data Form -->
+@php use Carbon\Carbon; @endphp
+    <!-- Invoice Data Form -->
 <div class="text-center">
     <h4 class="m-3">Invoice Data</h4>
 </div>
@@ -107,7 +108,7 @@
         <div class="form-outline mb-4">
             <label for="fiscal_year" class="form-label">Fiscal Year:</label>
             <select class="form-select" id="fiscal_year" name="fiscal_year">
-                <option value="2023">2023</option>
+                <option value="{{Carbon::now()->year}}">{{Carbon::now()->year}}</option>
                 <!-- Add more fiscal year options as needed -->
             </select>
         </div>
@@ -129,11 +130,11 @@
         <div class="form-outline mb-4">
             <label for="status" class="form-label">Invoice Status:</label>
             <select class="form-select" id="status" name="status">
-                <option value="STAGING"
-                    {{old('status')  == "STAGING" ? 'selected' : ''}}>Staging
-                </option>
                 <option value="SENT"
                     {{old('status')  == "SENT" ? 'selected' : ''}}>Sent
+                </option>
+                <option value="STAGING"
+                    {{old('status')  == "STAGING" ? 'selected' : ''}}>Staging
                 </option>
             </select>
         </div>

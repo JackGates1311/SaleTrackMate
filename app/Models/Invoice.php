@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @method static find($id)
@@ -74,6 +75,11 @@ class Invoice extends Model
     public function fiscalYear(): BelongsTo
     {
         return $this->belongsTo(FiscalYear::class, 'fiscal_year_id', 'id');
+    }
+
+    public function closure(): HasOne
+    {
+        return $this->hasOne(InvoiceClosure::class, 'invoice_id', 'id');
     }
 
     public static array $rules = [

@@ -30,7 +30,7 @@
                         </div>
                     </form>
                     <a href="{{route('create_invoice', ['company' => request()->query('company')])}}"
-                       class="btn btn-primary btn-block gradient-custom-2 w-100 mb-2">Create
+                       class="btn btn-primary btn-block gradient-custom-2 w-100 mb-3">Create
                         New Invoice</a>
                     @if (Session::has('message'))
                         <div class="alert alert-success mb-2">

@@ -7,9 +7,11 @@
             </div>
             <div class="modal-body">
                 <div class="d-inline-flex w-100 mt-2 gap-3">
-                    <a href="{{route('create_invoice', ['company' => request()->query('company')])}}"
+                    <a href="{{route('invoice_pdf_export', ['company' => request()->query('company'),
+                        'invoice' => request()->query('invoice')])}}"
                        class="btn btn-primary btn-block gradient-custom-2 w-100 mb-2">Export As PDF</a>
-                    <a href="{{route('create_invoice', ['company' => request()->query('company')])}}"
+                    <a href="{{route('invoice_xml_export', ['company' => request()->query('company'),
+                        'invoice' => request()->query('invoice')])}}"
                        class="btn btn-primary btn-block gradient-custom-2 w-100 mb-2">Export As XML</a>
                 </div>
             </div>

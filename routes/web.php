@@ -59,6 +59,9 @@ Route::middleware('auth:web')->group(function () {
         Route::post('/search', [InvoiceController::class, 'search'])->name('invoices_search');
         Route::get('/create', [InvoiceController::class, 'createView'])->name('create_invoice_view');
         Route::post('/create', [InvoiceController::class, 'create'])->name('create_invoice');
+        Route::get('/pdf', [InvoiceController::class, 'exportAsPdf'])->name('invoice_pdf_export');
+        Route::get('/xml', [InvoiceController::class, 'exportAsXml'])->name('invoice_xml_export');
+        Route::post('/close', [InvoiceController::class, 'closeInvoice'])->name('invoice_close');
     });
     Route::group(['prefix' => 'recipients'], function () {
         Route::get('/', [RecipientController::class, 'index'])->name('recipients');
