@@ -46,21 +46,24 @@
                         <div class="d-flex align-items-center justify-content-center" style="height: 50vh;">
                             <div class="alert alert-danger" role="alert">
                                 <h3 class="alert-danger">Internal Server Error</h3>
-                                <p> Internal Server Error occurred while fetching issuer company data.
-                                    Please try to refresh page and logout from system to resolve a problem.</p>
+                                <p> Internal Server Error occurred. Before creating a invoice, check it out if
+                                    you created your company first correctly! If that is not resolved this error,
+                                    please try to refresh page and logout from system to resolve a problem.</p>
                             </div>
                         </div>
                     @endif
                 </div>
                 <div class="tab-pane" id="tabpage_2" role="tabpanel">
                     @component('components.forms.invoice_recipient_form_component', ['recipient_list' =>
-                                $issuer['recipient_list']])
+                                $issuer['recipient_list'] ?? []])
                     @endcomponent
                 </div>
                 <div class="tab-pane" id="tabpage_3" role="tabpanel">
-                    @component('components.forms.invoice_form_component', ['issuer' => $issuer, 'invoice_num' =>
-                                $invoice_num ?? ''])
-                    @endcomponent
+                    @if(isset($issuer) && count($issuer) > 0)
+                        @component('components.forms.invoice_form_component', ['issuer' => $issuer, 'invoice_num' =>
+            $invoice_num ?? ''])
+                        @endcomponent
+                    @endif
                 </div>
                 <div class="tab-pane" id="tabpage_4" role="tabpanel">
                     <div class="text-center">

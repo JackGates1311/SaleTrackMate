@@ -91,7 +91,7 @@
                             <li>
                                 <a class="dropdown-item {{ request()->is('account') ? 'active' : '' }}"
                                    href="{{ route('account', ['user' => auth('web')->user(),
-                                    'company' => request()->query('company')]) }}">
+                                    'company' => request()->query('company') ?? 'default']) }}">
                                     Settings
                                 </a>
                             </li>

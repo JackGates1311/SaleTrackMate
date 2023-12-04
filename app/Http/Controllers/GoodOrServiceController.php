@@ -43,7 +43,7 @@ class GoodOrServiceController extends Controller
         $user_companies = $this->userService->getUserCompanies();
 
         $goods_or_services = $this->goodOrServiceService->findByCompanyId(request()->query('company'))
-        ['goods_or_services'];
+        ['goods_or_services'] ?? [];
 
         return view('goods_and_services', ['companies' => $user_companies,
             'selected_company' => $this->selected_company, 'goods_or_services' => $goods_or_services]);
