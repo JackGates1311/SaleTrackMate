@@ -139,6 +139,8 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/requests', [UserController::class, 'manageRequests'])->name('user_registration_requests');
         Route::post('/request', [UserController::class, 'updateRequestStatus'])->name(
             'user_registration_update');
+        Route::get('/backup', [UserController::class, 'backupDatabase'])->name('database_backup');
+        Route::post('/restore', [UserController::class, 'restoreDatabase'])->name('database_restore');
     });
     Route::match(['get', 'post'], '/logout', [UserController::class, 'logout'])->name('logout');
 });

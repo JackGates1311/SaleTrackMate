@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\AccountType;
 use App\Services\UserService;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -11,6 +12,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -25,8 +29,6 @@ class UserController extends Controller
     {
         session(['account_edit' => false]);
         session(['account' => true]);
-
-        //how to add param in url there?
 
         return view('account', ['companies' => $this->userService->getUserCompanies()]);
     }
@@ -100,6 +102,83 @@ class UserController extends Controller
                 ['company' => request()->query('company')])->with(['message' => $result['message']]);
         } else {
             return back()->withErrors(['message' => $result['message']]);
+        }
+    }
+
+    public function backupDatabase(): Factory|View|BinaryFileResponse|Application|string
+    {
+        $result = $this->userService->getUserData($this->userService->getUserIdWeb());
+
+        if ($result['success'] && $result['user']['account_type'] == AccountType::ADMINISTRATOR->value) {
+
+            $backup_file_name = 'backup_' . date('Y-m-d_His') . '.sql';
+            $backup_directory = storage_path('app/backups/');
+            $backup_file_path = $backup_directory . $backup_file_name;
+
+            if (!is_dir($backup_directory)) {
+                mkdir($backup_directory, 0755, true);
+            }
+
+            $command = sprintf(
+                'mysqldump -u%s -p%s %s > "%s"',
+                env('DB_USERNAME'),
+                env('DB_PASSWORD'),
+                env('DB_DATABASE'),
+                $backup_file_path
+            );
+
+            exec($command);
+
+            if (file_exists($backup_file_path)) {
+                $temp_file_path = tempnam(sys_get_temp_dir(), 'backup_');
+                file_put_contents($temp_file_path, file_get_contents($backup_file_path));
+                return response()->download($temp_file_path, $backup_file_name)->deleteFileAfterSend();
+            } else {
+                return 'Internal Server Error occurred while backing up your database';
+            }
+        } else {
+            return view('permission_denied');
+        }
+    }
+
+    public function restoreDatabase(Request $request): RedirectResponse
+    {
+        try {
+            $request->validate([
+                'fileInput' => [
+                    'required',
+                    'file',
+                    function ($attribute, $value, $fail) {
+                        $content = File::get($value);
+                        if (!preg_match('/\b(SELECT|INSERT|UPDATE|DELETE)\b/i', $content)) {
+                            $fail('The uploaded file does not appear to be a valid SQL file');
+                        }
+                    },
+                    'min:1',
+                    'max:12288',
+                ],
+            ]);
+
+            $file = $request->file('fileInput');
+
+            $path = $file->storeAs('backups', 'db_restore' . $file->getClientOriginalName());
+
+            $command = sprintf(
+                'mysql -u%s -p%s %s < "%s"',
+                env('DB_USERNAME'),
+                env('DB_PASSWORD'),
+                env('DB_DATABASE'),
+                storage_path('app/' . $path)
+            );
+
+            shell_exec($command);
+
+            Storage::delete($path);
+
+            return redirect()->route('login')->with(['success' => 'Database successfully restored']);
+        } catch (Exception $e) {
+            return redirect()->route('login')->withErrors(['message' =>
+                'Failed to restore database: ' . $e->getMessage()]);
         }
     }
 }

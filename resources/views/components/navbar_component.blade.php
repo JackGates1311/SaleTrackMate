@@ -69,7 +69,10 @@
                                 Admin Actions
                             </a>
                             <ul class="dropdown-menu text-center" aria-labelledby="navbarDropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Backup & Restore</a></li>
+                                <li><a class="dropdown-item" href="{{route('database_backup', ['company' =>
+                                    request()->query('company')])}}">Backup Database</a></li>
+                                <li><a href="#" class="dropdown-item" data-bs-toggle="modal"
+                                       data-bs-target="#restoreDatabaseModal">Restore Database</a></li>
                                 <li><a class="dropdown-item" href="{{route('user_registration_requests', ['company' =>
                                     request()->query('company')])}}">Manage User Registration Requests</a></li>
                                 <li><a class="dropdown-item" href="{{route('tax_categories', ['company' =>
@@ -103,3 +106,5 @@
         </div>
     </div>
 </nav>
+@component('components.restore_database_modal_component')
+@endcomponent
