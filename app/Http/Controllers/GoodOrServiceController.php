@@ -61,8 +61,6 @@ class GoodOrServiceController extends Controller
 
     public function create(Request $request): RedirectResponse
     {
-        //TODO implement logic for saving article there ... (and test it of course for side effects)
-
         $result = $this->goodOrServiceService->store($request->except('_token'), request()->query('company'));
 
         if ($result['success']) {

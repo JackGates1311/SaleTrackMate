@@ -105,8 +105,6 @@ class UserController extends Controller
         }
     }
 
-    //TODO move backup and restore into service layer!
-
     public function backupDatabase(): Factory|View|BinaryFileResponse|Application|string
     {
         $result = $this->userService->getUserData($this->userService->getUserIdWeb());

@@ -51,7 +51,7 @@ class Invoice extends Model
     /**
      * @noinspection PhpUnused
      */
-    public function issuer(): belongsTo //TODO figure out why hasOne relation returns null?!
+    public function issuer(): belongsTo
     {
         return $this->belongsTo(InvoiceIssuer::class, 'issuer_company_id', 'id');
     }

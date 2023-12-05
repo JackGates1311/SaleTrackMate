@@ -60,9 +60,6 @@ class InvoiceService
             DB::beginTransaction();
             try {
 
-                //TODO add check if bank accounts belongs to recipient and issuer companies ...
-                //TODO also check for user auth there
-
                 $issuer_data = $this->companyService->show($company_id)['company'];
                 $issuer_bank_account = $this->bankAccountService->show($data['issuer_bank_account'])['bank_account']->
                 toArray();

@@ -25,8 +25,6 @@ class TaxCategoryService
     {
         $result = $this->userService->getUserData($user_id);
 
-        //TODO Add DB transaction logic there ... (make cascade delete of tax rates while deleting tax category)
-
         if ($result['success'] && $result['user']['account_type'] == AccountType::ADMINISTRATOR->value) {
             try {
 
