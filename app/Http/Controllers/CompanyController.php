@@ -122,6 +122,10 @@ class CompanyController extends Controller
         } else if ($entity == 'recipients') {
             return redirect()->route('recipients', ['company' => $selected_company_id])->
             with(['companies' => $companies, 'selected_company' => $this->selected_company]);
+        } else if ($entity == 'analytics') {
+            return redirect()->route('invoice_analytics', ['company' => $selected_company_id,
+                'period' => $request['period'] ?? 'daily'])->
+            with(['companies' => $companies, 'selected_company' => $this->selected_company]);
         } else {
             return redirect()->route('goods_and_services', ['company' => $selected_company_id])->
             with(['companies' => $companies, 'selected_company' => $this->selected_company]);

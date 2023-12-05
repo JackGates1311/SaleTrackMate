@@ -20,7 +20,10 @@
                            href="{{ route('recipients', ['company' => request()->query('company')]) }}">Recipients</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('analytics') ? 'active' : '' }}" href="#">Analytics</a>
+                        <a class="nav-link {{ request()->is('invoices/analytics') ? 'active' : '' }}"
+                           href="{{ route('invoice_analytics', ['company' => request()->query('company'),
+                                'period' => 'daily']) }}">
+                            Analytics</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('goods_and_services') ? 'active' : '' }}"
@@ -29,8 +32,8 @@
                     </li>
                 @else
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('login') ? 'active' : '' }}" href="{{ route('login') }}">Log
-                            In</a>
+                        <a class="nav-link {{ request()->is('login') ? 'active' : '' }}" href="{{ route('login') }}">
+                            Log In</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('register') ? 'active' : '' }}"

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\InvoiceAnalyticsPeriodType;
+use App\Models\Company;
 use App\Models\FiscalYear;
 use App\Models\Invoice;
 use App\Services\CompanyService;
@@ -29,6 +31,7 @@ class InvoiceController extends Controller
     private RecipientService $recipientService;
     private GoodOrServiceService $goodOrServiceService;
     private InvoiceClosureService $invoiceClosureService;
+    private ?Company $selected_company;
 
     public function __construct(CompanyService        $companyService, UserService $userService,
                                 InvoiceService        $invoiceService, RecipientService $recipientService,
@@ -41,6 +44,7 @@ class InvoiceController extends Controller
         $this->recipientService = $recipientService;
         $this->goodOrServiceService = $goodOrServiceService;
         $this->invoiceClosureService = $invoiceClosureService;
+        $this->selected_company = null;
     }
 
     public function index(): Factory|View|Application|RedirectResponse
@@ -225,5 +229,35 @@ class InvoiceController extends Controller
         } else {
             return back()->withErrors(['message' => $result['message']]);
         }
+    }
+
+    public function analytics(): Factory|View|Application
+    {
+        $result = $this->invoiceService->findByCompanyId(request()->query('company'));
+
+        if (isset($result['invoices'])) {
+            $invoices = $result['invoices']->toArray();
+        } else {
+            $invoices = [];
+        }
+
+        $period = request()->query('period');
+
+        if (!isset($period)) {
+            $period = InvoiceAnalyticsPeriodType::DAILY->value;
+        }
+
+        $this->selected_company = $this->companyService->findSelectedCompany(request()->query('company'));
+
+        $user_companies = $this->userService->getUserCompanies();
+
+        $invoice_analytics = $this->invoiceService->getAnalyticsData($invoices, mb_strtoupper($period));
+
+        return view('analytics', ['invoices' => $invoices, 'selected_company' => $this->selected_company,
+            'companies' => $user_companies, 'number_of_invoices' => $invoice_analytics['number_of_invoices'],
+            'average_total_price' => $invoice_analytics['average_total_price'],
+            'the_most_profitable_recipients_labels' => $invoice_analytics['the_most_profitable_recipients_labels'],
+            'the_most_profitable_recipients' => $invoice_analytics['the_most_profitable_recipients'],
+            'the_most_loyal_recipients' => $invoice_analytics['the_most_loyal_recipients']]);
     }
 }

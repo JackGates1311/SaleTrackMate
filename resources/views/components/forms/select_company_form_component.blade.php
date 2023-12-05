@@ -1,4 +1,5 @@
 <form method="GET" action="{{route('select_company')}}">
+    <input type="hidden" name="period" value="{{ request()->query('period') }}">
     <input type="hidden" name="entity" value="{{ $entity }}">
     <label class="mb-2" for="companySelect">Company:</label>
     <div class="d-flex flex-column flex-lg-row">
@@ -39,7 +40,8 @@
                     Add New Company
                 </a>
             </div>
-        @elseif ($entity == 'recipients')
+        @endif
+        @if ($entity == 'recipients')
             <div
                 class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50"></div>
             <div
@@ -51,7 +53,8 @@
                     Add New Recipient
                 </a>
             </div>
-        @else
+        @endif
+        @if ($entity == 'goods_and_services')
             <div
                 class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">
             </div>
@@ -64,6 +67,31 @@
                    class="btn btn-primary mb-3 mb-lg-0 me-lg-2 w-100">
                     Add New Good Or Service
                 </a>
+            </div>
+        @endif
+        @if ($entity == 'analytics')
+            <div
+                class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">
+            </div>
+            <div
+                class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">
+            </div>
+            <div
+                class="d-flex flex-column flex-lg-row justify-content-end justify-content-lg-end w-100 w-lg-50">
+                <label for="timePeriodSelect">
+                    <select class="form-select mb-3 mb-lg-0 me-lg-2 w-sm-100 w-100"
+                            id="timePeriodSelect" name="time_period" onchange="handleTimePeriodChange(
+                            '{{ route('invoice_analytics', ['company' => request()->query('company')]) }}')">
+                        <option value="daily" {{ request()->query('period') === 'daily' ? 'selected' : '' }}>Daily
+                        </option>
+                        <option value="weekly" {{ request()->query('period') === 'weekly' ? 'selected' : '' }}>Weekly
+                        </option>
+                        <option value="monthly" {{ request()->query('period') === 'monthly' ? 'selected' : '' }}>Monthly
+                        </option>
+                        <option value="yearly" {{ request()->query('period') === 'yearly' ? 'selected' : '' }}>Yearly
+                        </option>
+                    </select>
+                </label>
             </div>
         @endif
     </div>

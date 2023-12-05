@@ -62,6 +62,7 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/pdf', [InvoiceController::class, 'exportAsPdf'])->name('invoice_pdf_export');
         Route::get('/xml', [InvoiceController::class, 'exportAsXml'])->name('invoice_xml_export');
         Route::post('/close', [InvoiceController::class, 'closeInvoice'])->name('invoice_close');
+        Route::get('/analytics', [InvoiceController::class, 'analytics'])->name('invoice_analytics');
     });
     Route::group(['prefix' => 'recipients'], function () {
         Route::get('/', [RecipientController::class, 'index'])->name('recipients');

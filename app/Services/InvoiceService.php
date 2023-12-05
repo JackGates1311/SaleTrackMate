@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use App\Constants;
+use App\Enums\InvoiceAnalyticsPeriodType;
 use App\Helper\GenerateData;
 use App\Models\Company;
 use App\Models\Invoice;
+use Carbon\Carbon;
 use DOMException;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -117,7 +119,8 @@ class InvoiceService
 
     public function index(): array
     {
-        return ['invoices' => Invoice::with('fiscalYear', 'recipient', 'issuer', 'invoiceItems')->get()->toArray()];
+        return ['invoices' => Invoice::with('fiscalYear', 'recipient', 'issuer', 'invoiceItems', 'closure')->
+        get()->toArray()];
     }
 
     public function show($id): array
@@ -195,6 +198,14 @@ class InvoiceService
             return ['success' => false, 'message' => Constants::INVOICE_NOT_FOUND . ': ' . $id];
         }
 
+        foreach ($invoices as $invoice) {
+            $invoice->load('fiscalYear');
+            $invoice->load('recipient');
+            $invoice->load('issuer');
+            $invoice->load('invoiceItems');
+            $invoice->load('closure');
+        }
+
         return ['success' => true, 'invoices' => $invoices];
     }
 
@@ -254,5 +265,189 @@ class InvoiceService
         }
 
         return $invoice;
+    }
+
+    public function getAnalyticsData(array $invoices, string $period): array
+    {
+        $number_of_invoices = [];
+        $average_total_price = [];
+        $the_most_profitable_recipients = [];
+        $the_most_profitable_recipients_labels = [];
+        $the_most_loyal_recipients = [];
+
+        if ($period == InvoiceAnalyticsPeriodType::YEARLY->value) {
+            $year = Carbon::now()->year;
+            for ($i = 0; $i < 12; $i++) {
+                $count = 0;
+                $total_price_amount = 0;
+
+                foreach ($invoices as $invoice) {
+                    if (Carbon::parse($invoice['created_at'])->year == $year &&
+                        Carbon::parse($invoice['created_at'])->month == $i + 1) {
+                        $count++;
+                        $total_price_amount += floatval($invoice['total_price'] + $invoice['total_vat']);
+                        $the_most_profitable_recipients_labels[$invoice['recipient']['vat_id']] =
+                            $invoice['recipient']['name'];
+                    }
+                }
+
+                $number_of_invoices[$i] = $count;
+                $average_total_price[$i] = $count > 0 ? $total_price_amount / $count : 0;
+            }
+
+            $the_most_profitable_recipients_labels = array_unique($the_most_profitable_recipients_labels);
+
+            foreach (array_keys($the_most_profitable_recipients_labels) as $recipient_vat_id) {
+                $the_most_profitable_recipients[$recipient_vat_id] = 0;
+                $the_most_loyal_recipients[$recipient_vat_id] = 0;
+                for ($k = 0; $k < 12; $k++) {
+                    $loyalty_count = 0;
+                    foreach ($invoices as $invoice) {
+                        if (Carbon::parse($invoice['created_at'])->year == $year &&
+                            Carbon::parse($invoice['created_at'])->month == $k + 1) {
+
+                            if ($invoice['recipient']['vat_id'] == $recipient_vat_id) {
+                                $loyalty_count++;
+                                $the_most_profitable_recipients[$recipient_vat_id] +=
+                                    floatval($invoice['total_price'] + $invoice['total_vat']);
+                                $the_most_loyal_recipients[$recipient_vat_id] = $loyalty_count;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($period == InvoiceAnalyticsPeriodType::MONTHLY->value) {
+            $month = Carbon::now()->month;
+            $days_of_month = Carbon::now()->daysInMonth;
+
+            for ($i = 0; $i < $days_of_month; $i++) {
+                $count = 0;
+                $total_price_amount = 0;
+
+                foreach ($invoices as $invoice) {
+                    if (Carbon::parse($invoice['created_at'])->month == $month &&
+                        Carbon::parse($invoice['created_at'])->day == $i + 1) {
+                        $count++;
+                        $total_price_amount += floatval($invoice['total_price'] + $invoice['total_vat']);
+                        $the_most_profitable_recipients_labels[$invoice['recipient']['vat_id']] =
+                            $invoice['recipient']['name'];
+                    }
+                }
+                $number_of_invoices[$i] = $count;
+                $average_total_price[$i] = $count > 0 ? $total_price_amount / $count : 0;
+            }
+
+            $the_most_profitable_recipients_labels = array_unique($the_most_profitable_recipients_labels);
+
+            foreach (array_keys($the_most_profitable_recipients_labels) as $recipient_vat_id) {
+                $the_most_profitable_recipients[$recipient_vat_id] = 0;
+                $the_most_loyal_recipients[$recipient_vat_id] = 0;
+                for ($k = 0; $k < $days_of_month; $k++) {
+                    $loyalty_count = 0;
+                    foreach ($invoices as $invoice) {
+                        if (Carbon::parse($invoice['created_at'])->month == $month &&
+                            Carbon::parse($invoice['created_at'])->day == $k + 1) {
+                            if ($invoice['recipient']['vat_id'] == $recipient_vat_id) {
+                                $loyalty_count++;
+                                $the_most_profitable_recipients[$recipient_vat_id] +=
+                                    floatval($invoice['total_price'] + $invoice['total_vat']);
+                                $the_most_loyal_recipients[$recipient_vat_id] = $loyalty_count;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($period == InvoiceAnalyticsPeriodType::WEEKLY->value) {
+            $week_of_year = Carbon::now()->isoWeek();
+            for ($i = 0; $i < 7; $i++) {
+                $count = 0;
+                $total_price_amount = 0;
+
+                foreach ($invoices as $invoice) {
+                    if (Carbon::parse($invoice['created_at'])->week == $week_of_year &&
+                        Carbon::parse($invoice['created_at'])->dayOfWeek == $i + 1) {
+                        $count++;
+                        $total_price_amount += floatval($invoice['total_price'] + $invoice['total_vat']);
+                        $the_most_profitable_recipients_labels[$invoice['recipient']['vat_id']] =
+                            $invoice['recipient']['name'];
+                    }
+                }
+                $number_of_invoices[$i] = $count;
+                $average_total_price[$i] = $count > 0 ? $total_price_amount / $count : 0;
+            }
+
+            $the_most_profitable_recipients_labels = array_unique($the_most_profitable_recipients_labels);
+
+            foreach (array_keys($the_most_profitable_recipients_labels) as $recipient_vat_id) {
+                $the_most_profitable_recipients[$recipient_vat_id] = 0;
+                $the_most_loyal_recipients[$recipient_vat_id] = 0;
+                for ($k = 0; $k < 7; $k++) {
+                    $loyalty_count = 0;
+                    foreach ($invoices as $invoice) {
+                        if (Carbon::parse($invoice['created_at'])->week == $week_of_year &&
+                            Carbon::parse($invoice['created_at'])->dayOfWeek == $k + 1) {
+
+                            if ($invoice['recipient']['vat_id'] == $recipient_vat_id) {
+                                $loyalty_count++;
+                                $the_most_profitable_recipients[$recipient_vat_id] +=
+                                    floatval($invoice['total_price'] + $invoice['total_vat']);
+                                $the_most_loyal_recipients[$recipient_vat_id] = $loyalty_count;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($period == InvoiceAnalyticsPeriodType::DAILY->value) {
+            $day = Carbon::now()->day;
+            for ($i = 0; $i < 24; $i++) {
+                $count = 0;
+                $total_price_amount = 0;
+
+                foreach ($invoices as $invoice) {
+                    if (Carbon::parse($invoice['created_at'])->day == $day &&
+                        Carbon::parse($invoice['created_at'])->hour == $i) {
+                        $count++;
+                        $total_price_amount += floatval($invoice['total_price'] + $invoice['total_vat']);
+                        $the_most_profitable_recipients_labels[$invoice['recipient']['vat_id']] =
+                            $invoice['recipient']['name'];
+                    }
+                }
+                $number_of_invoices[$i] = $count;
+                $average_total_price[$i] = $count > 0 ? $total_price_amount / $count : 0;
+            }
+
+            $the_most_profitable_recipients_labels = array_unique($the_most_profitable_recipients_labels);
+
+            foreach (array_keys($the_most_profitable_recipients_labels) as $recipient_vat_id) {
+                $the_most_profitable_recipients[$recipient_vat_id] = 0;
+                $the_most_loyal_recipients[$recipient_vat_id] = 0;
+                for ($k = 0; $k < 24; $k++) {
+                    $loyalty_count = 0;
+                    foreach ($invoices as $invoice) {
+                        if (Carbon::parse($invoice['created_at'])->day == $day &&
+                            Carbon::parse($invoice['created_at'])->hour == $k) {
+
+                            if ($invoice['recipient']['vat_id'] == $recipient_vat_id) {
+                                $loyalty_count++;
+                                $the_most_profitable_recipients[$recipient_vat_id] +=
+                                    floatval($invoice['total_price'] + $invoice['total_vat']);
+                                $the_most_loyal_recipients[$recipient_vat_id] = $loyalty_count;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return ['number_of_invoices' => $number_of_invoices, 'average_total_price' => $average_total_price,
+            'the_most_profitable_recipients_labels' => $the_most_profitable_recipients_labels,
+            'the_most_profitable_recipients' => $the_most_profitable_recipients,
+            'the_most_loyal_recipients' => $the_most_loyal_recipients];
     }
 }
