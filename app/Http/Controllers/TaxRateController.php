@@ -28,7 +28,7 @@ class TaxRateController extends Controller
     public function create(Request $request): RedirectResponse
     {
         $result = $this->taxRateService->store($request->toArray()['tax_rate'],
-            $this->userService->getUserIdWeb(), $request->toArray()['tax_category_id']);
+            $this->userService->getUserIdWeb(), $request->toArray()['tax_category_id'] ?? '');
 
         return $this->taxCategoryController->loadTaxCategoriesPage($result);
     }
