@@ -17,13 +17,13 @@
 
         h1, h2, h3, h4, h5, h6, p, span, div {
             font-family: DejaVu Sans, serif;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: normal;
         }
 
         th, td {
             font-family: DejaVu Sans, serif;
-            font-size: 12px;
+            font-size: 11px;
             white-space: normal;
         }
 
