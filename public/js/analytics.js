@@ -105,7 +105,7 @@ new Chart(theMostProfitableRecipientsChartCtx, {
         labels: Object.values(theMostProfitableRecipientsLabels),
         datasets: [{
             label: 'The most profitable recipients',
-            data: theMostProfitableRecipients,
+            data: Object.values(theMostProfitableRecipients),
             backgroundColor: 'rgba(192,186,75,0.2)',
             borderColor: 'rgb(162,189,37)',
             borderWidth: 2
@@ -129,7 +129,7 @@ new Chart(theMostLoyalRecipientsChartCtx, {
         labels: Object.values(theMostProfitableRecipientsLabels),
         datasets: [{
             label: 'The most loyal recipients',
-            data: theMostLoyalRecipients,
+            data: Object.values(theMostLoyalRecipients),
             backgroundColor: 'rgba(192,120,75,0.2)',
             borderColor: 'rgb(192,120,75)',
             borderWidth: 2
